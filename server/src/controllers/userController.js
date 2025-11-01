@@ -95,9 +95,20 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
+
+    res.json({
+      message: "Đăng nhập thành công",
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
-    console.log("registration error;", error);
-    res.status(500).json({ message: "Lỗi server khi đăng nhap" });
+    console.log("login error;", error);
+    res.status(500).json({ message: "Lỗi server khi đăng nhập" });
   }
 };
 
@@ -204,8 +215,12 @@ export const changePassword = async (req, res) => {
     // update
     user.password = hashedPassword;
     await user.save();
+
+    res.json({
+      message: "Đổi mật khẩu thành công",
+    });
   } catch (error) {
-    console.error("Lổi đổi mật khẩu", error);
+    console.error("Lỗi đổi mật khẩu", error);
     res.status(500).json({
       message: "Lỗi server khi đổi mật khẩu",
     });

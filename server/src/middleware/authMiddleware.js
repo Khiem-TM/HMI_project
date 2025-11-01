@@ -9,14 +9,19 @@ export const verifyToken = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = await User.findById(decoded.id).select("-password");
-      next();
+      if (!req.user) {
+        return res.status(401).json({ message: "User không tồn tại" });
+      }
+      return next();
     } catch (error) {
-      res.status(401).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
+      return res
+        .status(401)
+        .json({ message: "Token không hợp lệ hoặc đã hết hạn" });
     }
   }
 
   if (!token) {
-    res
+    return res
       .status(401)
       .json({ message: "Không có token, quyền truy cập bị từ chối" });
   }

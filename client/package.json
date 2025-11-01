@@ -1,4 +1,13 @@
 {
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -28,7 +37,24 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "axios": "^1.13.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.23.24",
-    "lucide-react": "^0.552.0"
+    "lucide-react": "^0.552.0",
+    "next": "^15.1.6",
+    "next-themes": "^0.4.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.1",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.6",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2"
   }
 }

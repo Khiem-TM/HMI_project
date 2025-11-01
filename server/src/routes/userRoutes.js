@@ -51,7 +51,7 @@ router.post(
   handleValidationErrors,
   registerUser
 );
-router.post("login", loginValidation, handleValidationErrors, loginUser);
+router.post("/login", loginValidation, handleValidationErrors, loginUser);
 
 // Protected routes
 router.get("/me", verifyToken, getMe);
