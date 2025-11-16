@@ -75,7 +75,7 @@ net start MongoDB
 
 --> Cần cải tiến thêm nhiều
 
-Để có dữ liệu ban đầu:
+Để có dữ liệu ban đầuv (tự tạo seed file)
 
 ```bash
 cd server
@@ -83,7 +83,32 @@ node seed-dictionary.js
 node seed-exercises.js
 ```
 
-### 6. Chạy Development Servers
+### 6. Thiết Lập Offline Translation (BrowserMT) -
+
+Để sử dụng dịch offline từ tiếng Anh sang ASL, bạn cần tải các model files:
+
+**Yêu cầu:**
+
+- Model files phải được đặt trong: `client/public/assets/models/browsermt/spoken-to-signed/en-ase/`
+- Các file cần thiết:
+  - `model.enase.intgemm.alphas.bin` (model chính)
+  - `lex.50.50.enase.s2t.bin` (lexical shortlist)
+  - `vocab.enase.spm` (SentencePiece vocabulary)
+
+**Worker files đã được copy tự động:**
+
+- `client/public/browsermt/worker.js`
+- `client/public/browsermt/bergamot-translator-worker.js`
+- `client/public/browsermt/bergamot-translator-worker.wasm`
+
+**Kiểm tra model files:**
+
+```bash
+cd client
+node scripts/verify-models.js
+```
+
+### 7. Chạy Development Servers
 
 Từ thư mục gốc:
 

@@ -5,6 +5,14 @@ export const searchWords = async (req, res) => {
   try {
     const { word, category, difficulty, page = 1, limit = 10 } = req.query;
 
+    console.log("🔍 Dictionary search request:", {
+      word,
+      category,
+      difficulty,
+      page,
+      limit,
+    });
+
     // Tạo query object
     const query = {};
 
@@ -20,6 +28,8 @@ export const searchWords = async (req, res) => {
       query.difficulty = difficulty;
     }
 
+    console.log("📝 MongoDB query:", JSON.stringify(query, null, 2));
+
     // Tính toán phân trang
     const skip = (page - 1) * limit;
 
@@ -29,20 +39,31 @@ export const searchWords = async (req, res) => {
       .limit(parseInt(limit))
       .sort({ word: 1 });
 
+    console.log(`📊 Found ${words.length} words`);
+
     // Đếm tổng số từ để phân trang
     const total = await Word.countDocuments(query);
 
-    res.json({
+    console.log(`📈 Total words: ${total}`);
+
+    const response = {
       words,
       pagination: {
         current: parseInt(page),
         pages: Math.ceil(total / limit),
         total,
       },
-    });
+    };
+
+    console.log("✅ Sending response with", words.length, "words");
+    res.json(response);
   } catch (err) {
-    console.error("Lỗi tìm kiếm từ:", err);
-    res.status(500).json({ message: err.message });
+    console.error("❌ Lỗi tìm kiếm từ:", err);
+    console.error("❌ Error stack:", err.stack);
+    res.status(500).json({
+      message: err.message || "Internal server error",
+      error: process.env.NODE_ENV === "development" ? err.stack : undefined,
+    });
   }
 };
 

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserNav } from "@/components/user-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -16,6 +16,12 @@ export function Navigation() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    if (user && user.role === "admin" && pathname && !pathname.startsWith("/admin")) {
+      router.replace("/admin");
+    }
+  }, [user, pathname, router]);
+
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/dictionary", label: "Dictionary" },
@@ -24,6 +30,10 @@ export function Navigation() {
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
   ];
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">

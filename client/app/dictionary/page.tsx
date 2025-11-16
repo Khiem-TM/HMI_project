@@ -21,18 +21,45 @@ export default function DictionaryPage() {
       setError("");
 
       try {
-        console.log("Fetching dictionary for word:", searchQuery);
+        console.log("🔍 Fetching dictionary for word:", searchQuery);
         const res = await apiService.dictionary.searchWords({
           word: searchQuery,
         });
-        console.log("API Response:", res.data);
-        // Handle different response formats
-        const words = res.data?.words || res.data?.data || res.data || [];
+
+        const words = res.data?.words || [];
+
         setVideos(Array.isArray(words) ? words : []);
-      } catch (err) {
-        console.error("Lỗi khi gọi API:", err);
-        setError("Không thể tải dữ liệu từ server");
-        setVideos([]); // Set empty array on error
+
+        if (words.length === 0) {
+          console.warn("⚠️ No words found in response");
+        }
+      } catch (err: any) {
+        console.error("Error details:", {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status,
+          config: err.config,
+          isNetworkError: err.isNetworkError,
+        });
+
+        // Better error messages
+        let errorMessage = "Không thể tải dữ liệu từ server";
+
+        if (err.isNetworkError || !err.response) {
+          errorMessage =
+            "Không thể kết nối tới server. Vui lòng kiểm tra server có đang chạy không (http://localhost:5000)";
+        } else if (err.response?.status === 404) {
+          errorMessage = "Không tìm thấy từ vựng";
+        } else if (err.response?.status >= 500) {
+          errorMessage = "Lỗi server. Vui lòng thử lại sau";
+        } else if (err.response?.data?.message) {
+          errorMessage = err.response.data.message;
+        } else if (err.message) {
+          errorMessage = err.message;
+        }
+
+        setError(errorMessage);
+        setVideos([]);
       } finally {
         setLoading(false);
       }

@@ -1,0 +1,70 @@
+import { SignWritingService } from './signwriting.service';
+import { PoseLandmark } from '@/lib/stores/pose-store';
+import { threeService } from './three.service';
+import { holisticService } from './holistic.service';
+import type { BodyStateModel } from '@/lib/stores/signwriting-store';
+
+class BodyService {
+  async shoulders(landmarks: PoseLandmark[]): Promise<{ center: any; width: number }> {
+    await threeService.load();
+    await holisticService.load();
+
+    const POSE_LANDMARKS = holisticService.POSE_LANDMARKS;
+    const Vector2 = threeService.Vector2;
+
+    const p1 = landmarks[POSE_LANDMARKS.LEFT_SHOULDER];
+    const p2 = landmarks[POSE_LANDMARKS.RIGHT_SHOULDER];
+
+    return {
+      center: new Vector2((p1.x + p2.x) / 2, (p1.y + p2.y) / 2),
+      width: Math.abs(p1.x - p2.x),
+    };
+  }
+
+  drawShoulders(shoulders: { center: any; width: number }, ctx: CanvasRenderingContext2D): void {
+    const shouldersText = '񎣡';
+    const fontSize = SignWritingService.textFontSize(shouldersText, shoulders.width, ctx);
+    SignWritingService.drawSWText(shouldersText, shoulders.center, fontSize, ctx);
+  }
+
+  drawArm(
+    shoulder: PoseLandmark,
+    elbow: PoseLandmark,
+    wrist: PoseLandmark,
+    ctx: CanvasRenderingContext2D
+  ): void {
+    // make sure elbow is visible
+    if (elbow.visibility && elbow.visibility < 0.8) {
+      return;
+    }
+    ctx.strokeStyle = 'black';
+    ctx.beginPath();
+    ctx.moveTo(shoulder.x * ctx.canvas.width, shoulder.y * ctx.canvas.height);
+    ctx.lineTo(elbow.x * ctx.canvas.width, elbow.y * ctx.canvas.height);
+    if (wrist.visibility && wrist.visibility > 0.8) {
+      ctx.lineTo(wrist.x * ctx.canvas.width, wrist.y * ctx.canvas.height);
+    }
+    ctx.stroke();
+  }
+
+  drawArms(body: BodyStateModel, ctx: CanvasRenderingContext2D): void {
+    ctx.lineWidth = (body.shoulders.width * ctx.canvas.width) / 50;
+    const shoulders = [
+      { x: body.shoulders.center.x + 0.45 * body.shoulders.width, y: body.shoulders.center.y },
+      { x: body.shoulders.center.x - 0.45 * body.shoulders.width, y: body.shoulders.center.y },
+    ] as PoseLandmark[];
+    this.drawArm(shoulders[0], body.elbows[0], body.wrists[0], ctx);
+    this.drawArm(shoulders[1], body.elbows[1], body.wrists[1], ctx);
+  }
+
+  draw(body: BodyStateModel, ctx: CanvasRenderingContext2D): void {
+    if (body) {
+      this.drawShoulders(body.shoulders, ctx);
+      this.drawArms(body, ctx);
+    }
+  }
+}
+
+export const bodyService = new BodyService();
+
+

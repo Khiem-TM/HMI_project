@@ -21,10 +21,13 @@ export default function SignInPage() {
   const router = useRouter();
   const { login, user } = useAuth();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      router.push("/");
+      if (user.role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
     }
   }, [user, router]);
 
@@ -35,7 +38,17 @@ export default function SignInPage() {
 
     try {
       await login(email, password);
-      router.push("/");
+      try {
+        const savedUser = localStorage.getItem("user");
+        const parsed = savedUser ? JSON.parse(savedUser) : null;
+        if (parsed?.role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/");
+        }
+      } catch {
+        router.push("/");
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {

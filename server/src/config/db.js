@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-// Kiểm tra kết nối với database
 
 const connectDB = async () => {
   try {
+    if (!process.env.MONGO_URI) {
+      throw new Error("Đường dẫn không hợp lệ --> Check lại trong .env");
+    }
+
     await mongoose.connect(process.env.MONGO_URI);
-    console.log(" MongoDB Connected Successfully");
+    console.log("DONE");
+    console.log(`DB: ${mongoose.connection.db.databaseName}`);
   } catch (error) {
-    console.error("MongoDB Connection Failed:", error.message);
-    process.exit(1);
+    console.error(error.message);
+    throw error; // reThrow
   }
 };
 

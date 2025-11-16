@@ -3,6 +3,8 @@ import {
   createTranslation,
   getUserTranslations,
   deleteTranslation,
+  translateSignToText,
+  translateTextToSign,
 } from "../controllers/translationController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { body } from "express-validator";
@@ -21,7 +23,38 @@ const translationValidation = [
 
 router.use(verifyToken);
 
-// Check input  --> POST khi ok
+// using python service
+const translateValidation = [
+  body("text").trim().notEmpty().withMessage("Text is required"),
+  body("text_language")
+    .optional()
+    .isIn(["english", "urdu", "hindi"])
+    .withMessage("Invalid text language"),
+  body("sign_language")
+    .optional()
+    .isString()
+    .withMessage("Invalid sign language"),
+  body("output_format")
+    .optional()
+    .isIn(["video", "landmarks"])
+    .withMessage("Invalid output format"),
+];
+
+router.post("/translate", translateValidation, translateTextToSign);
+
+const signToTextValidation = [
+  body("landmarks").isArray().withMessage("Landmarks must be an array"),
+  body("landmarks.*").isArray().withMessage("Each landmark must be an array"),
+  body("sign_language")
+    .optional()
+    .isString()
+    .withMessage("Invalid sign language"),
+  body("videoUrl").optional().isString().withMessage("Invalid video URL"),
+];
+
+router.post("/sign-to-text", signToTextValidation, translateSignToText);
+
+//  endpoints
 router.post("/", translationValidation, createTranslation);
 
 router.get("/", getUserTranslations);

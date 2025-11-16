@@ -8,7 +8,13 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 10000, // 10 seconds timeout
+  withCredentials: true, // Include credentials for CORS
 });
+
+// Log API URL in development
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  console.log("🔗 API Base URL:", API_URL);
+}
 
 // Request interceptor để thêm token vào header
 api.interceptors.request.use(
@@ -26,31 +32,53 @@ api.interceptors.request.use(
 
 // Response interceptor để xử lý lỗi
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Log successful requests in development
+    if (process.env.NODE_ENV === "development") {
+      console.log("✅ API Success:", response.config?.url, response.status);
+    }
+    return response;
+  },
   (error) => {
     // Handle network errors
-    if (error.code === "ECONNABORTED" || error.message === "Network Error") {
-      console.error("Network error:", error.message);
-      // You can show a toast notification here
+    if (error.code === "ECONNABORTED" || error.message === "Network Error" || !error.response) {
+      console.error("❌ Network error - Server might be down:", error.message);
+      console.error("💡 Check if server is running on:", API_URL);
+      // Don't redirect on network errors for public endpoints
+      if (error.config?.url?.includes("/dictionary") || error.config?.url?.includes("/exercises")) {
+        // These are public endpoints, don't redirect
+        return Promise.reject({
+          ...error,
+          isNetworkError: true,
+          message: "Không thể kết nối tới server. Vui lòng kiểm tra server có đang chạy không.",
+        });
+      }
     }
     
     if (error.response?.status === 401) {
-      // Token hết hạn hoặc không hợp lệ
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      // Redirect to login page nếu đang ở client-side
-      if (typeof window !== "undefined") {
-        window.location.href = "/signin";
+      // Token hết hạn hoặc không hợp lệ - chỉ redirect nếu không phải public endpoint
+      const isPublicEndpoint = error.config?.url?.includes("/dictionary") || 
+                               error.config?.url?.includes("/exercises") ||
+                               error.config?.url?.includes("/health");
+      
+      if (!isPublicEndpoint) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        // Redirect to login page nếu đang ở client-side
+        if (typeof window !== "undefined") {
+          window.location.href = "/signin";
+        }
       }
     }
     
     // Log error for debugging
     if (process.env.NODE_ENV === "development") {
-      console.error("API Error:", {
+      console.error("❌ API Error:", {
         message: error.message,
         status: error.response?.status,
         data: error.response?.data,
         url: error.config?.url,
+        code: error.code,
       });
     }
     
@@ -85,6 +113,96 @@ export const apiService = {
       return api.get(`/exercises/${id}`);
     },
   },
+  games: {
+    saveSession: async (data: {
+      gameMode: string;
+      difficulty?: string;
+      score?: number;
+      correctAnswers?: number;
+      wrongAnswers?: number;
+      totalQuestions?: number;
+      timeSpent?: number;
+      exercises?: string[];
+      answers?: any[];
+    }) => {
+      return api.post("/games/sessions", data);
+    },
+    startSession: async (data: {
+      gameMode: string;
+      difficulty?: string;
+    }) => {
+      return api.post("/games/start", data);
+    },
+    getHistory: async (params?: {
+      page?: number;
+      limit?: number;
+      gameMode?: string;
+      difficulty?: string;
+    }) => {
+      return api.get("/profile/game-history", { params });
+    },
+  },
+  admin: {
+    loginAdmin: async (data: { email: string; password: string }) => {
+      return api.post("/admin/login", data);
+    },
+    getAllUsers: async (params?: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      role?: string;
+      isActive?: string;
+      sortBy?: string;
+      sortOrder?: string;
+    }) => {
+      return api.get("/admin/users", { params });
+    },
+    getUserById: async (id: string) => {
+      return api.get(`/admin/users/${id}`);
+    },
+    getUserActivities: async (
+      id: string,
+      params?: {
+        page?: number;
+        limit?: number;
+        action?: string;
+      }
+    ) => {
+      return api.get(`/admin/users/${id}/activities`, { params });
+    },
+    deleteUser: async (id: string) => {
+      return api.delete(`/admin/users/${id}`);
+    },
+    getSystemStats: async () => {
+      return api.get("/admin/stats");
+    },
+    getMe: async () => {
+      return api.get("/admin/me");
+    },
+  },
+  profile: {
+    getProfile: async () => {
+      return api.get("/profile");
+    },
+    getStats: async (params?: { period?: string }) => {
+      return api.get("/profile/stats", { params });
+    },
+    getAchievements: async () => {
+      return api.get("/profile/achievements");
+    },
+  },
+  leaderboard: {
+    getLeaderboard: async (params?: {
+      page?: number;
+      limit?: number;
+      sortBy?: string;
+    }) => {
+      return api.get("/leaderboard", { params });
+    },
+    getUserRank: async () => {
+      return api.get("/leaderboard/rank");
+    },
+  },
   translations: {
     create: async (data: {
       inputText: string;
@@ -98,6 +216,22 @@ export const apiService = {
     },
     delete: async (id: string) => {
       return api.delete(`/translations/${id}`);
+    },
+    translate: async (data: {
+      text: string;
+      text_language?: "english" | "urdu" | "hindi";
+      sign_language?: string;
+      output_format?: "video" | "landmarks";
+    }) => {
+      return api.post("/translations/translate", data);
+    },
+    signToText: async (data: {
+      landmarks: number[][][] | number[][][][]; // Single sign or sequence
+      sign_language?: string;
+      videoUrl?: string;
+      mode?: "single" | "sequence";
+    }) => {
+      return api.post("/translations/sign-to-text", data);
     },
   },
   auth: {

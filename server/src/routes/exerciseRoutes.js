@@ -7,11 +7,9 @@ import {
 
 const router = express.Router();
 
+// Public
 router.get("/random", getRandomExercise);
-
 router.get("/", getAllExercises);
-
-//lấy ID của bài tập từ schema Exercise
 router.get("/:id", getExerciseById);
 
 export default router;

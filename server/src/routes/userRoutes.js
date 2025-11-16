@@ -5,6 +5,7 @@ import {
   getMe,
   updateProfile,
   changePassword,
+  logoutUser,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { body, validationResult } from "express-validator";
@@ -55,6 +56,7 @@ router.post("/login", loginValidation, handleValidationErrors, loginUser);
 
 // Protected routes
 router.get("/me", verifyToken, getMe);
+router.post("/logout", verifyToken, logoutUser);
 router.put("/profile", verifyToken, updateProfile);
 router.put("/password", verifyToken, changePassword);
 

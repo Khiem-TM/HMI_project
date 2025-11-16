@@ -2,22 +2,50 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Mail, Shield, Calendar, Settings } from "lucide-react";
+import {
+  User,
+  Mail,
+  Shield,
+  Calendar,
+  Settings,
+  Trophy,
+  TrendingUp,
+  Award,
+  BarChart3,
+} from "lucide-react";
 import Link from "next/link";
+import { apiService } from "@/lib/api";
+import { Loader2 } from "lucide-react";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [profile, setProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/signin");
+    } else if (user) {
+      loadProfile();
     }
   }, [user, loading, router]);
+
+  const loadProfile = async () => {
+    try {
+      setProfileLoading(true);
+      const response = await apiService.profile.getProfile();
+      setProfile(response.data.user);
+    } catch (error: any) {
+      console.error("Error loading profile:", error);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -129,32 +157,124 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Learning Progress</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <p className="text-muted-foreground mb-4">
-                Track your sign language learning journey
-              </p>
-              <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-                <div className="p-4 rounded-lg bg-primary/10">
-                  <p className="text-2xl font-bold text-primary">0</p>
-                  <p className="text-xs text-muted-foreground">Words Learned</p>
-                </div>
-                <div className="p-4 rounded-lg bg-secondary/20">
-                  <p className="text-2xl font-bold text-secondary-foreground">0</p>
-                  <p className="text-xs text-muted-foreground">Games Played</p>
-                </div>
-                <div className="p-4 rounded-lg bg-accent/30">
-                  <p className="text-2xl font-bold text-accent-foreground">0</p>
-                  <p className="text-xs text-muted-foreground">Translations</p>
-                </div>
+        {/* Stats Overview */}
+        {profileLoading ? (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
               </div>
+            </CardContent>
+          </Card>
+        ) : profile?.profile ? (
+          <>
+            <Card>
+              <CardHeader>
+                <CardTitle>Learning Progress</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-4 rounded-lg bg-primary/10">
+                    <p className="text-2xl font-bold text-primary">
+                      {profile.profile.totalScore || 0}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Total Score</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-secondary/20">
+                    <p className="text-2xl font-bold text-secondary-foreground">
+                      {profile.profile.totalGamesPlayed || 0}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Games Played
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-green-100 dark:bg-green-900/20">
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      {profile.profile.accuracyRate || 0}%
+                    </p>
+                    <p className="text-xs text-muted-foreground">Accuracy</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-yellow-100 dark:bg-yellow-900/20">
+                    <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+                      {profile.profile.currentStreak || 0}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Day Streak</p>
+                  </div>
+                </div>
+                <div className="mt-6 pt-6 border-t">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        Level & Rank
+                      </p>
+                      <p className="text-xl font-bold">
+                        Level {profile.profile.level || 1} •{" "}
+                        <span className="capitalize">
+                          {profile.profile.rank || "bronze"}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-muted-foreground">
+                        Longest Streak
+                      </p>
+                      <p className="text-xl font-bold">
+                        {profile.profile.longestStreak || 0} days
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Links */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Link href="/profile/achievements">
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3">
+                      <Award className="h-8 w-8 text-yellow-600" />
+                      <div>
+                        <p className="font-semibold">Achievements</p>
+                        <p className="text-sm text-muted-foreground">
+                          View your badges
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+              <Link href="/profile/stats">
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3">
+                      <BarChart3 className="h-8 w-8 text-blue-600" />
+                      <div>
+                        <p className="font-semibold">Detailed Stats</p>
+                        <p className="text-sm text-muted-foreground">
+                          View analytics
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             </div>
-          </CardContent>
-        </Card>
+          </>
+        ) : (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-center py-8">
+                <p className="text-muted-foreground mb-4">
+                  Start playing games to see your progress!
+                </p>
+                <Link href="/game">
+                  <Button>Start Playing</Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
