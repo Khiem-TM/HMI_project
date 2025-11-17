@@ -1,117 +1,94 @@
-# Hướng Dẫn Cài Đặt
+## 🔧 Cài đặt
 
-### Frontend (Client)
+### 1. Clone repository
+h
+git clone <repository-url>
+cd SignLearn
 
-- **Next.js 15** (App Router)
-- **React 19**
-- **TypeScript**
-- **Tailwind CSS v4**
-- **shadcn/ui** components
-- **Axios** cho API calls
-- **Framer Motion** cho animations
+### 2. Cài đặt dependencies cho Server
 
-### Backend (Server)
-
-- **Express.js 5**
-- **MongoDB** với Mongoose
-- **JWT** cho authentication
-- **bcryptjs** cho password hashing
-- **CORS** đã bật
-- **Helmet** cho security
-
-### 1. Cài Đặt Dependencies
-
-```bash
-npm run install:all
-```
-
-### 2. Thiết Lập Môi Trường Server
-
-Sao chép và chỉnh sửa file môi trường server:
-
-```bash
 cd server
-cp env.example .env
-```
+npm install
 
-Chỉnh sửa `server/.env` --> Dựa trên cấu hình máy cá nhân nhé
+### 3. Cài đặt dependencies cho Client
 
-```env
+cd ../client
+npm install
+
+### 4. Cài đặt Python dependencies
+
+cd ../server
+pip install -r requirements.txt**Lưu ý**: Nếu bạn gặp lỗi khi cài đặt `sign-language-translator`, có thể cần cài đặt thêm các dependencies:
+
+pip install torch torchvision torchaudio
+pip install opencv-contrib-python## 
+
+### 1. Cấu hình Server
+
+Tạo file `.env` trong thư mục `server/`:
+
+cd server
+cp env.example .envChỉnh sửa file `.env` với các giá trị phù hợp:
+nv
+# Database
 MONGO_URI=mongodb://localhost:27017/signlearn
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-here-change-this-in-production
 JWT_EXPIRES_IN=7d
+
+# Server
 PORT=5000
 NODE_ENV=development
+
+# Client
 CLIENT_URL=http://localhost:3000
-```
 
-### 3. Thiết Lập Môi Trường Client
+# Admin bootstrap (tài khoản admin mặc định)
+ADMIN_NAME=Admin
+ADMIN_EMAIL=admin@signlearn.local
+ADMIN_PASSWORD=change-me-please
 
-Tạo `client/.env.local`:
+### 2. Cấu hình Client (nếu cần)
 
-```bash
-cd ../client
-```
+Nếu client cần các biến môi trường riêng, tạo file `.env.local` trong thư mục `client/`:
 
-Tạo file `client/.env.local`:
+NEXT_PUBLIC_API_URL=http://localhost:5000## 🗄️ Database Setup
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-```
+### 1. Khởi động MongoDB
 
-### 4. Khởi Động MongoDB
+Đảm bảo MongoDB đang chạy:
 
-**MongoDB Local:**
-
-```bash
-# Mac (Homebrew)
+# Trên macOS với Homebrew
 brew services start mongodb-community
 
-# Windows
-net start MongoDB
-```
+### Development Mode
 
-### 5. Seed Database --> Cấp sampledata cho 2 chức năng dictionary và exercises
+Mở 2 terminal riêng biệt:
 
---> Cần cải tiến thêm nhiều
-
-Để có dữ liệu ban đầuv (tự tạo seed file)
-
-```bash
+**Terminal 1 - Server:**
 cd server
-node seed-dictionary.js
-node seed-exercises.js
-```
+npm run devServer sẽ chạy tại `http://localhost:5000`
 
-### 6. Thiết Lập Offline Translation (BrowserMT) -
-
-Để sử dụng dịch offline từ tiếng Anh sang ASL, bạn cần tải các model files:
-
-**Yêu cầu:**
-
-- Model files phải được đặt trong: `client/public/assets/models/browsermt/spoken-to-signed/en-ase/`
-- Các file cần thiết:
-  - `model.enase.intgemm.alphas.bin` (model chính)
-  - `lex.50.50.enase.s2t.bin` (lexical shortlist)
-  - `vocab.enase.spm` (SentencePiece vocabulary)
-
-**Worker files đã được copy tự động:**
-
-- `client/public/browsermt/worker.js`
-- `client/public/browsermt/bergamot-translator-worker.js`
-- `client/public/browsermt/bergamot-translator-worker.wasm`
-
-**Kiểm tra model files:**
-
-```bash
+**Terminal 2 - Client:**
 cd client
-node scripts/verify-models.js
-```
+npm run devClient sẽ chạy tại `http://localhost:3000`
 
-### 7. Chạy Development Servers
+### Lỗi CORS
 
-Từ thư mục gốc:
+Nếu gặp lỗi CORS khi client gọi API:
+- Đảm bảo `CLIENT_URL` trong `.env` của server khớp với URL client đang chạy
+- Trong development, server tự động cho phép `localhost:3000`
 
-```bash
-npm run dev
-```
+### Lỗi kết nối MongoDB
+
+- Kiểm tra MongoDB đang chạy: `mongosh` hoặc `mongo`
+- Kiểm tra `MONGO_URI` trong `.env` đúng format
+
+### Lỗi Python dependencies
+
+Nếu gặp lỗi khi import Python modules:
+# Cài đặt lại dependencies
+pip install --upgrade -r requirements.txt
+
+--> Chú ý: Đây chưa chắc là đã đầy đủ dependencies --> Ae đọc kĩ lỗi (đa số là thiếu thư viện) --> Nếu thiều dùng npm để install vào (Chủ yếu thiếu ở client)
