@@ -11,7 +11,7 @@
     "download-models": "node scripts/download-models-firebase.js"
   },
   "dependencies": {
-    "@google/model-viewer": "^4.1.0",
+    "@google/model-viewer": "^2.1.1",
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/holistic": "^0.5.1675471629",
     "@mediapipe/tasks-text": "^0.10.21",
