@@ -22,7 +22,7 @@ interface UseHandDetectionOptions {
 }
 
 export function useHandDetection(
-  videoRef: React.RefObject<HTMLVideoElement>,
+  videoRef: React.RefObject<HTMLVideoElement| null>,
   enabled: boolean = false,
   options: UseHandDetectionOptions = {}
 ) {

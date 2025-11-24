@@ -40,7 +40,7 @@ export function VideoCanvas({
 
   const fpsStatsRef = useRef<Stats | null>(null);
   const appLoopRef = useRef<boolean>(false);
-
+  
   // Initialize pose service and set up callbacks
   useEffect(() => {
     const setupPoseService = async () => {
