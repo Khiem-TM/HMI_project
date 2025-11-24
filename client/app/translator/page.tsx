@@ -12,6 +12,7 @@ import { useTranslatorStore } from "@/lib/stores/translator-store";
 import { useHandDetection } from "@/hooks/useHandDetection";
 import { apiService } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
+import { useSignRecognition } from "@/hooks/useSignRecognition";
 
 let translationService: any = null;
 let languageDetectionService: any = null;
@@ -114,7 +115,7 @@ function TranslatorPageContent() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   const { toast } = useToast();
-
+const [realtimeSign, setRealtimeSign] = useState<string>("");
   // Hand detection hook
   const {
     isInitialized: isHandDetectionReady,
@@ -139,6 +140,23 @@ function TranslatorPageContent() {
     confidenceThreshold: 0.5,
     detectionInterval: 100,
   });
+
+  useSignRecognition(videoRef, {
+    // Chỉ bật khi Camera đang mở VÀ đang ở chế độ Sign-to-Text
+    enabled: isCameraActive && mode === "sign-to-text",
+    
+    onResult: (text, score) => {
+      // Chỉ chấp nhận nếu độ tin cậy > 60%
+      if (score > 0.6) {
+        console.log(`AI Detected: ${text} (${score})`);
+        setTranslatedText(text); // Cập nhật chữ lên màn hình
+        
+        // (Tùy chọn) Nếu muốn chữ tự động điền vào ô kết quả bên phải:
+        // setTranslatedText(text); 
+      }
+    }
+  });
+  // -----------------------------------------------------------
 
   useEffect(() => {
     loadServices()
@@ -657,7 +675,18 @@ function TranslatorPageContent() {
                       </p>
                     </div>
                   )}
-
+{/* 👇 [CHÈN ĐOẠN CODE HIỂN THỊ KẾT QUẢ NÀY VÀO] */}
+                  {isCameraActive && realtimeSign && (
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center z-30 pointer-events-none">
+                      <div className="bg-black/70 backdrop-blur-sm text-white px-6 py-2 rounded-full border border-green-500 shadow-lg animate-in slide-in-from-bottom-2">
+                        <p className="text-xl font-bold flex items-center gap-2">
+                          <span className="text-sm font-normal text-gray-300">AI Detected:</span>
+                          <span className="text-green-400 uppercase">{realtimeSign}</span>
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {/* ------------------------------------------- */}
                   {/* Idle state */}
                   {!isCameraActive && !isLoading && !cameraError && (
                     <div className="absolute inset-0 flex items-center justify-center bg-muted">
