@@ -11,6 +11,12 @@ node_modules/
 server/.env
 client/.env.local
 
+# Python & Virtual Env
+venv/
+.venv/
+env/
+__pycache__/
+
 # Build outputs
 .next/
 client/.next/

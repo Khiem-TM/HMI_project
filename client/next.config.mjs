@@ -1,5 +1,12 @@
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingRoot: path.join(__dirname, ".."),
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -14,8 +21,6 @@ const nextConfig = {
       ...config.experiments,
       asyncWebAssembly: true,
     };
-    // Note: Multiple Three.js instances warning may still appear from pose-viewer dependency.
-    // This is a known issue and doesn't affect functionality.
     return config;
   },
 };

@@ -1,7 +1,7 @@
-import { tfjsService } from './tfjs.service';
-import { threeService } from './three.service';
-import type { Vector3 } from 'three';
-import type { Tensor } from '@tensorflow/tfjs';
+import { tfjsService } from "./tfjs.service";
+import { threeService } from "./three.service";
+import type { Vector3 } from "three";
+import type { Tensor } from "@tensorflow/tfjs";
 
 export interface PlaneNormal {
   center: Vector3;
@@ -9,7 +9,10 @@ export interface PlaneNormal {
 }
 
 class PoseNormalizationService {
-  async normal(vectors: Vector3[], planeIdx: [number, number, number]): Promise<PlaneNormal> {
+  async normal(
+    vectors: Vector3[],
+    planeIdx: [number, number, number]
+  ): Promise<PlaneNormal> {
     await threeService.load();
     const { Vector3, Plane } = threeService;
 
@@ -21,7 +24,11 @@ class PoseNormalizationService {
       (triangle[0].z + triangle[1].z + triangle[2].z) / 3
     );
 
-    const plane = new Plane().setFromCoplanarPoints(triangle[0], triangle[1], triangle[2]);
+    const plane = new Plane().setFromCoplanarPoints(
+      triangle[0],
+      triangle[1],
+      triangle[2]
+    );
     const direction = plane.normal;
 
     return { center, direction };
@@ -92,5 +99,3 @@ class PoseNormalizationService {
 }
 
 export const poseNormalizationService = new PoseNormalizationService();
-
-

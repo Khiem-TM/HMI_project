@@ -8,7 +8,7 @@ const FIREBASE_CONFIG = {
   projectId: "sign-mt",
   appId: "1:665830225099:web:18e0669d5847a4b047974e",
   databaseURL: "https://sign-mt-default-rtdb.firebaseio.com",
-  storageBucket: "sign-mt-assets", // Note: bucket name is sign-mt-assets, not sign-mt.appspot.com
+  storageBucket: "sign-mt-assets", 
   locationId: "us-central",
   authDomain: "sign-mt.firebaseapp.com",
   messagingSenderId: "665830225099",
