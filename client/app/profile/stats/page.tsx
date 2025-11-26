@@ -70,14 +70,14 @@ export default function ProfileStatsPage() {
         <Link href="/profile">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Profile
+            Quay lại hồ sơ
           </Button>
         </Link>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-primary mb-2">Statistics</h1>
+            <h1 className="text-4xl font-bold text-primary mb-2">Thống kê</h1>
             <p className="text-muted-foreground">
-              Detailed analytics of your learning journey
+              Chi tiết thông kê quá trình học của bạn
             </p>
           </div>
           <Select value={period} onValueChange={setPeriod}>
@@ -85,10 +85,10 @@ export default function ProfileStatsPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Time</SelectItem>
-              <SelectItem value="year">This Year</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
+              <SelectItem value="all">Tất cả</SelectItem>
+              <SelectItem value="year">Năm này</SelectItem>
+              <SelectItem value="month">Tháng này</SelectItem>
+              <SelectItem value="week">Tuần này</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -101,7 +101,7 @@ export default function ProfileStatsPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Total Score
+                  Tổng điểm
                 </CardTitle>
                 <Award className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -116,7 +116,7 @@ export default function ProfileStatsPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Games Played
+                  Game đã chơi
                 </CardTitle>
                 <BarChart3 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -124,27 +124,27 @@ export default function ProfileStatsPage() {
                 <div className="text-2xl font-bold">
                   {stats.overview?.totalGamesPlayed || 0}
                 </div>
-                <p className="text-xs text-muted-foreground">Total sessions</p>
+                <p className="text-xs text-muted-foreground">Tổng số lượt</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Accuracy</CardTitle>
+                <CardTitle className="text-sm font-medium">Độ chính xác</CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
                   {stats.overview?.accuracyRate || 0}%
                 </div>
-                <p className="text-xs text-muted-foreground">Correct answers</p>
+                <p className="text-xs text-muted-foreground">Số lượt trả lời đúng</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Current Streak
+                  Số lượt streak
                 </CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>

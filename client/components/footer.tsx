@@ -19,28 +19,27 @@ export function Footer() {
               <span className="text-xl font-bold">SignLearn</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Empowering the deaf and hard of hearing community through sign language education and translation
-              technology.
+              Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động, giúp phá bỏ rào cản giao tiếp và thúc đẩy sự hòa nhập xã hội
             </p>
           </div>
 
           {/* Pages */}
           <div>
-            <h3 className="font-semibold mb-4">Pages</h3>
+            <h3 className="font-semibold mb-4">Trang</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
-                  Home
+                  Trang chủ
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
-                  About
+                  Thôngtin
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
-                  Contact
+                  Liên hệ
                 </Link>
               </li>
             </ul>
@@ -52,17 +51,17 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/dictionary" className="text-muted-foreground hover:text-primary transition-colors">
-                  Dictionary
+                  Từ điển
                 </Link>
               </li>
               <li>
                 <Link href="/translator" className="text-muted-foreground hover:text-primary transition-colors">
-                  Translator
+                  Trình dịch
                 </Link>
               </li>
               <li>
                 <Link href="/game" className="text-muted-foreground hover:text-primary transition-colors">
-                  Practice Game
+                  Game
                 </Link>
               </li>
             </ul>

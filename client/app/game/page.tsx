@@ -370,11 +370,11 @@ export default function GamePage() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <Trophy className="h-5 w-5 text-yellow-500" />
-            <span className="font-semibold">Score: {score}</span>
+            <span className="font-semibold">Điểm số: {score}</span>
           </div>
           <div className="flex items-center gap-2">
             <Shuffle className="h-5 w-5 text-green-600" />
-            <span className="font-semibold">Streak: {streak}</span>
+            <span className="font-semibold">Lượt Streak: {streak}</span>
           </div>
         </div>
       </div>
@@ -433,7 +433,7 @@ export default function GamePage() {
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
               <Timer className="h-5 w-5 text-primary" />
-              <span>Time: {timeLeft}s</span>
+              <span>Đếm ngược: {timeLeft}s</span>
             </div>
             <Select value={difficulty} onValueChange={(v) => setDifficulty(v)}>
               <SelectTrigger className="w-48">
@@ -467,10 +467,10 @@ export default function GamePage() {
                 <CardContent className="p-8">
                   <div className="mb-2 text-center">
                     <h2 className="text-2xl font-bold mb-1">
-                      {exercise.wordMeaning}
+                      Câu hỏi
                     </h2>
                     <p className="text-muted-foreground">
-                      Category: {exercise.category} • Difficulty:{" "}
+                      Thể loại: {exercise.category} • Độ khó:{" "}
                       {exercise.difficulty}
                     </p>
                   </div>

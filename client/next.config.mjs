@@ -6,10 +6,6 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  outputFileTracingRoot: path.join(__dirname, ".."),
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -23,6 +19,7 @@ const nextConfig = {
     };
     return config;
   },
+  turbopack: {},
 };
 
 export default nextConfig;

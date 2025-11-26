@@ -9,17 +9,16 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="py-20 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance">
-          Learn Sign Language,{" "}
-          <span className="text-primary">Bridge Communication</span>
+          Học Ngôn Ngữ Ký Hiệu,{" "}
+          <span className="text-primary">Kết Nối Giao Tiếp</span>
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
-          Empowering the deaf and hard of hearing community with comprehensive
-          sign language learning, translation, and practice tools.
+          Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động, giúp phá bỏ rào cản giao tiếp và thúc đẩy sự hòa nhập xã hội.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/signup">
             <Button size="lg" className="w-full sm:w-auto">
-              Get Started Free
+              Bắt đầu miễn phí
             </Button>
           </Link>
           <Link href="/about">
@@ -28,7 +27,7 @@ export default function HomePage() {
               variant="outline"
               className="w-full sm:w-auto bg-transparent"
             >
-              Learn More
+              Tìm hiểu thêm
             </Button>
           </Link>
         </div>
@@ -37,7 +36,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-20">
         <h2 className="text-3xl font-bold text-center mb-12">
-          Everything You Need to Learn Sign Language
+          Mọi thứ bạn cần để học ngôn ngữ ký hiệu
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="hover:shadow-lg transition-shadow">
@@ -45,32 +44,29 @@ export default function HomePage() {
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Dictionary</h3>
+              <h3 className="text-xl font-semibold mb-2">Từ điển</h3>
               <p className="text-muted-foreground mb-4">
-                Search and learn thousands of sign language words with video
-                demonstrations.
+                Tìm kiếm và học hàng ngàn từ ngôn ngữ ký hiệu với các video minh họa.
               </p>
               <Link href="/dictionary">
                 <Button variant="link" className="p-0">
-                  Explore Dictionary →
+                  Khám phá Từ điển →
                 </Button>
               </Link>
             </CardContent>
           </Card>
-
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <Languages className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Translator</h3>
+              <h3 className="text-xl font-semibold mb-2">Trình dịch</h3>
               <p className="text-muted-foreground mb-4">
-                Real-time translation between sign language and text using your
-                camera.
+                Trình dịch ngôn ngữ ký hiệu thời gian thực giữa ngôn ngữ ký hiệu và văn bản sử dụng camera của bạn.
               </p>
               <Link href="/translator">
                 <Button variant="link" className="p-0">
-                  Try Translator →
+                  Thử trình dịch →
                 </Button>
               </Link>
             </CardContent>
@@ -81,14 +77,13 @@ export default function HomePage() {
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <Gamepad2 className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Practice Game</h3>
+              <h3 className="text-xl font-semibold mb-2">Trò chơi luyện tập</h3>
               <p className="text-muted-foreground mb-4">
-                Test your knowledge with interactive games and improve your sign
-                language skills.
+                Kiểm tra kiến thức của bạn với các trò chơi tương tác và cải thiện kỹ năng ngôn ngữ ký hiệu.
               </p>
               <Link href="/game">
                 <Button variant="link" className="p-0">
-                  Play Game →
+                  Chơi trò chơi →
                 </Button>
               </Link>
             </CardContent>
@@ -99,13 +94,13 @@ export default function HomePage() {
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <Users className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Community</h3>
+              <h3 className="text-xl font-semibold mb-2">Cộng đồng</h3>
               <p className="text-muted-foreground mb-4">
-                Join a supportive community of learners and native signers.
+                Tham gia một cộng đồng hỗ trợ gồm những người học và người ký hiệu bản ngữ.
               </p>
               <Link href="/about">
                 <Button variant="link" className="p-0">
-                  Join Community →
+                  Tham gia cộng đồng →
                 </Button>
               </Link>
             </CardContent>
@@ -116,11 +111,11 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20 bg-primary text-primary-foreground rounded-lg px-8 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Ready to Start Learning?
+          Bạn đã sẵn sàng bắt đầu quá trình học chưa?
         </h2>
         <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
-          Join thousands of learners who are breaking down communication
-          barriers through sign language.
+          Tham gia cùng hàng ngàn người học đang phá vỡ rào cản giao tiếp
+          thông qua ngôn ngữ ký hiệu.
         </p>
         <Link href="/signup">
           <Button
@@ -128,7 +123,7 @@ export default function HomePage() {
             variant="secondary"
             className="bg-background text-foreground hover:bg-background/90"
           >
-            Sign Up Now
+            Đăng ký ngay miễn phí
           </Button>
         </Link>
       </section>

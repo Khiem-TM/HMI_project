@@ -52,7 +52,7 @@ export default function ProfilePage() {
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading profile...</p>
+          <p className="text-muted-foreground">Đang tải hồ sơ...</p>
         </div>
       </div>
     );
@@ -74,9 +74,9 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-2">My Profile</h1>
+        <h1 className="text-4xl font-bold text-primary mb-2">Hồ sơ của tôi</h1>
         <p className="text-muted-foreground">
-          View and manage your personal information
+          Xem và quản lý thông tin cá nhân của bạn
         </p>
       </div>
 
@@ -100,7 +100,7 @@ export default function ProfilePage() {
                 <Link href="/profile/settings">
                   <Button>
                     <Settings className="mr-2 h-4 w-4" />
-                    Edit Profile
+                    Chỉnh sửa hồ sơ
                   </Button>
                 </Link>
               </div>
@@ -110,13 +110,13 @@ export default function ProfilePage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Account Information</CardTitle>
+            <CardTitle>Thông tin tài khoản</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
               <User className="h-5 w-5 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-medium mb-1">Full Name</p>
+                <p className="text-sm font-medium mb-1">Họ và tên</p>
                 <p className="text-sm text-muted-foreground">{user.name}</p>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function ProfilePage() {
             <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
               <Mail className="h-5 w-5 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-medium mb-1">Email Address</p>
+                <p className="text-sm font-medium mb-1">Email</p>
                 <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function ProfilePage() {
             <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
               <Shield className="h-5 w-5 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-medium mb-1">Role</p>
+                <p className="text-sm font-medium mb-1">Vai trò</p>
                 <p className="text-sm text-muted-foreground capitalize">
                   {user.role}
                 </p>
@@ -142,7 +142,7 @@ export default function ProfilePage() {
             <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
               <Calendar className="h-5 w-5 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-medium mb-1">Member Since</p>
+                <p className="text-sm font-medium mb-1">Tham gia từ</p>
                 <p className="text-sm text-muted-foreground">
                   {user.createdAt
                     ? new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -170,7 +170,7 @@ export default function ProfilePage() {
           <>
             <Card>
               <CardHeader>
-                <CardTitle>Learning Progress</CardTitle>
+                <CardTitle>Tiến trình học tập</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -178,37 +178,37 @@ export default function ProfilePage() {
                     <p className="text-2xl font-bold text-primary">
                       {profile.profile.totalScore || 0}
                     </p>
-                    <p className="text-xs text-muted-foreground">Total Score</p>
+                    <p className="text-xs text-muted-foreground">Tổng điểm</p>
                   </div>
                   <div className="p-4 rounded-lg bg-secondary/20">
                     <p className="text-2xl font-bold text-secondary-foreground">
                       {profile.profile.totalGamesPlayed || 0}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Games Played
+                      Số trò chơi đã chơi
                     </p>
                   </div>
                   <div className="p-4 rounded-lg bg-green-100 dark:bg-green-900/20">
                     <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                       {profile.profile.accuracyRate || 0}%
                     </p>
-                    <p className="text-xs text-muted-foreground">Accuracy</p>
+                    <p className="text-xs text-muted-foreground">Độ chính xác</p>
                   </div>
                   <div className="p-4 rounded-lg bg-yellow-100 dark:bg-yellow-900/20">
                     <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
                       {profile.profile.currentStreak || 0}
                     </p>
-                    <p className="text-xs text-muted-foreground">Day Streak</p>
+                    <p className="text-xs text-muted-foreground">Chuỗi ngày</p>
                   </div>
                 </div>
                 <div className="mt-6 pt-6 border-t">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        Level & Rank
+                        Cấp độ & Hạng
                       </p>
                       <p className="text-xl font-bold">
-                        Level {profile.profile.level || 1} •{" "}
+                        Cấp độ {profile.profile.level || 1} •{" "}
                         <span className="capitalize">
                           {profile.profile.rank || "bronze"}
                         </span>
@@ -216,10 +216,10 @@ export default function ProfilePage() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-muted-foreground">
-                        Longest Streak
+                        Chuỗi dài nhất
                       </p>
                       <p className="text-xl font-bold">
-                        {profile.profile.longestStreak || 0} days
+                        {profile.profile.longestStreak || 0} ngày
                       </p>
                     </div>
                   </div>
@@ -235,9 +235,9 @@ export default function ProfilePage() {
                     <div className="flex items-center gap-3">
                       <Award className="h-8 w-8 text-yellow-600" />
                       <div>
-                        <p className="font-semibold">Achievements</p>
+                        <p className="font-semibold">Thành tích</p>
                         <p className="text-sm text-muted-foreground">
-                          View your badges
+                          Xem huy hiệu của bạn
                         </p>
                       </div>
                     </div>
@@ -250,9 +250,9 @@ export default function ProfilePage() {
                     <div className="flex items-center gap-3">
                       <BarChart3 className="h-8 w-8 text-blue-600" />
                       <div>
-                        <p className="font-semibold">Detailed Stats</p>
+                        <p className="font-semibold">Thống kê chi tiết</p>
                         <p className="text-sm text-muted-foreground">
-                          View analytics
+                          Xem phân tích
                         </p>
                       </div>
                     </div>
@@ -266,10 +266,10 @@ export default function ProfilePage() {
             <CardContent className="pt-6">
               <div className="text-center py-8">
                 <p className="text-muted-foreground mb-4">
-                  Start playing games to see your progress!
+                  Bắt đầu chơi trò chơi để xem tiến trình của bạn!
                 </p>
                 <Link href="/game">
-                  <Button>Start Playing</Button>
+                  <Button>Bắt đầu chơi</Button>
                 </Link>
               </div>
             </CardContent>

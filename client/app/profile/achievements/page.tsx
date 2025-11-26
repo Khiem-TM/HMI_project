@@ -78,12 +78,12 @@ export default function AchievementsPage() {
         <Link href="/profile">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Profile
+            Quay lại hồ sơ
           </Button>
         </Link>
-        <h1 className="text-4xl font-bold text-primary mb-2">Achievements</h1>
+        <h1 className="text-4xl font-bold text-primary mb-2">Thành tích</h1>
         <p className="text-muted-foreground">
-          {unlockedCount} of {achievements.length} achievements unlocked
+          {unlockedCount} trong số {achievements.length} thành tích đã mở khóa
         </p>
       </div>
 
@@ -92,7 +92,7 @@ export default function AchievementsPage() {
         <CardContent className="pt-6">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="font-medium">Progress</span>
+              <span className="font-medium">Quá trình</span>
               <span className="text-muted-foreground">
                 {Math.round((unlockedCount / achievements.length) * 100)}%
               </span>

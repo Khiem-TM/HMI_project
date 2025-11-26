@@ -131,7 +131,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
       setCapturedLandmarks(landmarks);
 
       if (isRecording && landmarks.length > 0) {
-        setRecordedSequence((prev) => [...prev, landmarks]);
+        setRecordedSequence((prev) => [...prev, landmarks])
       }
     },
     onNoHands: () => {
@@ -254,9 +254,9 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
 
     if (landmarksToUse.length === 0 && !hasVideo) {
       toast({
-        title: "No Hands Detected",
+        title: "Chưa phát hiện ký hiệu",
         description:
-          "Please show your hands to the camera or record a sequence",
+          "Vui lòng đưa tay vào trước camera hoặc ghi lại một chuỗi ký hiệu để nhận diện.",
         variant: "destructive",
       });
       return;
@@ -310,8 +310,8 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
       if (recognizedText) {
         setTranslatedText(recognizedText);
         toast({
-          title: "Sign Recognized",
-          description: `Detected: ${recognizedText}`,
+          title: "Nhận diện ngôn ngữ ký hiệu thành công",
+          description: `Nhận diện: ${recognizedText}`,
         });
       } else {
         throw new Error("No text recognized from either API");
@@ -319,14 +319,14 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
     } catch (error: any) {
       console.error("Sign recognition error:", error);
       toast({
-        title: "Recognition Failed",
+        title: "Nhận diện thất bại",
         description:
           error.response?.data?.message ||
           error.message ||
-          "An error occurred. Please try again.",
+          "Đã xảy ra lỗi. Vui lòng thử lại.",
         variant: "destructive",
       });
-      setTranslatedText("Recognition failed. Please try again.");
+      setTranslatedText("Nhận diện thất bại. Vui lòng thử lại.");
     } finally {
       setIsRecognizing(false);
     }
@@ -376,8 +376,8 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
     }
 
     toast({
-      title: "Recording Started",
-      description: "Show sign language gestures. Click Stop to finish.",
+      title: "Bắt đầu ghi lại",
+      description: "Hiển thị các cử chỉ ngôn ngữ ký hiệu. Nhấn Dừng để kết thúc.",
     });
   };
 
@@ -393,9 +393,9 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
     }
 
     toast({
-      title: "Recording Stopped",
-      description: `Recorded ${recordedSequence.length} frames${
-        recordedVideoBlob ? " and video" : ""
+      title: "Đã dừng ghi lại",
+      description: `Đã ghi lại ${recordedSequence.length} khung hình${
+        recordedVideoBlob ? " và video" : ""
       }`,
     });
   };
@@ -403,7 +403,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
   // Handle text translation using external API (Firebase Cloud Functions)
   const handleTranslate = async () => {
     if (!inputText.trim() || !translationService || !languageDetectionService) {
-      setTranslationError("Please enter text to translate");
+      setTranslationError("Vui lòng nhập văn bản để dịch");
       return;
     }
 
@@ -428,7 +428,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                 inputText
               );
           } catch (e) {
-            console.warn("MediaPipe detection failed, using fallback:", e);
+            console.warn("Phát hiện MediaPipe thất bại, sử dụng phương án dự phòng:", e);
             spokenLang = await languageDetectionService.detectSpokenLanguage(
               inputText
             );
@@ -541,20 +541,18 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-4">Translator</h1>
+        <h1 className="text-4xl font-bold text-primary mb-4">Trình dịch</h1>
         <p className="text-muted-foreground mb-2">
           <span className="text-accent font-semibold">
-            Text to Sign Language:
+            Văn bảng sang ngôn ngữ ký hiệu:
           </span>{" "}
-          Converts written text into accurate sign language animations, enabling
-          easy understanding for hearing-impaired users.
+          Chuyển đổi văn bản viết thành các hoạt ảnh ngôn ngữ ký hiệu chính xác, giúp người khiếm thính dễ dàng hiểu.
         </p>
         <p className="text-muted-foreground">
           <span className="text-accent font-semibold">
-            Sign Language to Text:
+            Ngôn ngữ ký hiệu sang văn bản:
           </span>{" "}
-          Users can express sign language through a camera, which is recognized
-          and converted back into text.
+          Người dùng có thể biểu đạt ngôn ngữ ký hiệu qua camera, được nhận diện và chuyển đổi lại thành văn bản.
         </p>
       </div>
 
@@ -578,7 +576,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
             />
           </svg>
-          Translate Text to ASL
+          Văn bảng sang ASL
         </Button>
         <Button
           variant={mode === "sign-to-text" ? "default" : "outline"}
@@ -598,7 +596,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
               d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
             />
           </svg>
-          Translate ASL to Text
+          ASL sang văn bản
         </Button>
       </div>
 
@@ -609,8 +607,8 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
           <CardContent className="p-6">
             <h2 className="text-xl font-semibold mb-4">
               {mode === "sign-to-text"
-                ? "Sign Language Detection"
-                : "Text Input"}
+                ? "Nhận diện ngôn ngữ ký hiệu"
+                : "Nhập văn bản"}
             </h2>
 
             {mode === "sign-to-text" ? (
@@ -661,7 +659,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted">
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-2"></div>
                       <p className="text-sm text-muted-foreground">
-                        Starting camera...
+                        Đang khởi động camera...
                       </p>
                     </div>
                   )}
@@ -719,10 +717,10 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                       {isRecognizing ? (
                         <>
                           <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Recognizing...
+                          Đang nhận diện...
                         </>
                       ) : (
-                        "Recognize Sign"
+                        "Nhận diện ký hiệu"
                       )}
                     </Button>
                   )}
@@ -747,8 +745,8 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                         )
                       }
                     >
-                      <option value="single">Single Sign</option>
-                      <option value="sequence">Sequence</option>
+                      <option value="single">Ký hiệu đơn</option>
+                      <option value="sequence">Chuỗi ký hiệu</option>
                     </select>
                   </div>
                 )}
@@ -765,7 +763,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span>{inputText.length} / 500</span>
                   {detectedLanguage && selectedSpokenLanguage === "auto" && (
-                    <span>Detected: {detectedLanguage.toUpperCase()}</span>
+                    <span>Đã phát hiện: {detectedLanguage.toUpperCase()}</span>
                   )}
                 </div>
                 {translationError && (
@@ -781,10 +779,10 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                   {isTranslating ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Translating...
+                      Đang dịch...
                     </>
                   ) : (
-                    "Translate to Sign Language"
+                    "Dịch sang ngôn ngữ ký hiệu"
                   )}
                 </Button>
               </div>
@@ -807,11 +805,11 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                   value={selectedSpokenLanguage}
                   onChange={(e) => setSelectedSpokenLanguage(e.target.value)}
                 >
-                  <option value="auto">Auto-detect</option>
-                  <option value="en">English</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
+                  <option value="auto">Tự động phát hiện</option>
+                  <option value="en">Tiếng Anh</option>
+                  <option value="es">Tiếng Tây Ban Nha</option>
+                  <option value="fr">Tiếng Pháp</option>
+                  <option value="de">Tiếng Đức</option>
                 </select>
                 <select
                   className="border rounded-md px-3 py-1 text-sm"
@@ -834,15 +832,15 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                 <div className="flex gap-2">
                   <Button variant="outline" className="flex-1 bg-transparent">
                     <Volume2 className="h-4 w-4 mr-2" />
-                    Listen
+                    Nghe
                   </Button>
                   <Button variant="outline" className="flex-1 bg-transparent">
                     <Download className="h-4 w-4 mr-2" />
-                    Download
+                    Tải xuống
                   </Button>
                   <Button variant="outline" className="flex-1 bg-transparent">
                     <Copy className="h-4 w-4 mr-2" />
-                    Copy
+                    Sao chép
                   </Button>
                 </div>
               </div>
@@ -851,7 +849,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                 {isTranslating ? (
                   <div className="aspect-video bg-muted rounded-lg flex flex-col items-center justify-center">
                     <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-                    <p className="text-muted-foreground">Translating...</p>
+                    <p className="text-muted-foreground">Đang dịch...</p>
                   </div>
                 ) : signedLanguageVideo ? (
                   <div className="aspect-video bg-black rounded-lg overflow-hidden relative">
@@ -911,8 +909,9 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                 ) : (
                   <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
                     <p className="text-muted-foreground text-center px-4">
-                      Enter text and click "Translate to Sign Language" to see
-                      the sign language symbols here
+                      Nhập văn bản và nhấn "Dịch sang ngôn ngữ ký hiệu" để xem
+                      các ký hiệu ngôn ngữ ký hiệu ở đây
+                      
                     </p>
                   </div>
                 )}
@@ -932,7 +931,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                       }}
                     >
                       <Download className="h-4 w-4 mr-2" />
-                      Download Video
+                      Tải xuống video
                     </Button>
                     {navigator.share && (
                       <Button
@@ -958,7 +957,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                           }
                         }}
                       >
-                        Share
+                        Chia sẻ
                       </Button>
                     )}
                   </div>
@@ -966,7 +965,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
                 {signWriting.length > 0 && !signedLanguageVideo && (
                   <Button variant="outline" className="w-full bg-transparent">
                     <Download className="h-4 w-4 mr-2" />
-                    Download Animation
+                    Tải xuống hoạt hình
                   </Button>
                 )}
               </div>

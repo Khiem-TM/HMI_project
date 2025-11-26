@@ -71,9 +71,9 @@ export default function DictionaryPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-4">Dictionary</h1>
+        <h1 className="text-4xl font-bold text-primary mb-4">Từ điển</h1>
         <p className="text-muted-foreground mb-2">
-          Easily look up words and phrases in sign language.
+          Dễ dàng tra cứu các từ và cụm từ trong ngôn ngữ ký hiệu tại đây.
         </p>
       </div>
 
@@ -83,7 +83,7 @@ export default function DictionaryPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
           <Input
             type="text"
-            placeholder="Search for a word..."
+            placeholder="Tìm kiếm từ và cụm từ tại đây."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 py-6 text-lg"
@@ -134,8 +134,8 @@ export default function DictionaryPage() {
                     {video.description}
                   </p>
                   <div className="text-xs mt-2">
-                    <span className="mr-2">Category: {video.category}</span>
-                    <span>Difficulty: {video.difficulty}</span>
+                    <span className="mr-2">Phân loại: {video.category}</span>
+                    <span>Độ khó: {video.difficulty}</span>
                   </div>
                   {video.meaning && (
                     <div className="mt-2 text-base text-green-700">

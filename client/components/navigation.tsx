@@ -79,7 +79,7 @@ export function Navigation() {
                         variant={pathname === "/signin" ? "default" : "ghost"}
                         className="transition-all duration-300"
                       >
-                        Sign In
+                        Đăng nhập
                       </Button>
                     </Link>
                     <Link href="/signup">
@@ -87,7 +87,7 @@ export function Navigation() {
                         variant={pathname === "/signup" ? "default" : "ghost"}
                         className="transition-all duration-300"
                       >
-                        Sign Up
+                        Đăng ký
                       </Button>
                     </Link>
                   </>
@@ -138,7 +138,7 @@ export function Navigation() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Button variant="ghost" className="w-full">
-                      Profile
+                      Hồ sơ
                     </Button>
                   </Link>
                   <Link
@@ -146,7 +146,7 @@ export function Navigation() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Button variant="ghost" className="w-full">
-                      Settings
+                      Cài đặt
                     </Button>
                   </Link>
                   <Button
@@ -158,18 +158,18 @@ export function Navigation() {
                       router.push("/");
                     }}
                   >
-                    Log out
+                    Đăng xuất
                   </Button>
                 </>
               ) : (
                 <>
                   <Link href="/signin">
                     <Button variant="ghost" className="w-full">
-                      Sign In
+                      Đăng nhập
                     </Button>
                   </Link>
                   <Link href="/signup">
-                    <Button className="w-full">Sign Up</Button>
+                    <Button className="w-full">Đăng ký</Button>
                   </Link>
                 </>
               )}

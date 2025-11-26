@@ -34,7 +34,7 @@ export function UserNav() {
         className="flex items-center gap-2"
       >
         <User className="h-4 w-4" />
-        <span className="hidden sm:inline">Profile</span>
+        <span className="hidden sm:inline">Hồ sơ</span>
       </Button>
 
       {/* Logout Button */}
@@ -45,7 +45,7 @@ export function UserNav() {
         className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
       >
         <LogOut className="h-4 w-4" />
-        <span className="hidden sm:inline">Logout</span>
+        <span className="hidden sm:inline">Đăng xuất</span>
       </Button>
     </div>
   );

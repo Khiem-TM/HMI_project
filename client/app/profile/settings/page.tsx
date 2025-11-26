@@ -132,13 +132,13 @@ export default function ProfileSettingsPage() {
           className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Profile
+          Quay lại hồ sơ
         </Link>
         <h1 className="text-4xl font-bold text-primary mb-2">
-          Profile Settings
+          Cài đặt hồ sơ
         </h1>
         <p className="text-muted-foreground">
-          Manage your account settings and preferences
+          Quản lý cài đặt và tùy chọn tài khoản của bạn
         </p>
       </div>
 
@@ -146,31 +146,31 @@ export default function ProfileSettingsPage() {
         {/* Profile Information */}
         <Card>
           <CardHeader>
-            <CardTitle>Profile Information</CardTitle>
-            <CardDescription>Update your personal information</CardDescription>
+            <CardTitle>Thông tin hồ sơ</CardTitle>
+            <CardDescription>Cập nhật thông tin cá nhân của bạn</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleUpdateProfile} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">Họ và tên</Label>
                 <Input
                   id="name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your full name"
+                  placeholder="Nhập họ và tên của bạn tại đây"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="Nhập email của bạn tại đây"
                   required
                 />
               </div>
@@ -179,12 +179,12 @@ export default function ProfileSettingsPage() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
+                    Đang lưu...
                   </>
                 ) : (
                   <>
                     <Save className="mr-2 h-4 w-4" />
-                    Save Changes
+                    Lưu thay đổi
                   </>
                 )}
               </Button>
@@ -195,45 +195,45 @@ export default function ProfileSettingsPage() {
         {/* Change Password */}
         <Card>
           <CardHeader>
-            <CardTitle>Change Password</CardTitle>
+            <CardTitle>Đổi mật khẩu</CardTitle>
             <CardDescription>
-              Update your password to keep your account secure
+              Cập nhật mật khẩu để bảo vệ tài khoản của bạn
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password</Label>
+                <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
                 <Input
                   id="currentPassword"
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Enter current password"
+                  placeholder="Nhập mật khẩu hiện tại"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="newPassword">New Password</Label>
+                <Label htmlFor="newPassword">Mật khẩu mới</Label>
                 <Input
                   id="newPassword"
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Enter new password"
+                  placeholder="Nhập mật khẩu mới"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                <Label htmlFor="confirmPassword">Xác nhận mật khẩu mới</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm new password"
+                  placeholder="Nhập lại mật khẩu mới"
                   required
                 />
               </div>
@@ -242,12 +242,12 @@ export default function ProfileSettingsPage() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Updating...
+                    Đang cập nhật...
                   </>
                 ) : (
                   <>
                     <Save className="mr-2 h-4 w-4" />
-                    Change Password
+                    Đổi mật khẩu
                   </>
                 )}
               </Button>
