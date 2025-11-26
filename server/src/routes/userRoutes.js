@@ -5,7 +5,7 @@ import {
   getMe,
   updateProfile,
   changePassword,
-  logoutUser,
+  logoutUser, loginWithGoogle,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { body, validationResult } from "express-validator";
@@ -53,6 +53,7 @@ router.post(
   registerUser
 );
 router.post("/login", loginValidation, handleValidationErrors, loginUser);
+router.post("/google-login", loginWithGoogle);
 
 // Protected routes
 router.get("/me", verifyToken, getMe);

@@ -81,6 +81,95 @@ export const registerUser = async (req, res) => {
   }
 };
 
+export const loginWithGoogle = async (req, res) => {
+  try {
+    const { name, email, googleId, avatar } = req.body;
+
+    // Kiểm tra xem user đã tồn tại chưa
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // User đã tồn tại -> Đăng nhập
+      // Nếu user cũ chưa có googleId (đăng ký bằng email thường), ta cập nhật thêm googleId để link tài khoản
+      if (!user.googleId) {
+        user.googleId = googleId;
+        user.authType = "google";
+        if (avatar && !user.avatar) user.avatar = avatar;
+      }
+
+      user.lastLoginAt = new Date();
+      await user.save();
+    } else {
+      // User chưa tồn tại -> Đăng ký mới (Không cần password)
+      user = await User.create({
+        name,
+        email,
+        googleId,
+        avatar,
+        authType: "google",
+        password: null
+      });
+
+      // UserProfile mặc định
+      const UserProfile = (await import("../models/UserProfile.js")).default;
+      try {
+        await UserProfile.create({
+          userId: user._id,
+          totalScore: 0,
+          totalGamesPlayed: 0,
+          totalCorrectAnswers: 0,
+          totalWrongAnswers: 0,
+          accuracyRate: 0,
+          currentStreak: 0,
+          longestStreak: 0,
+          level: 1,
+          rank: "bronze",
+        });
+      } catch (profileError) {
+        console.warn("Failed to create user profile for Google user:", profileError);
+      }
+    }
+
+    // Tạo Token JWT
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    // Log Activity
+    const UserActivity = (await import("../models/UserActivity.js")).default;
+    try {
+      await UserActivity.create({
+        userId: user._id,
+        action: "login",
+        details: { method: "google" },
+        ipAddress: req.ip,
+        userAgent: req.get("user-agent"),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    res.status(200).json({
+      message: "Google login successful",
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        role: user.role,
+      },
+    });
+
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    res.status(500).json({
+      message: "Lỗi xử lý đăng nhập Google",
+      error: error.message,
+    });
+  }
+};
+
 // Đăng nhập
 export const loginUser = async (req, res) => {
   try {

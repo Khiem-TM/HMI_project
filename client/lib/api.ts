@@ -247,6 +247,15 @@ export const apiService = {
     getMe: async () => {
       return api.get("/users/me");
     },
+
+    googleLogin: async (data: {
+      email: string;
+      name: string;
+      googleId: string;
+      avatar?: string
+    }) => {
+      return api.post("/users/google-login", data);
+    },
   },
 };
 
