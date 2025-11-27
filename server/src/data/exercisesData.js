@@ -55,5 +55,85 @@ export const exercisesData = [
         options: ["enemy", "friend", "sister", "brother"],
         correctAnswer: "friend"
     },
+    {
+        word: "water",
+        wordMeaning: "Nước",
+        category: "objects",
+        difficulty: "beginner",
+        videoUrl: generateVideoUrl("water"),
+        thumbnail: "/images/water.jpg", // Bạn tự thay ảnh nếu có
+        options: ["food", "water", "dringk", "eat"],
+        correctAnswer: "water"
+    },
+    {
+        word: "food",
+        wordMeaning: "Thức ăn",
+        videoUrl: generateVideoUrl("food"),
+        thumbnail: "/person-signing-food.jpg",
+        options: ["food", "water", "milk", "bread"],
+        correctAnswer: "food",
+        category: "objects",
+        difficulty: "beginner"
+    },
+    {
+        word: "love",
+        wordMeaning: "Yêu / Tình yêu",
+        videoUrl: generateVideoUrl("love"),
+        thumbnail: "/images/love.jpg",
+        options: ["love", "like", "happy", "friend"],
+        correctAnswer: "love",
+        category: "emotions",
+        difficulty: "beginner"
+    },
+    {
+        word: "happy",
+        wordMeaning: "Hạnh phúc / Vui vẻ",
+        videoUrl: generateVideoUrl("happy"),
+        thumbnail: "/images/happy.jpg",
+        options: ["sad", "angry", "happy", "tired"],
+        correctAnswer: "happy",
+        category: "emotions",
+        difficulty: "beginner"
+    },
+    {
+        word: "school",
+        wordMeaning: "Trường học",
+        videoUrl: generateVideoUrl("school"),
+        thumbnail: "/images/school.jpg",
+        options: ["home", "school", "store", "work"],
+        correctAnswer: "school",
+        category: "places",
+        difficulty: "beginner"
+    },
+    {
+        word: "home",
+        wordMeaning: "Nhà",
+        videoUrl: generateVideoUrl("home"),
+        thumbnail: "/images/home.jpg",
+        options: ["school", "park", "home", "hospital"],
+        correctAnswer: "home",
+        category: "places",
+        difficulty: "beginner"
+    },
+    {
+        word: "help",
+        wordMeaning: "Giúp đỡ",
+        videoUrl: generateVideoUrl("help"),
+        thumbnail: "/images/help.jpg",
+        options: ["stop", "help", "wait", "go"],
+        correctAnswer: "help",
+        category: "actions",
+        difficulty: "beginner"
+    },
+    {
+        word: "please",
+        wordMeaning: "Làm ơn / Vui lòng",
+        videoUrl: generateVideoUrl("please"),
+        thumbnail: "/images/please.jpg",
+        options: ["sorry", "thank you", "please", "hello"],
+        correctAnswer: "please",
+        category: "greetings",
+        difficulty: "beginner"
+    }
     // ...  COPY PASTE THÊM NHIỀU TỪ KHÁC VÀO ĐÂY ...
 ];

@@ -48,7 +48,7 @@ interface DictionaryWord {
 
 type GameMode = "guess" | "speed-match" | "timed";
 
-// --- HÀM XỬ LÝ URL ẢNH (FIX LỖI ẢNH KHÔNG HIỆN) ---
+// --- HÀM XỬ LÝ URL ẢNH ---
 const getImageUrl = (path: string | undefined) => {
     if (!path) return null;
     if (path.startsWith("http")) return path;
@@ -216,19 +216,34 @@ export default function GamePage() {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timerRef.current as NodeJS.Timeout);
-                    setShowResult(true);
-                    return 0;
+                    return 0; // Trả về 0 để useEffect bắt được
                 }
                 return prev - 1;
             });
         }, 1000);
     };
 
+    // Xử lý Hết giờ
+    useEffect(() => {
+        if (timeLeft === 0 && mode === 'guess' && !showResult && exercise && !loading) {
+            setShowResult(true);
+            playSound(false);
+            if (exercise._id) {
+                updateGameData(exercise._id, "TIMEOUT", false, 20);
+            }
+        }
+    }, [timeLeft, mode, showResult, exercise, loading]);
+
     const loadExercise = async () => {
+        // 1. Dừng timer cũ và Reset thời gian NGAY LẬP TỨC để tránh lỗi logic
+        if (timerRef.current) clearInterval(timerRef.current);
+        setTimeLeft(20);
+
         setLoading(true);
         setError("");
         setSelectedAnswer(null);
         setShowResult(false);
+
         try {
             const resp = await apiService.exercises.getRandom();
             const data = resp.data?.data || resp.data;
@@ -240,7 +255,9 @@ export default function GamePage() {
                 data.options = shuffleArray([...data.options]);
             }
             setExercise(data);
+
             if (mode === 'guess') startCountdown(20);
+
         } catch (err) {
             setError("Lỗi kết nối server.");
         } finally {
@@ -478,6 +495,7 @@ export default function GamePage() {
                                     )}
                                 </div>
 
+                                {/* ĐÃ XÓA TEXT WORD MEANING Ở ĐÂY */}
 
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     {exercise.options.map((option, idx) => {
@@ -487,15 +505,15 @@ export default function GamePage() {
 
                                         if (showResult) {
                                             if (isCorrect) {
-                                                buttonClass += "!bg-green-600 text-white border-green-600 hover:bg-green-700";
+                                                buttonClass += "!bg-green-600 !text-white !border-green-600 hover:!bg-green-700";
                                             } else if (isSelected && !isCorrect) {
-                                                buttonClass += "!bg-red-600 text-white border-red-600 hover:bg-red-700";
+                                                buttonClass += "!bg-red-600 !text-white !border-red-600 hover:!bg-red-700";
                                             } else {
                                                 buttonClass += "opacity-40 border-muted bg-transparent text-muted-foreground";
                                             }
                                         } else {
                                             if (isSelected) {
-                                                buttonClass += "!bg-blue-600 text-white border-blue-600 hover:bg-blue-700 ring-2 ring-blue-200 ring-offset-2";
+                                                buttonClass += "!bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 ring-2 ring-blue-200 ring-offset-2";
                                             } else {
                                                 buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
                                             }
@@ -631,7 +649,7 @@ export default function GamePage() {
                                     )}
                                 </div>
 
-                                {/* ĐÃ XÓA DÒNG CHỮ XANH Ở ĐÂY */}
+                                {/* ĐÃ XÓA TEXT WORD MEANING Ở ĐÂY */}
 
                                 <div className="grid grid-cols-2 gap-4">
                                     {exercise.options.map((opt) => (
