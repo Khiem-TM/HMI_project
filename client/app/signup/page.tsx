@@ -62,26 +62,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden">
-      <motion.div
-        key="signup-image"
-        initial={{ opacity: 0, scale: 0.92, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.92, y: 20 }}
-        transition={{
-          duration: 0.6,
-          ease: [0.43, 0.13, 0.23, 0.96],
-          delay: 0.1,
-        }}
-        className="hidden md:block relative bg-muted order-1"
-      >
-        <img
-          src="https://www.shutterstock.com/image-vector/hearing-loss-symbol-american-sign-600nw-2441574545.jpg"
-          alt="Student learning"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      </motion.div>
-
+    <div className="min-h-[calc(100vh-4rem)] item-center justify-center overflow-hidden bg-center bg-cover bg-no-repeat" 
+    style={{ backgroundImage: "url('/Đăng nhập (2).png')" }}>
       <motion.div
         key="signup-form"
         initial={{ opacity: 0, x: 80, scale: 0.95 }}
@@ -96,9 +78,11 @@ export default function SignUpPage() {
       >
         <div className="w-full max-w-md space-y-8">
           <div>
-            <h1 className="text-3xl font-bold">Welcome to SignLearn</h1>
-            <p className="text-muted-foreground mt-2">
-              Create your account to start learning sign language.
+            <h1 className="text-3xl font-bold text-black">Chào mừng đến với {""}
+              <span style = {{color: "#043bb3"}}>SignLearn</span>
+            </h1>
+            <p className="text-muted-foreground mt-2 text-black">
+              Tạo tài khoản của bạn để bắt đầu ngay hôm nay!
             </p>
           </div>
 
@@ -127,7 +111,7 @@ export default function SignUpPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Sign up with Google
+              Đăng ký với Google
             </Button>
 
             <div className="relative">
@@ -136,18 +120,18 @@ export default function SignUpPage() {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  or
+                  hoặc
                 </span>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Tên</Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder="Nhập tên của bạn tại đây"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -159,7 +143,7 @@ export default function SignUpPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Nhập email của bạn tại đây"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -167,11 +151,11 @@ export default function SignUpPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mật khẩu</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Create a password"
+                  placeholder="Tạo mật khẩu cho tài khoản của bạn "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -179,11 +163,11 @@ export default function SignUpPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
-                  placeholder="Confirm your password"
+                  placeholder="Xác nhận mật khẩu của bạn"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
@@ -201,7 +185,7 @@ export default function SignUpPage() {
                 htmlFor="remember"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Remember for 30 days
+                Ghi nhớ trong 30 ngày
               </label>
             </div>
 
@@ -218,12 +202,12 @@ export default function SignUpPage() {
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              Bạn đã có tài khoản?{" "}
               <Link
                 href="/signin"
                 className="font-medium text-primary hover:underline"
               >
-                Sign in
+                Đăng nhập
               </Link>
             </p>
           </form>

@@ -57,7 +57,36 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden bg-center bg-cover bg-no-repeat" 
+    style={{ backgroundImage: "url('/Component 3.png')" }}>
+      <motion.div
+        key="signin-image"
+        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+        transition={{
+          duration: 0.6,
+          ease: [0.43, 0.13, 0.23, 0.96],
+          delay: 0.1,
+        }}
+        className="hidden md:block relative "
+      >
+        <div className="absolute inset-0 flex items-center justify-center translate-x-10">
+          <div className="text-lg text-muted-foreground p-8">
+            <div className="flex items-baseline gap-3 mb-4">
+              <span className="text-2xl font-bold text-black">SignLearn</span>
+              <div className="w-[20%] flex-1 h-[2px] bg-[#043bb3]"></div>
+            </div>
+            <h2 className="text-4xl font-bold mb-4 text-black">Chào mừng đến với {""}
+              <span style = {{color: "#043bb3"}}>SignLearn</span>
+            </h2>
+            <p className="text-lg text-black">
+              Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động
+            </p>
+            <p className="text-right font-bold italic text-[#043bb3] mt-4 text-sm">"Caring for life, every step of the way"</p>
+          </div>
+        </div>
+      </motion.div>
       <motion.div
         key="signin-form"
         initial={{ opacity: 0, x: -80, scale: 0.95 }}
@@ -68,13 +97,13 @@ export default function SignInPage() {
           ease: [0.43, 0.13, 0.23, 0.96],
           opacity: { duration: 0.3 },
         }}
-        className="flex items-center justify-center p-8"
+        className="flex items-center justify-center p-8 -translate-x-10"
       >
-        <div className="w-full max-w-md space-y-8">
+        <div className="w-full max-w-xs space-y-8">
           <div>
-            <h1 className="text-3xl font-bold">Welcome back</h1>
+            <h1 className="text-3xl font-bold text-black">Chào mừng bạn!</h1>
             <p className="text-muted-foreground mt-2">
-              Welcome back! Please enter your details.
+              Vui lòng nhập thông tin của bạn tại đây.
             </p>
           </div>
 
@@ -85,7 +114,7 @@ export default function SignInPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Nhập email của bạn tại đây"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -93,11 +122,11 @@ export default function SignInPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mật khẩu</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Nhập mật khẩu của bạn tại đây"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -116,14 +145,14 @@ export default function SignInPage() {
                   htmlFor="remember"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Remember for 30 days
+                  Nhớ tài khoản
                 </label>
               </div>
               <Link
                 href="/forgot-password"
                 className="text-sm font-medium text-primary hover:underline"
               >
-                Forgot password
+                Quên mật khẩu
               </Link>
             </div>
 
@@ -132,41 +161,19 @@ export default function SignInPage() {
             )}
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Đang đăng nhập..." : "Log in"}
+              {loading ? "Đang đăng nhập..." : "Đăng nhập"}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              {"Don't have an account? "}
+              {"Bạn chưa có tài khoản? "}
               <Link
                 href="/signup"
                 className="font-medium text-primary hover:underline"
               >
-                Sign up for free
+                Đăng ký miễn phí
               </Link>
             </p>
           </form>
-        </div>
-      </motion.div>
-
-      <motion.div
-        key="signin-image"
-        initial={{ opacity: 0, scale: 0.92, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.92, y: 20 }}
-        transition={{
-          duration: 0.6,
-          ease: [0.43, 0.13, 0.23, 0.96],
-          delay: 0.1,
-        }}
-        className="hidden md:block relative bg-muted"
-      >
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
-          <div className="text-center text-muted-foreground p-8">
-            <h2 className="text-3xl font-bold mb-4">Learn Sign Language</h2>
-            <p className="text-lg">
-              Connect with the deaf community through visual communication
-            </p>
-          </div>
         </div>
       </motion.div>
     </div>
