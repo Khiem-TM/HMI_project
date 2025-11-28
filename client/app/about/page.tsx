@@ -224,10 +224,10 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <p className="text-primary font-semibold mb-2 text-sm uppercase tracking-wide">
-              Giảng viên của chúng tôi
+              Đội ngũ thực hiện
             </p>
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Khám phá các chuyên gia cố vấn của chúng tôi
+              Khám phá các thành viên đội ngũ chúng tôi
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               Chọn từ hàng trăm khóa học từ các tổ chức chuyên môn
@@ -242,23 +242,11 @@ export default function AboutPage() {
                   <span className="text-2xl font-bold text-green-800">JK</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Say Gơn
+                  Trương Mạnh Khiêm
                 </h3>
                 <p className="text-gray-600 mb-4 text-sm">
-                  Chuyên gia ngôn ngữ ký hiệu TFT với hơn 10 năm kinh nghiệm
-                  giảng dạy và nghiên cứu.
+                  email: 23021601@vnu.edu.vn
                 </p>
-                <div className="flex justify-center space-x-3">
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Facebook className="h-4 w-4 text-blue-600" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Twitter className="h-4 w-4 text-blue-400" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Linkedin className="h-4 w-4 text-blue-700" />
-                  </Button>
-                </div>
               </CardContent>
             </Card>
 
@@ -269,49 +257,67 @@ export default function AboutPage() {
                   <span className="text-2xl font-bold text-blue-800">KI</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Hiếu Lọ
+                  Nguyễn Hữu Hiếu
                 </h3>
                 <p className="text-gray-600 mb-4 text-sm">
-                  Nhà nghiên cứu và phát triển công nghệ hỗ trợ người khiếm
-                  thính.
+                  email: 23021549@vnu.edu.vn
                 </p>
-                <div className="flex justify-center space-x-3">
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Facebook className="h-4 w-4 text-blue-600" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Twitter className="h-4 w-4 text-blue-400" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Linkedin className="h-4 w-4 text-blue-700" />
-                  </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="pt-8 pb-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-purple-200 to-purple-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-purple-800">HS</span>
                 </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Hà Xuân Sơn
+                </h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  email: 23021681@vnu.edu.vn
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="pt-8 pb-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-red-200 to-red-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-red-800">NY</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Nguyễn Thị Ngọc Yến
+                </h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  email: 23021757@vnu.edu.vn
+                </p>
               </CardContent>
             </Card>
 
             <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="pt-8 pb-6">
                 <div className="w-24 h-24 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-yellow-800"></span>
+                  <span className="text-2xl font-bold text-yellow-800">NB</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Mạnh Khiêm
+                  Nguyễn Văn Biển
                 </h3>
                 <p className="text-gray-600 mb-4 text-sm">
-                  Chuyên gia tâm lý học và phát triển kỹ năng giao tiếp cho cộng
-                  đồng đặc biệt.
+                  email: 23021477@vnu.edu.vu
                 </p>
-                <div className="flex justify-center space-x-3">
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Facebook className="h-4 w-4 text-blue-600" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Twitter className="h-4 w-4 text-blue-400" />
-                  </Button>
-                  <Button variant="ghost" size="sm" className="p-2">
-                    <Linkedin className="h-4 w-4 text-blue-700" />
-                  </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="pt-8 pb-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-green-200 to-green-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-green-800">NH</span>
                 </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Nguyễn Hữu Lưu
+                </h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  email: 23021617@vnu.edu.vn
+                </p>
               </CardContent>
             </Card>
           </div>
