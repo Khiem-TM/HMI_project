@@ -16,7 +16,7 @@ export default function HomePage() {
           Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động, giúp phá bỏ rào cản giao tiếp và thúc đẩy sự hòa nhập xã hội.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/signup">
+          <Link href="/translator">
             <Button size="lg" className="w-full sm:w-auto">
               Bắt đầu miễn phí
             </Button>
