@@ -8,6 +8,7 @@ interface User {
   name: string;
   email: string;
   role: string;
+  avatar?: string;
   createdAt?: string;
 }
 
@@ -18,6 +19,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -103,9 +105,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const refreshUser = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      await verifyToken(token);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, register, logout, updateUser }}
+      value={{ user, loading, login, register, logout, updateUser, refreshUser }}
     >
       {children}
     </AuthContext.Provider>

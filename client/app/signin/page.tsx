@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 import { signInWithGooglePopup } from "@/lib/firebase";
 import { apiService } from "@/lib/api";
@@ -23,6 +24,7 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login, user } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -77,6 +79,10 @@ export default function SignInPage() {
 
     try {
       await login(email, password);
+      toast({
+        title: "Đăng nhập thành công",
+        description: "Chào mừng bạn quay trở lại!",
+      });
       // Logic check role sau khi login thường
       try {
         const savedUser = localStorage.getItem("user");
@@ -91,173 +97,178 @@ export default function SignInPage() {
       }
     } catch (err: any) {
       setError(err.message);
+      toast({
+        title: "Đăng nhập thất bại",
+        description: err.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-      <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden bg-center bg-cover bg-[url('/Component_3.png')]">
-        
-        <motion.div
-            key="signin-image"
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{
-              duration: 0.6,
-              ease: [0.43, 0.13, 0.23, 0.96],
-              delay: 0.1,
-            }}
-            className="hidden md:block relative"
-        >
-          <div className="absolute inset-0 flex items-center justify-center ">
-            <div className="text-left text-muted-foreground p-10">
-              <div className="flex items-baseline gap-3">
-                <span className="font-black text-2xl text-black">SignLearn</span>
-                <div className="flex-1 h-[2px] bg-[#043BB3]" />
-                <p/>
-              </div>
-              <h2 className="text-5xl font-black mb-4 text-black">HỌC ASL CÙNG {""}
-                <span className="text-primary font-black" style={{ color: "#043BB3" }}>SIGNLEARN</span>
-              </h2>
-              <p className="text-lg text-black">
-               Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động, giúp phá bỏ rào cản giao tiếp và thúc đẩy sự hòa nhập xã hội 
-              </p>
-              <p className = "text-right font-bold italic" style={{color : "#043bb3"}}>“Caring for life,  every step of the way.”</p>
+    <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden bg-center bg-cover bg-[url('/Component_3.png')]">
+
+      <motion.div
+        key="signin-image"
+        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+        transition={{
+          duration: 0.6,
+          ease: [0.43, 0.13, 0.23, 0.96],
+          delay: 0.1,
+        }}
+        className="hidden md:block relative"
+      >
+        <div className="absolute inset-0 flex items-center justify-center ">
+          <div className="text-left text-muted-foreground p-10">
+            <div className="flex items-baseline gap-3">
+              <span className="font-black text-2xl text-black">SignLearn</span>
+              <div className="flex-1 h-[2px] bg-[#043BB3]" />
+              <p />
             </div>
+            <h2 className="text-5xl font-black mb-4 text-black">HỌC ASL CÙNG {""}
+              <span className="text-primary font-black" style={{ color: "#043BB3" }}>SIGNLEARN</span>
+            </h2>
+            <p className="text-lg text-black">
+              Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động, giúp phá bỏ rào cản giao tiếp và thúc đẩy sự hòa nhập xã hội
+            </p>
+            <p className="text-right font-bold italic" style={{ color: "#043bb3" }}>“Caring for life,  every step of the way.”</p>
           </div>
-        </motion.div>
-        <motion.div
-            key="signin-form"
-            initial={{ opacity: 0, x: -80, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -80, scale: 0.95 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.43, 0.13, 0.23, 0.96],
-              opacity: { duration: 0.3 },
-            }}
-            className="flex items-center justify-center p-8"
-        >
-          <div className="w-full max-w-[320px] -ml-20">
-            <div>
-              <h1 className="text-3xl font-bold">Chào mừng trở lại</h1>
-              <p className="text-muted-foreground mt-2">       
-              </p>
-            </div>
+        </div>
+      </motion.div>
+      <motion.div
+        key="signin-form"
+        initial={{ opacity: 0, x: -80, scale: 0.95 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        exit={{ opacity: 0, x: -80, scale: 0.95 }}
+        transition={{
+          duration: 0.5,
+          ease: [0.43, 0.13, 0.23, 0.96],
+          opacity: { duration: 0.3 },
+        }}
+        className="flex items-center justify-center p-8"
+      >
+        <div className="w-full max-w-[320px] -ml-20">
+          <div>
+            <h1 className="text-3xl font-bold">Chào mừng trở lại</h1>
+            <p className="text-muted-foreground mt-2">
+            </p>
+          </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
 
-              {/* 3. THÊM NÚT GOOGLE VÀO ĐÂY */}
-              <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full bg-transparent"
-                  onClick={handleGoogleLogin}
-                  disabled={loading}
-              >
-                <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
-                  <path
-                      fill="currentColor"
-                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                      fill="currentColor"
-                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                      fill="currentColor"
-                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  />
-                  <path
-                      fill="currentColor"
-                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  />
-                </svg>
-                Đăng nhập với Google
-              </Button>
+            {/* 3. THÊM NÚT GOOGLE VÀO ĐÂY */}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full bg-transparent"
+              onClick={handleGoogleLogin}
+              disabled={loading}
+            >
+              <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              Đăng nhập với Google
+            </Button>
 
-              {/* 4. THÊM ĐƯỜNG KẺ "OR" */}
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
+            {/* 4. THÊM ĐƯỜNG KẺ "OR" */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
                   or
                 </span>
-                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Nhập email của bạn tại đây"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
 
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                      id="email"
-                      type="email"
-                      placeholder="Nhập email của bạn tại đây"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="password">Mật khẩu</Label>
-                  <Input
-                      id="password"
-                      type="password"
-                      placeholder="Nhập mật khẩu của bạn tại đây"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Mật khẩu</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Nhập mật khẩu của bạn tại đây"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
+            </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                      id="remember"
-                      checked={remember}
-                      onCheckedChange={(checked) => setRemember(checked as boolean)}
-                  />
-                  <label
-                      htmlFor="remember"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Ghi nhớ đăng nhập
-                  </label>
-                </div>
-                <Link
-                    href="/forgot-password"
-                    className="text-sm font-medium text-primary hover:underline"
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remember"
+                  checked={remember}
+                  onCheckedChange={(checked) => setRemember(checked as boolean)}
+                />
+                <label
+                  htmlFor="remember"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Quên mật khẩu
-                </Link>
+                  Ghi nhớ đăng nhập
+                </label>
               </div>
+              <Link
+                href="/forgot-password"
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                Quên mật khẩu
+              </Link>
+            </div>
 
-              {error && (
-                  <div className="text-red-500 text-sm text-center">{error}</div>
-              )}
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Đang đăng nhập..." : "Đăng nhập"}
-              </Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+            </Button>
 
-              <p className="text-center text-sm text-muted-foreground">
-                {"Bạn chưa có tài khoản? "}
-                <Link
-                    href="/signup"
-                    className="font-medium text-primary hover:underline"
-                >
-                  Đăng ký miễn phí
-                </Link>
-              </p>
-            </form>
-          </div>
-        </motion.div>
-      </div>
+            <p className="text-center text-sm text-muted-foreground">
+              {"Bạn chưa có tài khoản? "}
+              <Link
+                href="/signup"
+                className="font-medium text-primary hover:underline"
+              >
+                Đăng ký miễn phí
+              </Link>
+            </p>
+          </form>
+        </div>
+      </motion.div>
+    </div>
   );
 }

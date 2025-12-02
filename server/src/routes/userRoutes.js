@@ -6,8 +6,10 @@ import {
   updateProfile,
   changePassword,
   logoutUser, loginWithGoogle,
+  uploadAvatar,
 } from "../controllers/userController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
+import upload from "../config/multerConfig.js";
 import { body, validationResult } from "express-validator";
 
 // Nhiệm vụ: Xác định các đường dẫn APi liên quan rồi gắn chúng vào hàm xử lý
@@ -60,5 +62,6 @@ router.get("/me", verifyToken, getMe);
 router.post("/logout", verifyToken, logoutUser);
 router.put("/profile", verifyToken, updateProfile);
 router.put("/password", verifyToken, changePassword);
+router.post("/avatar", verifyToken, upload.single("avatar"), uploadAvatar);
 
 export default router;

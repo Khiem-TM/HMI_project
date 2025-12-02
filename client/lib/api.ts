@@ -54,13 +54,13 @@ api.interceptors.response.use(
         });
       }
     }
-    
+
     if (error.response?.status === 401) {
       // Token hết hạn hoặc không hợp lệ - chỉ redirect nếu không phải public endpoint
-      const isPublicEndpoint = error.config?.url?.includes("/dictionary") || 
-                               error.config?.url?.includes("/exercises") ||
-                               error.config?.url?.includes("/health");
-      
+      const isPublicEndpoint = error.config?.url?.includes("/dictionary") ||
+        error.config?.url?.includes("/exercises") ||
+        error.config?.url?.includes("/health");
+
       if (!isPublicEndpoint) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -70,7 +70,7 @@ api.interceptors.response.use(
         }
       }
     }
-    
+
     // Log error for debugging
     if (process.env.NODE_ENV === "development") {
       console.error("❌ API Error:", {
@@ -81,7 +81,7 @@ api.interceptors.response.use(
         code: error.code,
       });
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -255,6 +255,13 @@ export const apiService = {
       avatar?: string
     }) => {
       return api.post("/users/google-login", data);
+    },
+    uploadAvatar: async (formData: FormData) => {
+      return api.post("/users/avatar", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     },
   },
 };

@@ -150,6 +150,73 @@ export default function ProfileSettingsPage() {
             <CardDescription>Cập nhật thông tin cá nhân của bạn</CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="flex items-center gap-6 mb-6">
+              <div className="relative group cursor-pointer">
+                <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-muted">
+                  {user.avatar ? (
+                    <img
+                      src={
+                        user.avatar.startsWith("http")
+                          ? user.avatar
+                          : `${(process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api").replace(
+                            "/api",
+                            ""
+                          )}${user.avatar}`
+                      }
+                      alt={user.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-primary flex items-center justify-center text-primary-foreground text-2xl font-bold">
+                      {user.name?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div
+                  className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full"
+                  onClick={() => document.getElementById("avatar-upload")?.click()}
+                >
+                  <span className="text-white text-xs font-medium">Thay đổi</span>
+                </div>
+                <input
+                  type="file"
+                  id="avatar-upload"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    try {
+                      setLoading(true);
+                      const formData = new FormData();
+                      formData.append("avatar", file);
+                      await apiService.auth.uploadAvatar(formData);
+                      await refreshUser();
+                      toast({
+                        title: "Success",
+                        description: "Avatar updated successfully",
+                      });
+                    } catch (error: any) {
+                      toast({
+                        title: "Error",
+                        description: "Failed to upload avatar",
+                        variant: "destructive",
+                      });
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                />
+              </div>
+              <div>
+                <h3 className="font-medium">Ảnh đại diện</h3>
+                <p className="text-sm text-muted-foreground">
+                  Nhấp vào ảnh để thay đổi. JPG, PNG hoặc GIF. Tối đa 5MB.
+                </p>
+              </div>
+            </div>
+
             <form onSubmit={handleUpdateProfile} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Họ và tên</Label>

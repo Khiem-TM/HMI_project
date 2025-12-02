@@ -229,6 +229,7 @@ export const loginUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        avatar: user.avatar,
         role: user.role,
       },
     });
@@ -330,5 +331,47 @@ export const changePassword = async (req, res) => {
     res.json({ message: "Đổi mật khẩu thành công" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const uploadAvatar = async (req, res) => {
+  try {
+    console.log("Upload avatar request received");
+    console.log("File:", req.file);
+    console.log("User ID:", req.user.id);
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Construct the avatar URL (assuming server is serving uploads at /uploads)
+    // Note: In production, you might want to use a full URL or CDN
+    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    console.log("Avatar URL:", avatarUrl);
+
+    user.avatar = avatarUrl;
+    const savedUser = await user.save();
+    console.log("User saved with avatar:", savedUser.avatar);
+
+    res.json({
+      message: "Avatar uploaded successfully",
+      avatar: avatarUrl,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: avatarUrl,
+      },
+    });
+  } catch (error) {
+    console.error("Error uploading avatar:", error);
+    res.status(500).json({ message: "Failed to upload avatar" });
   }
 };

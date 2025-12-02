@@ -87,7 +87,16 @@ export default function ProfilePage() {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               <Avatar className="h-24 w-24">
                 <AvatarImage
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`}
+                  src={
+                    user.avatar
+                      ? user.avatar.startsWith("http")
+                        ? user.avatar
+                        : `${(
+                          process.env.NEXT_PUBLIC_API_URL ||
+                          "http://localhost:5000/api"
+                        ).replace("/api", "")}${user.avatar}`
+                      : `https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`
+                  }
                   alt={user.name}
                 />
                 <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
@@ -97,13 +106,13 @@ export default function ProfilePage() {
               <div className="flex-1 text-center md:text-left">
                 <h2 className="text-2xl font-bold mb-1">{user.name}</h2>
                 <p className="text-muted-foreground mb-4">{user.email}</p>
-                <Link href="/profile/settings">
-                  <Button>
-                    <Settings className="mr-2 h-4 w-4" />
-                    Chỉnh sửa hồ sơ
-                  </Button>
-                </Link>
               </div>
+              <Link href="/profile/settings">
+                <Button>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Chỉnh sửa hồ sơ
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -146,10 +155,10 @@ export default function ProfilePage() {
                 <p className="text-sm text-muted-foreground">
                   {user.createdAt
                     ? new Date(user.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
                     : "N/A"}
                 </p>
               </div>

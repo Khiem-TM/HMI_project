@@ -117,6 +117,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -172,8 +173,7 @@ const startServer = async () => {
   app.locals.PORT = PORT;
   app.listen(PORT, () => {
     console.log(
-      `Server running on port ${PORT} in ${
-        process.env.NODE_ENV || "development"
+      `Server running on port ${PORT} in ${process.env.NODE_ENV || "development"
       } mode`
     );
   });

@@ -13,7 +13,7 @@ export function UserNav() {
 
   const handleProfile = () => {
     console.log("Opening profile settings");
-    router.push("/profile/settings");
+    router.push("/profile");
   };
 
   const handleLogout = () => {
