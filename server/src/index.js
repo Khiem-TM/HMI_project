@@ -18,6 +18,8 @@ import profileRoutes from "./routes/profileRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import gameRoutes from "./routes/gameRoutes.js";
 
+import chatbotRoutes from "./routes/chatbotRoutes.js";
+
 // env
 dotenv.config();
 
@@ -139,6 +141,9 @@ app.use("/api/dictionary", dictionaryRoutes);
 app.use("/api/exercises", exerciseRoutes);
 app.use("/api/translations", translationRoutes);
 app.use("/api/games", gameRoutes);
+
+app.use("/api/chatbot", chatbotRoutes);
+
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
 
