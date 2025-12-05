@@ -1,0 +1,946 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "lastUpdated": "2025-12-05",
+    "source": "WHO, CDC, Bộ Y tế Việt Nam, Medical guidelines for deaf children, American Academy of Audiology",
+    "language": "vi",
+    "description": "Cơ sở dữ liệu toàn diện về khiếm thính ở trẻ em, bao gồm các dấu hiệu nhận biết, phương pháp điều trị, thiết bị hỗ trợ và hướng dẫn chăm sóc chi tiết dành cho phụ huynh và người chăm sóc"
+  },
+  
+  "age_groups": [
+    {
+      "id": "0-3m",
+      "name": "0-3 tháng tuổi",
+      "ageRange": "từ sơ sinh đến 3 tháng",
+      "description": "Đây là giai đoạn sơ sinh - thời kỳ quan trọng nhất để phát hiện sớm khiếm thính, vì can thiệp sớm trong 6 tháng đầu đời sẽ giúp trẻ có cơ hội phát triển ngôn ngữ tốt nhất",
+      "keyDevelopments": [
+        "Phản xạ giật mình với âm thanh lớn đột ngột",
+        "Nhận biết giọng nói của mẹ và những người thân quen",
+        "Có phản ứng khác nhau với âm thanh êm dịu và âm thanh mạnh"
+      ],
+      "parentGuidance": "Cha mẹ nên quan sát kỹ các phản ứng của bé với âm thanh xung quanh và thực hiện sàng lọc thính giác sơ sinh trong vòng 48 giờ đầu sau sinh"
+    },
+    {
+      "id": "3-6m",
+      "name": "3-6 tháng tuổi",
+      "ageRange": "từ 3 đến 6 tháng",
+      "description": "Giai đoạn phát triển quan trọng khi trẻ bắt đầu có những phản ứng chủ động với âm thanh, quay đầu tìm nguồn âm thanh và bắt đầu tạo ra những âm thanh đầu tiên",
+      "keyDevelopments": [
+        "Quay đầu tìm nguồn âm thanh một cách tích cực",
+        "Bắt đầu phát ra những âm thanh cơ bản như 'cú', 'gừ', 'ba'",
+        "Phản ứng vui vẻ khi nghe nhạc hoặc giọng nói quen thuộc",
+        "Có thể phân biệt giọng nói vui và giọng nói giận dữ"
+      ],
+      "parentGuidance": "Hãy thường xuyên nói chuyện, hát ru và đọc sách cho bé, quan sát xem bé có phản ứng và tương tác lại không"
+    },
+    {
+      "id": "6-12m",
+      "name": "6-12 tháng tuổi",
+      "ageRange": "từ 6 đến 12 tháng",
+      "description": "Đây là giai đoạn bùng nổ ngôn ngữ khi trẻ bắt đầu lặp lại các âm tiết, hiểu một số từ đơn giản và phản ứng khi được gọi tên",
+      "keyDevelopments": [
+        "Lặp lại các âm tiết như 'ba-ba', 'ma-ma', 'da-da' một cách liên tục",
+        "Hiểu và phản ứng với một số từ quen thuộc như 'không', 'bố', 'mẹ'",
+        "Quay đầu ngay lập tức khi nghe tên mình được gọi",
+        "Bắt chước các âm thanh và cử chỉ của người lớn"
+      ],
+      "parentGuidance": "Khuyến khích bé lặp lại âm thanh bằng cách nhắc lại những gì bé nói và thêm từ ngữ mới vào cuộc trò chuyện hàng ngày"
+    },
+    {
+      "id": "1-2y",
+      "name": "1-2 tuổi",
+      "ageRange": "từ 1 đến 2 tuổi",
+      "description": "Giai đoạn phát triển ngôn ngữ cực kỳ nhanh chóng, khi trẻ bắt đầu nói những từ đầu tiên, hiểu nhiều từ hơn và có thể tuân theo các chỉ dẫn đơn giản",
+      "keyDevelopments": [
+        "Vốn từ vựng tăng từ 10 từ lúc 12 tháng lên đến 50-100 từ lúc 18 tháng",
+        "Có thể nói tên các đồ vật, con vật và người quen thuộc",
+        "Hiểu và tuân theo các lệnh đơn giản như 'đưa cho mẹ', 'ngồi xuống'",
+        "Bắt đầu kết hợp 2 từ với nhau vào cuối giai đoạn này"
+      ],
+      "parentGuidance": "Đặt tên cho mọi thứ xung quanh trẻ, đọc sách tranh hàng ngày và khuyến khích trẻ nói bằng cách đặt câu hỏi đơn giản"
+    },
+    {
+      "id": "2-3y",
+      "name": "2-3 tuổi",
+      "ageRange": "từ 2 đến 3 tuổi",
+      "description": "Giai đoạn phát triển kỹ năng giao tiếp và xã hội, khi trẻ bắt đầu tạo thành câu đơn giản, hỏi nhiều câu hỏi và tương tác tốt hơn với mọi người xung quanh",
+      "keyDevelopments": [
+        "Vốn từ vựng tăng lên 200-300 từ, có thể nhiều hơn",
+        "Tạo thành câu 2-3 từ như 'bé muốn nước', 'mẹ đi đâu'",
+        "Hỏi nhiều câu hỏi bắt đầu bằng 'cái gì', 'ở đâu'",
+        "Người lạ có thể hiểu được 50-75% những gì trẻ nói"
+      ],
+      "parentGuidance": "Trả lời tất cả câu hỏi của trẻ một cách kiên nhẫn, mở rộng câu nói của trẻ và đọc nhiều sách để phát triển ngôn ngữ"
+    },
+    {
+      "id": "3-5y",
+      "name": "3-5 tuổi",
+      "ageRange": "từ 3 đến 5 tuổi",
+      "description": "Giai đoạn chuẩn bị nhập học khi trẻ có khả năng giao tiếp tốt, kể chuyện, tham gia trò chuyện và chuẩn bị các kỹ năng ngôn ngữ cần thiết cho việc học tập",
+      "keyDevelopments": [
+        "Nói rõ ràng và người lạ có thể hiểu được hầu hết những gì trẻ nói",
+        "Kể lại chuyện đơn giản theo trình tự thời gian",
+        "Hỏi câu hỏi 'tại sao' và 'như thế nào'",
+        "Tham gia vào cuộc trò chuyện, biết lượt nói của mình"
+      ],
+      "parentGuidance": "Khuyến khích trẻ kể lại những gì trẻ trải nghiệm trong ngày, chơi các trò chơi ngôn ngữ và chuẩn bị cho môi trường học đường"
+    },
+    {
+      "id": "5-12y",
+      "name": "5-12 tuổi",
+      "ageRange": "từ 5 đến 12 tuổi",
+      "description": "Giai đoạn học tập chính thức và phát triển xã hội, khi trẻ cần sử dụng ngôn ngữ phức tạp hơn trong học tập, giao tiếp với bạn bè và tham gia các hoạt động xã hội",
+      "keyDevelopments": [
+        "Sử dụng ngữ pháp phức tạp và câu dài",
+        "Đọc và viết phát triển theo độ tuổi",
+        "Hiểu và sử dụng các khái niệm trừu tượng",
+        "Giao tiếp hiệu quả trong nhiều tình huống khác nhau"
+      ],
+      "parentGuidance": "Hỗ trợ trẻ trong học tập, khuyến khích đọc sách, tham gia các hoạt động ngoại khóa và theo dõi sát sao hiệu suất học tập"
+    }
+  ],
+
+  "hearing_loss_types": [
+    {
+      "id": "conductive",
+      "name": "Khiếm thính dẫn truyền",
+      "englishName": "Conductive Hearing Loss",
+      "description": "Loại khiếm thính xảy ra khi có vấn đề ở tai ngoài hoặc tai giữa, khiến âm thanh không thể truyền đến tai trong một cách bình thường",
+      "detailedCauses": [
+        "Viêm tai giữa cấp tính hoặc mãn tính với tích dịch",
+        "Tích dịch trong tai giữa (otitis media with effusion)",
+        "Vôi hóa xương tai (otosclerosis)",
+        "Khiếm khuyết bẩm sinh của tai",
+        "Tắc nghẽn ống tai do ráy tai, dị vật hoặc nước",
+        "Chấn thương tai"
+      ],
+      "severity": "thường từ nhẹ đến trung bình, hiếm khi nặng",
+      "prognosis": "Tiên lượng thường tốt, có thể cải thiện hoặc khỏi hoàn toàn khi nguyên nhân được điều trị đúng cách",
+      "treatment": "Điều trị bằng thuốc kháng sinh, phẫu thuật đặt ống thông khí, hoặc phẫu thuật tái tạo xương con",
+      "preventionTips": [
+        "Vệ sinh tai đúng cách",
+        "Điều trị kịp thời các bệnh đường hô hấp",
+        "Tránh hút thuốc lá thụ động",
+        "Tiêm chủng đầy đủ"
+      ]
+    },
+    {
+      "id": "sensorineural",
+      "name": "Khiếm thính cảm âm thần kinh",
+      "englishName": "Sensorineural Hearing Loss",
+      "description": "Loại khiếm thính xảy ra khi có tổn thương ở tai trong (ốc tai), các tế bào lông thính giác, hoặc dây thần kinh thính",
+      "detailedCauses": [
+        "Yếu tố di truyền (50-60% trường hợp khiếm thính bẩm sinh)",
+        "Nhiễm virus khi mang thai (rubella, CMV, toxoplasmosis, herpes)",
+        "Thiểu sản tai trong",
+        "Thiếu oxy khi sinh, sinh non hoặc vàng da nặng",
+        "Sử dụng thuốc độc tai",
+        "Phơi nhiễm tiếng ồn lớn kéo dài",
+        "Lão hóa tự nhiên",
+        "Viêm màng não, viêm não"
+      ],
+      "severity": "từ nhẹ đến rất nặng (điếc hoàn toàn)",
+      "prognosis": "Thường mang tính vĩnh viễn và không thể phục hồi hoàn toàn",
+      "treatment": "Máy trợ thính cho trường hợp nhẹ-trung bình, cấy ốc tai cho trường hợp nặng, kết hợp liệu pháp ngôn ngữ",
+      "earlyIntervention": "Can thiệp trước 6 tháng tuổi cho kết quả phát triển ngôn ngữ tốt nhất"
+    },
+    {
+      "id": "mixed",
+      "name": "Khiếm thính hỗn hợp",
+      "englishName": "Mixed Hearing Loss",
+      "description": "Kết hợp cả khiếm thính dẫn truyền và khiếm thính cảm âm thần kinh",
+      "detailedCauses": [
+        "Viêm tai giữa mãn tính kèm tổn thương tai trong",
+        "Vôi hóa xương tai kèm tổn thương tế bào lông",
+        "Chấn thương đầu nghiêm trọng",
+        "Sử dụng thuốc độc tai khi bị viêm tai giữa"
+      ],
+      "severity": "rất đa dạng",
+      "prognosis": "Phụ thuộc vào mức độ của từng thành phần",
+      "treatment": "Kết hợp điều trị y khoa/phẫu thuật cho phần dẫn truyền, máy trợ thính hoặc cấy ốc tai cho phần cảm âm"
+    },
+    {
+      "id": "auditory_processing",
+      "name": "Rối loạn xử lý thính giác trung ương",
+      "englishName": "Central Auditory Processing Disorder (CAPD)",
+      "description": "Vấn đề về cách bộ não xử lý và hiểu thông tin âm thanh, không phải vấn đề về tai",
+      "detailedCauses": [
+        "Rối loạn phát triển thần kinh",
+        "Chấn thương đầu hoặc tổn thương não",
+        "Sinh non hoặc thiếu oxy khi sinh",
+        "Rối loạn học tập hoặc ADHD",
+        "Viêm tai giữa mãn tính trong giai đoạn phát triển sớm"
+      ],
+      "severity": "từ nhẹ đến nặng",
+      "symptoms": [
+        "Khó hiểu lời nói trong môi trường ồn",
+        "Thường xuyên yêu cầu nhắc lại",
+        "Khó theo dõi hướng dẫn phức tạp",
+        "Dễ bị phân tâm",
+        "Khó phân biệt các âm thanh tương tự",
+        "Hiệu suất học tập kém"
+      ],
+      "prognosis": "Có thể cải thiện đáng kể với can thiệp phù hợp",
+      "treatment": "Liệu pháp huấn luyện thính giác, liệu pháp ngôn ngữ, hệ thống FM trong lớp học"
+    }
+  ],
+
+  "early_signs_by_age": [
+    {
+      "ageGroup": "0-3 tháng",
+      "normalBehavior": [
+        "Giật mình khi nghe tiếng ồn lớn đột ngột",
+        "Thay đổi nhịp thở, ngừng hoạt động khi nghe tiếng mới",
+        "Khóc hoặc khó chịu với âm thanh quá to",
+        "Yên tĩnh và chú ý khi nghe nhạc nhẹ"
+      ],
+      "warningSignsHearingLoss": [
+        "KHÔNG có phản ứng giật mình với tiếng ồn lớn",
+        "Không dừng khóc khi bố mẹ nói chuyện",
+        "Không tìm kiếm nguồn âm thanh",
+        "Ngủ say trong môi trường ồn ào",
+        "Không phản ứng với giọng nói quen thuộc"
+      ],
+      "recommendations": [
+        "Sàng lọc thính giác sơ sinh trong 24-48 giờ",
+        "Kiểm tra lại sau 1-2 tuần nếu không đạt",
+        "Tư vấn can thiệp sớm nếu phát hiện khiếm thính"
+      ],
+      "parentActions": [
+        "Quan sát phản ứng với âm thanh hàng ngày",
+        "Nói chuyện, hát ru thường xuyên",
+        "Ghi lại video các tình huống nghi ngờ"
+      ]
+    },
+    {
+      "ageGroup": "3-6 tháng",
+      "normalBehavior": [
+        "Quay đầu về phía nguồn âm thanh",
+        "Lắng nghe chăm chú khi có người nói",
+        "Phát ra âm thanh 'cú', 'gừ', 'a-a'",
+        "Phản ứng vui vẻ với nhạc",
+        "Phân biệt giọng nói vui và giận"
+      ],
+      "warningSignsHearingLoss": [
+        "Không quay đầu tìm nguồn âm thanh",
+        "Không phản ứng với giọng nói bố mẹ",
+        "Không quan tâm đến âm thanh",
+        "Không tạo ra âm thanh lặp lại",
+        "Chỉ tập trung vào thị giác"
+      ],
+      "recommendations": [
+        "Thử nghiệm thính giác toàn diện",
+        "Đo trở kháng tai (tympanometry)",
+        "Can thiệp ngay với máy trợ thính nếu cần"
+      ],
+      "parentActions": [
+        "Thử nghiệm đơn giản tại nhà",
+        "Ghi nhật ký phát triển",
+        "Đi khám nếu có nghi ngờ"
+      ]
+    },
+    {
+      "ageGroup": "6-12 tháng",
+      "normalBehavior": [
+        "Lặp lại âm tiết 'ba-ba', 'ma-ma', 'da-da'",
+        "Hiểu từ đơn giản 'không', 'bố', 'mẹ'",
+        "Quay đầu khi nghe tên",
+        "Bắt chước âm thanh và cử chỉ",
+        "Phản ứng khác nhau với âm thanh khác nhau"
+      ],
+      "warningSignsHearingLoss": [
+        "Không lặp lại âm thanh hoặc có regression",
+        "Không phản ứng khi gọi tên",
+        "Không hiểu bất kỳ từ nào",
+        "Không có giai đoạn babbling",
+        "Chỉ chú ý khi nhìn thấy người nói"
+      ],
+      "recommendations": [
+        "Visual Reinforcement Audiometry (VRA)",
+        "Đánh giá phát triển ngôn ngữ",
+        "Bắt đầu liệu pháp ngôn ngữ"
+      ],
+      "parentActions": [
+        "Đọc sách tranh hàng ngày",
+        "Nói chuyện liên tục với bé",
+        "Khuyến khích bắt chước âm thanh"
+      ]
+    },
+    {
+      "ageGroup": "1-2 tuổi",
+      "normalBehavior": [
+        "Vốn từ vựng 10-100 từ",
+        "Nói tên đồ vật, con vật",
+        "Tuân theo lệnh đơn giản",
+        "Kết hợp 2 từ vào cuối giai đoạn",
+        "Chỉ bộ phận cơ thể",
+        "Thích nghe đọc sách"
+      ],
+      "warningSignsHearingLoss": [
+        "Không hiểu lệnh đơn giản",
+        "Chưa nói từ nào lúc 18 tháng",
+        "Phát âm không rõ ràng",
+        "Vốn từ hiểu rất hạn chế",
+        "Không quan tâm đến sách"
+      ],
+      "recommendations": [
+        "Đánh giá toàn diện đa chuyên khoa",
+        "Play audiometry",
+        "Liệu pháp ngôn ngữ 2-3 lần/tuần",
+        "Tư vấn gia đình"
+      ],
+      "parentActions": [
+        "Đọc sách 30 phút/ngày",
+        "Mở rộng câu nói của bé",
+        "Hạn chế màn hình"
+      ]
+    },
+    {
+      "ageGroup": "2-3 tuổi",
+      "normalBehavior": [
+        "Vốn từ vựng 200-300 từ",
+        "Câu 2-3 từ",
+        "Hỏi câu 'cái gì', 'ở đâu'",
+        "Người lạ hiểu 50-75%",
+        "Kể trải nghiệm đơn giản",
+        "Dùng đại từ 'tôi', 'bạn'"
+      ],
+      "warningSignsHearingLoss": [
+        "Từ vựng rất chậm",
+        "Nói không rõ ràng",
+        "Không tuân theo hướng dẫn 2 bước",
+        "Tương tác xã hội yếu",
+        "Dễ bực bội"
+      ],
+      "recommendations": [
+        "Kiểm tra thính giác lại",
+        "Đánh giá rối loạn phát triển khác",
+        "Tăng cường liệu pháp ngôn ngữ"
+      ],
+      "parentActions": [
+        "Tạo môi trường ngôn ngữ phong phú",
+        "Chơi pretend play",
+        "Khuyến khích kể lại ngày"
+      ]
+    },
+    {
+      "ageGroup": "3-5 tuổi",
+      "normalBehavior": [
+        "Nói rõ ràng, dễ hiểu",
+        "Kể chuyện theo trình tự",
+        "Hỏi 'tại sao', 'như thế nào'",
+        "Biết lượt nói",
+        "Ngữ pháp phức tạp",
+        "Học thuộc bài hát"
+      ],
+      "warningSignsHearingLoss": [
+        "Yêu cầu nhắc lại liên tục",
+        "Tăng âm lượng TV rất lớn",
+        "Phát âm không rõ",
+        "Khó giao tiếp với bạn",
+        "Dễ phân tâm"
+      ],
+      "recommendations": [
+        "Kiểm tra thính giác định kỳ",
+        "Đánh giá sẵn sàng nhập học",
+        "Hỗ trợ ngôn ngữ nếu cần"
+      ],
+      "parentActions": [
+        "Đọc sách phức tạp hơn",
+        "Thảo luận về nội dung",
+        "Tạo cơ hội giao tiếp đa dạng"
+      ]
+    },
+    {
+      "ageGroup": "5-12 tuổi",
+      "normalBehavior": [
+        "Nghe hiểu tốt trong nhiều tình huống",
+        "Nói rõ với ngữ pháp đúng",
+        "Đọc viết theo độ tuổi",
+        "Học tập bình thường",
+        "Tương tác xã hội tốt"
+      ],
+      "warningSignsHearingLoss": [
+        "Lạm dụng 'cái gì', 'hả'",
+        "Hiệu suất học tập giảm",
+        "Rút lui khỏi hoạt động xã hội",
+        "Tập trung kém",
+        "Hành vi khó quản lý"
+      ],
+      "recommendations": [
+        "Sàng lọc thính giác tại trường",
+        "Kiểm tra toàn diện nếu có dấu hiệu",
+        "Hỗ trợ học tập đặc biệt"
+      ],
+      "parentActions": [
+        "Theo dõi học tập sát sao",
+        "Gặp giáo viên thường xuyên",
+        "Hỗ trợ bài tập tại nhà"
+      ]
+    }
+  ],
+
+  "severity_levels": [
+    {
+      "id": "normal",
+      "name": "Thính lực bình thường",
+      "decibel": "0-20 dB HL",
+      "description": "Nghe được tất cả âm thanh từ nhẹ đến lớn",
+      "realLifeComparison": "Nghe được tiếng lá rơi, tiếng thì thầm, tiếng bước chân nhẹ",
+      "impact": "Không ảnh hưởng đến giao tiếp và sinh hoạt"
+    },
+    {
+      "id": "mild",
+      "name": "Khiếm thính nhẹ",
+      "decibel": "21-40 dB HL",
+      "description": "Khó nghe âm thanh nhẹ và lời thì thầm",
+      "realLifeComparison": "Khó nghe lá xào xạc, thì thầm, trò chuyện ở xa",
+      "impacts": [
+        "Khó nghe thì thầm",
+        "Bỏ lỡ 25-50% nội dung trong môi trường ồn",
+        "Bỏ lỡ chi tiết trong lớp học",
+        "Dễ mệt mỏi"
+      ],
+      "intervention": "Máy trợ thính hữu ích, đặc biệt trong lớp học",
+      "educationImpact": "Cần ngồi gần giáo viên, môi trường yên tĩnh"
+    },
+    {
+      "id": "moderate",
+      "name": "Khiếm thính trung bình",
+      "decibel": "41-70 dB HL",
+      "description": "Khó nghe lời nói bình thường",
+      "realLifeComparison": "Khó nghe lời nói, chuông điện thoại, chó sủa gần",
+      "impacts": [
+        "Khó hiểu nếu không nhìn mặt người nói",
+        "Bỏ lỡ 50-100% lời nói không có máy trợ thính",
+        "Phát triển ngôn ngữ chậm nếu không can thiệp",
+        "Cần nói to và gần"
+      ],
+      "intervention": "Máy trợ thính cần thiết, liệu pháp ngôn ngữ chuyên sâu",
+      "educationImpact": "Cần máy trợ thính, hệ thống FM, có thể cần lớp đặc biệt"
+    },
+    {
+      "id": "moderately-severe",
+      "name": "Khiếm thính trung bình-nặng",
+      "decibel": "71-90 dB HL",
+      "description": "Chỉ nghe được âm thanh rất to, không nghe được hầu hết lời nói thông thường",
+      "realLifeComparison": "Chỉ nghe được tiếng máy hút bụi, tiếng xe tải đi qua, tiếng la hét",
+      "impacts": [
+        "Không nghe được lời nói thông thường",
+        "Chỉ nghe được tiếng hét hoặc lời nói rất to gần tai",
+        "Không phát triển ngôn ngữ tự nhiên nếu không can thiệp sớm",
+        "Cần xem xét cấy ốc tai"
+      ],
+      "intervention": "Máy trợ thính siêu mạnh hoặc cấy ốc tai, liệu pháp ngôn ngữ tích cực",
+      "educationImpact": "Cần giáo dục đặc biệt, ngôn ngữ ký hiệu, cộng đồng người điếc"
+    },
+    {
+      "id": "severe",
+      "name": "Khiếm thính nặng",
+      "decibel": "71-90 dB HL",
+      "description": "Chỉ nghe được âm thanh rất lớn, lời nói hét rất to",
+      "realLifeComparison": "Chỉ nghe được máy cắt cỏ, xe máy nổ gần, còi báo động",
+      "impacts": [
+        "Hoàn toàn không nghe được lời nói bình thường",
+        "Phụ thuộc hoàn toàn vào thị giác để giao tiếp",
+        "Cần can thiệp sớm tích cực",
+        "Ưu tiên cấy ốc tai"
+      ],
+      "intervention": "Cấy ốc tai là lựa chọn tốt nhất, ngôn ngữ ký hiệu, đọc môi",
+      "educationImpact": "Giáo dục đặc biệt, song ngữ (ngôn ngữ nói và ký hiệu)"
+    },
+    {
+      "id": "profound",
+      "name": "Khiếm thính sâu / Điếc",
+      "decibel": "91+ dB HL",
+      "description": "Không nghe được hầu hết âm thanh, kể cả tiếng rất to",
+      "realLifeComparison": "Có thể chỉ cảm nhận được rung động của âm thanh cực lớn như máy bay, sấm",
+      "impacts": [
+        "Không nghe được âm thanh thông thường",
+        "Cảm nhận rung động thay vì âm thanh",
+        "Không phát triển ngôn ngữ nói tự nhiên",
+        "Cần phương thức giao tiếp thị giác"
+      ],
+      "intervention": "Cấy ốc tai trong 12 tháng đầu đời, ngôn ngữ ký hiệu chính, văn hóa người Điếc",
+      "educationImpact": "Giáo dục song ngữ, cộng đồng người Điếc, giáo viên thạo ngôn ngữ ký hiệu"
+    }
+  ],
+
+  "diagnostic_tests": [
+    {
+      "id": "newborn_screening",
+      "name": "Sàng lọc thính giác sơ sinh",
+      "englishName": "Newborn Hearing Screening",
+      "ageRange": "24-48 giờ sau sinh",
+      "methods": [
+        {
+          "name": "OAE - Otoacoustic Emissions",
+          "vietnameseName": "Đo phát xạ tai",
+          "description": "Kiểm tra phản ứng của tế bào lông trong ốc tai bằng cách phát và ghi âm thanh phản hồi",
+          "duration": "5-10 phút",
+          "advantages": ["Nhanh", "Không đau", "Không cần bé hợp tác", "Chi phí thấp"],
+          "limitations": ["Chỉ kiểm tra tai trong", "Dễ bị ảnh hưởng bởi ráy tai, dịch"],
+          "accuracy": "Độ nhạy 90-95%"
+        },
+        {
+          "name": "AABR - Automated Auditory Brainstem Response",
+          "vietnameseName": "Đo đáp ứng thính giác thân não tự động",
+          "description": "Đo hoạt động điện của dây thần kinh thính và não khi có âm thanh",
+          "duration": "10-15 phút",
+          "advantages": ["Đánh giá đường dẫn truyền đầy đủ", "Ít bị nhiễu", "Phát hiện khiếm thính thần kinh"],
+          "limitations": ["Tốn thời gian hơn", "Chi phí cao hơn"],
+          "accuracy": "Độ nhạy 95-98%"
+        }
+      ],
+      "interpretation": {
+        "pass": "Đạt - thính lực bình thường, kiểm tra lại định kỳ",
+        "refer": "Không đạt - cần kiểm tra lại sau 2-4 tuần",
+        "followUp": "Nếu không đạt lần 2, chuyển đến chuyên khoa thính học trong 3 tháng tuổi"
+      },
+      "importance": "Phát hiện sớm là chìa khóa cho phát triển ngôn ngữ tốt nhất"
+    },
+    {
+      "id": "diagnostic_abr",
+      "name": "ABR chẩn đoán",
+      "englishName": "Diagnostic Auditory Brainstem Response",
+      "ageRange": "Mọi lứa tuổi, thường 3-6 tháng",
+      "description": "Kiểm tra chi tiết đáp ứng của dây thần kinh thính và não với âm thanh ở nhiều tần số và cường độ khác nhau",
+      "preparation": [
+        "Trẻ cần ngủ say (có thể cần an thần nhẹ)",
+        "Đầu sạch sẽ, không dầu",
+        "Nên cho trẻ đói và mệt trước khi test"
+      ],
+      "procedure": [
+        "Gắn điện cực lên đầu và tai",
+        "Phát âm thanh qua tai nghe",
+        "Ghi lại tín hiệu điện từ não",
+        "Kiểm tra nhiều tần số: 500, 1000, 2000, 4000 Hz"
+      ],
+      "duration": "1-2 giờ",
+      "results": {
+        "provides": [
+          "Ngưỡng nghe ở mỗi tần số",
+          "Loại khiếm thính (dẫn truyền hay cảm âm)",
+          "Mức độ khiếm thính",
+          "Có thể phát hiện auditory neuropathy"
+        ]
+      },
+      "accuracy": "Rất chính xác, tiêu chuẩn vàng cho trẻ nhỏ",
+      "cost": "3-5 triệu VNĐ tại VN"
+    },
+    {
+      "id": "behavioral_audiometry",
+      "name": "Đo thính lực hành vi",
+      "englishName": "Behavioral Audiometry",
+      "types": [
+        {
+          "name": "BOA - Behavioral Observation Audiometry",
+          "ageRange": "0-6 tháng",
+          "description": "Quan sát phản ứng hành vi tự nhiên của trẻ với âm thanh",
+          "method": "Phát âm thanh và quan sát phản ứng: giật mình, mở mắt, ngừng hoạt động",
+          "limitations": "Chủ quan, không chính xác lắm"
+        },
+        {
+          "name": "VRA - Visual Reinforcement Audiometry",
+          "ageRange": "6 tháng - 2.5 tuổi",
+          "description": "Huấn luyện trẻ quay đầu về phía đèn/đồ chơi khi nghe âm thanh",
+          "method": "Âm thanh phát ra → trẻ quay đầu → đèn/đồ chơi sáng lên khen thưởng",
+          "accuracy": "Khá chính xác nếu trẻ hợp tác tốt",
+          "advantages": ["Vui vẻ cho trẻ", "Đo được ngưỡng nghe khá chính xác"]
+        },
+        {
+          "name": "Play Audiometry",
+          "ageRange": "2.5-5 tuổi",
+          "description": "Trẻ chơi trò chơi khi nghe âm thanh",
+          "method": "Nghe âm thanh → bỏ vật vào thùng/xếp hình",
+          "accuracy": "Chính xác cao nếu trẻ hiểu và hợp tác"
+        },
+        {
+          "name": "Conventional Audiometry",
+          "ageRange": "5 tuổi trở lên",
+          "description": "Đo thính lực tiêu chuẩn như người lớn",
+          "method": "Trẻ nghe qua tai nghe, giơ tay hoặc nhấn nút khi nghe thấy",
+          "results": "Biểu đồ thính lực chi tiết (audiogram)"
+        }
+      ],
+      "importance": "Xác nhận kết quả khách quan, theo dõi tiến triển"
+    },
+    {
+      "id": "tympanometry",
+      "name": "Đo trở kháng tai",
+      "englishName": "Tympanometry",
+      "ageRange": "Mọi lứa tuổi",
+      "description": "Đánh giá chức năng tai giữa và màng nhĩ",
+      "procedure": [
+        "Đặt đầu dò mềm vào ống tai",
+        "Thay đổi áp suất trong ống tai",
+        "Đo độ di động của màng nhĩ"
+      ],
+      "duration": "2-3 phút",
+      "results": {
+        "typeA": "Bình thường - màng nhĩ di động tốt",
+        "typeB": "Phẳng - có dịch trong tai giữa hoặc màng nhĩ thủng",
+        "typeC": "Âm áp - chức năng vòi nhĩ kém",
+        "typeAs": "Cứng - vôi hóa xương tai",
+        "typeAd": "Quá mềm - màng nhĩ mỏng hoặc đứt xương con"
+      },
+      "uses": [
+        "Chẩn đoán viêm tai giữa",
+        "Theo dõi điều trị",
+        "Đánh giá trước phẫu thuật",
+        "Phân biệt khiếm thính dẫn truyền và cảm âm"
+      ],
+      "cost": "200,000-500,000 VNĐ"
+    },
+    {
+      "id": "speech_audiometry",
+      "name": "Đo thính lực lời nói",
+      "englishName": "Speech Audiometry",
+      "ageRange": "3 tuổi trở lên",
+      "components": [
+        {
+          "name": "SRT - Speech Reception Threshold",
+          "description": "Ngưỡng nghe lời nói - âm lượng nhỏ nhất để hiểu 50% từ",
+          "method": "Trẻ nghe các từ đơn giản (ba, má, cơm) ở nhiều âm lượng",
+          "importance": "Xác nhận ngưỡng nghe âm thuần"
+        },
+        {
+          "name": "WRS - Word Recognition Score",
+          "description": "Điểm nhận diện từ - % từ hiểu được ở âm lượng thoải mái",
+          "method": "Trẻ nghe 25-50 từ ở âm lượng vừa phải và nhắc lại",
+          "interpretation": {
+            "90-100%": "Tuyệt vời",
+            "80-89%": "Tốt",
+            "70-79%": "Trung bình",
+            "60-69%": "Kém",
+            "<60%": "Rất kém"
+          },
+          "importance": "Dự đoán hiệu quả của máy trợ thính"
+        }
+      ],
+      "clinicalValue": "Đánh giá khả năng giao tiếp thực tế, không chỉ nghe âm thanh"
+    },
+    {
+      "id": "otoascoustic_emissions",
+      "name": "Đo phát xạ tai",
+      "englishName": "Otoacoustic Emissions (OAE)",
+      "types": [
+        {
+          "name": "TEOAE - Transient Evoked OAE",
+          "description": "Phát xạ do âm thanh click ngắn kích thích",
+          "uses": "Sàng lọc, theo dõi"
+        },
+        {
+          "name": "DPOAE - Distortion Product OAE",
+          "description": "Phát xạ do 2 tần số thuần kích thích đồng thời",
+          "uses": "Đánh giá chi tiết từng tần số, theo dõi thuốc độc tai"
+        }
+      ],
+      "mechanism": "Tế bào lông ngoài trong ốc tai tạo ra âm thanh phản hồi khi khỏe mạnh",
+      "advantages": [
+        "Nhanh chóng (5-10 phút)",
+        "Không xâm lấn",
+        "Không cần trẻ hợp tác",
+        "Phát hiện khiếm thính ốc tai sớm"
+      ],
+      "limitations": [
+        "Chỉ đánh giá tai trong",
+        "Không phát hiện khiếm thính thần kinh",
+        "Dễ bị nhiễu bởi ráy tai, dịch, ồn"
+      ],
+      "applications": [
+        "Sàng lọc sơ sinh",
+        "Theo dõi thuốc độc tai",
+        "Phát hiện tổn thương tiếng ồn sớm",
+        "Chẩn đoán giám định"
+      ]
+    },
+    {
+      "id": "genetic_testing",
+      "name": "Xét nghiệm di truyền",
+      "englishName": "Genetic Testing",
+      "indication": [
+        "Khiếm thính cảm âm không rõ nguyên nhân",
+        "Tiền sử gia đình có khiếm thính",
+        "Nghi ngờ hội chứng di truyền",
+        "Tư vấn sinh sản cho gia đình"
+      ],
+      "commonGenes": [
+        {
+          "gene": "GJB2 (Connexin 26)",
+          "frequency": "30-50% khiếm thính di truyền không hội chứng",
+          "inheritance": "Lặn nhiễm sắc thể thường",
+          "severity": "Trung bình đến nặng, thường ổn định"
+        },
+        {
+          "gene": "GJB6 (Connexin 30)",
+          "frequency": "5-10%",
+          "inheritance": "Lặn nhiễm sắc thể thường"
+        },
+        {
+          "gene": "SLC26A4 (Pendred syndrome)",
+          "frequency": "5-10%",
+          "features": "Khiếm thính + tuyến giáp to + bất thường ốc tai",
+          "inheritance": "Lặn nhiễm sắc thể thường"
+        },
+        {
+          "gene": "Mitochondrial DNA",
+          "frequency": "1-2%",
+          "features": "Nhạy cảm với aminoglycoside",
+          "inheritance": "Di truyền mẹ"
+        }
+      ],
+      "types": [
+        {
+          "name": "Targeted gene testing",
+          "description": "Xét nghiệm gen cụ thể (GJB2)",
+          "cost": "3-5 triệu VNĐ",
+          "turnaround": "2-4 tuần"
+        },
+        {
+          "name": "Gene panel",
+          "description": "Xét nghiệm 50-100 gen liên quan khiếm thính",
+          "cost": "10-20 triệu VNĐ",
+          "turnaround": "4-8 tuần"
+        },
+        {
+          "name": "Whole exome sequencing",
+          "description": "Giải mã toàn bộ exome",
+          "cost": "20-40 triệu VNĐ",
+          "turnaround": "8-12 tuần"
+        }
+      ],
+      "benefits": [
+        "Xác định nguyên nhân khiếm thính",
+        "Tiên lượng và tư vấn",
+        "Tư vấn sinh sản",
+        "Phát hiện sớm biến chứng liên quan (thận, tim...)",
+        "Tránh thuốc độc tai nếu có đột biến mitochondrial"
+      ],
+      "availability": "Tại các bệnh viện lớn: BV Nhi TW, BV Tai Mũi Họng TW, BV Mắt TW"
+    },
+    {
+      "id": "imaging",
+      "name": "Chẩn đoán hình ảnh",
+      "englishName": "Imaging Studies",
+      "types": [
+        {
+          "name": "CT scan thái dương",
+          "englishName": "Temporal Bone CT",
+          "indication": [
+            "Khiếm thính dẫn truyền",
+            "Nghi ngờ bất thường xương tai",
+            "Đánh giá trước phẫu thuật",
+            "Chấn thương đầu"
+          ],
+          "shows": [
+            "Cấu trúc xương tai",
+            "Xương con tai giữa",
+            "Vôi hóa ốc tai",
+            "Bất thường bẩm sinh"
+          ],
+          "advantages": ["Chi tiết xương tốt", "Nhanh"],
+          "disadvantages": ["Phóng xạ", "Không thấy mô mềm tốt"]
+        },
+        {
+          "name": "MRI não và tai trong",
+          "englishName": "Brain and Internal Auditory Canal MRI",
+          "indication": [
+            "Khiếm thính cảm âm một bên",
+            "Nghi ngờ u thần kinh thính",
+            "Đánh giá trước cấy ốc tai",
+            "Khiếm thính tiến triển nhanh"
+          ],
+          "shows": [
+            "Dây thần kinh thính",
+            "Ốc tai và mô mềm",
+            "Bất thường não",
+            "Khối u"
+          ],
+          "advantages": ["Không phóng xạ", "Chi tiết mô mềm tuyệt vời"],
+          "disadvantages": ["Tốn thời gian", "Trẻ nhỏ cần an thần", "Đắt"]
+        }
+      ],
+      "preCochlearImplant": {
+        "mandatory": [
+          "CT thái dương: đánh giá cấu trúc ốc tai, xương chũm",
+          "MRI: đánh giá dây thần kinh thính, bất thường não"
+        ],
+        "purpose": [
+          "Xác nhận giải phẫu phù hợp",
+          "Phát hiện bất thường có thể ảnh hưởng phẫu thuật",
+          "Lập kế hoạch phẫu thuật",
+          "Tư vấn tiên lượng"
+        ]
+      },
+      "cost": {
+        "CT": "1.5-3 triệu VNĐ",
+        "MRI": "3-6 triệu VNĐ"
+      }
+    }
+  ],
+
+  "treatment_options": [
+    {
+      "id": "hearing_aids",
+      "name": "Máy trợ thính",
+      "englishName": "Hearing Aids",
+      "indication": "Khiếm thính nhẹ đến nặng (20-90 dB HL)",
+      "types": [
+        {
+          "name": "BTE - Behind-The-Ear",
+          "vietnameseName": "Máy đeo sau tai",
+          "description": "Thân máy đeo sau tai, âm thanh truyền qua ống dẫn vào tai",
+          "advantages": [
+            "Mạnh nhất",
+            "Phù hợp mọi mức độ khiếm thính",
+            "Pin lớn, sử dụng lâu",
+            "Dễ điều chỉnh, thao tác",
+            "Bền bỉ"
+          ],
+          "disadvantages": [
+            "Dễ thấy",
+            "Có thể vướng kính, khẩu trang"
+          ],
+          "bestFor": "Trẻ em, khiếm thính trung bình-nặng",
+          "cost": "10-50 triệu VNĐ/máy"
+        },
+        {
+          "name": "RIC - Receiver-In-Canal",
+          "vietnameseName": "Máy receiver trong tai",
+          "description": "Thân máy nhỏ sau tai, loa đặt trong ống tai",
+          "advantages": [
+            "Nhỏ gọn hơn BTE",
+            "Âm thanh tự nhiên hơn",
+            "Thoải mái",
+            "Ít hiện tượng hồi tiếng"
+          ],
+          "disadvantages": [
+            "Receiver dễ hỏng do ẩm, ráy tai",
+            "Không mạnh bằng BTE"
+          ],
+          "bestFor": "Khiếm thính nhẹ-trung bình, người lớn",
+          "cost": "15-60 triệu VNĐ/máy"
+        },
+        {
+          "name": "ITE - In-The-Ear",
+          "vietnameseName": "Máy trong tai",
+          "description": "Máy nhỏ gọn vừa khít trong tai",
+          "types": ["Full shell", "Half shell", "ITC", "CIC"],
+          "advantages": [
+            "Kín đáo",
+            "Không vướng kính",
+            "Âm thanh tự nhiên"
+          ],
+          "disadvantages": [
+            "Không phù hợp trẻ em (tai còn phát triển)",
+            "Pin nhỏ, hao nhanh",
+            "Dễ tắc ráy tai",
+            "Không mạnh lắm"
+          ],
+          "bestFor": "Người lớn khiếm thính nhẹ-trung bình, cần thẩm mỹ",
+          "cost": "20-80 triệu VNĐ/máy"
+        },
+        {
+          "name": "CROS/BiCROS",
+          "description": "Cho khiếm thính một bên hoặc bất đối xứng",
+          "mechanism": "Micro ở tai điếc truyền âm không dây sang tai tốt",
+          "bestFor": "Khiếm thính một bên không thể cấy ốc tai",
+          "cost": "30-70 triệu VNĐ/cặp"
+        }
+      ],
+      "features": {
+        "essential": [
+          "Khuyếch đại đa kênh",
+          "Nén âm thanh",
+          "Giảm tiếng ồn nền",
+          "Mic định hướng",
+          "Feedback cancellation"
+        ],
+        "advanced": [
+          "Bluetooth kết nối điện thoại, TV",
+          "Ứng dụng điều khiển",
+          "Sạc pin (không cần thay pin)",
+          "Chống nước",
+          "AI tự động điều chỉnh",
+          "Telecoil (T-coil) cho rạp, nhà thờ"
+        ]
+      },
+      "fittingProcess": [
+        {
+          "step": 1,
+          "name": "Đánh giá và lựa chọn",
+          "activities": [
+            "Đo thính lực chi tiết",
+            "Đo tai để chọn mold/dome phù hợp",
+            "Tư vấn loại máy phù hợp",
+            "Thảo luận nhu cầu, ngân sách"
+          ]
+        },
+        {
+          "step": 2,
+          "name": "Lập trình lần đầu",
+          "activities": [
+            "Nhập dữ liệu thính lực vào phần mềm",
+            "Tính toán gain cần thiết",
+            "Lập trình máy theo công thức (NAL, DSL)",
+            "Đeo máy cho trẻ/người lớn"
+          ]
+        },
+        {
+          "step": 3,
+          "name": "Xác minh và tinh chỉnh",
+          "activities": [
+            "Real-ear measurement (đo âm thanh thực tế trong tai)",
+            "Nghe thử trong môi trường khác nhau",
+            "Điều chỉnh dựa trên phản hồi",
+            "Hướng dẫn sử dụng, bảo quản"
+          ],
+          "duration": "1-2 giờ"
+        },
+        {
+          "step": 4,
+          "name": "Thích nghi và theo dõi",
+          "schedule": [
+            "Tuần 1-2: Tái khám điều chỉnh",
+            "Tháng 1: Kiểm tra và điều chỉnh",
+            "3 tháng, 6 tháng: Đánh giá hiệu quả",
+            "Sau đó: Kiểm tra 6-12 tháng/lần"
+          ]
+        }
+      ],
+      "maintenancecare": [
+        "Lau sạch hàng ngày bằng khăn khô",
+        "Sử dụng kit làm khô mỗi đêm",
+        "Thay pin đúng loại, đúng lúc (hoặc sạc đầy)",
+        "Thay filter, wax guard định kỳ",
+        "Bảo quản nơi khô ráo, thoáng mát",
+        "Kiểm tra và bảo dưỡng chuyên sâu 6 tháng/lần"
+      ],
+      "commonProblems": [
+        {
+          "problem": "Hú hồi (feedback)",
+          "causes": ["Mold/dome không vừa", "Ráy tai tắc", "Tăng âm lượng quá"],
+          "solutions": ["Kiểm tra mold", "Lấy ráy tai", "Giảm âm lượng", "Bật feedback cancellation"]
+        },
+        {
+          "problem": "Âm thanh yếu",
+          "causes": ["Pin yếu", "Filter tắc", "Loa hỏng", "Thiết lập sai"],
+          "solutions": ["Thay pin", "Thay filter", "Đưa đi sửa"]
+        },
+        {
+          "problem": "Không thoải mái",
+          "causes": ["Mold không vừa", "Kích ứng da", "Tăng âm quá nhanh"],
+          "solutions": ["Làm lại mold", "Điều trị da", "Điều chỉnh từ từ"]
+        }
+      ],
+      "childrenConsiderations": [
+        "Luôn chọn BTE cho trẻ em (tai còn phát triển)",
+        "Màu sắc vui nhộn để trẻ thích đeo",
+        "Dây giữ máy để tránh mất",
+        "Kiểm tra hàng ngày bởi phụ huynh",
+        "Thay mold 6-12 tháng khi trẻ lớn",
+        "Phối hợp chặt chẽ với trường học"
+      ]
+    }
+]}
