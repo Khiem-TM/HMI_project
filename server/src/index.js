@@ -146,6 +146,7 @@ app.use("/api/chatbot", chatbotRoutes);
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 // check health
 app.get("/api/health", (req, res) => {

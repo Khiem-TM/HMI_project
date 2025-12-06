@@ -264,6 +264,19 @@ export const apiService = {
       });
     },
   },
+
+  chatbot: {
+    ask: async (message: string) => {
+      // Chỉ gọi "/chatbot/ask" vì baseURL đã có sẵn "/api"
+      return api.post("/chatbot/ask", { message });
+    },
+    getKnowledge: async () => {
+      return api.get("/chatbot/knowledge");
+    },
+    search: async (query: string) => {
+      return api.post("/chatbot/search", { query });
+    }
+  },
 };
 
 export default api;

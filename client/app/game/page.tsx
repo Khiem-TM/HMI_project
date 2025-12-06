@@ -110,11 +110,6 @@ export default function GamePage() {
     const correctAudio = useRef<HTMLAudioElement | null>(null);
     const wrongAudio = useRef<HTMLAudioElement | null>(null);
 
-    const colors = useMemo(
-        () => ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"],
-        []
-    );
-
     useEffect(() => {
         if (typeof window !== "undefined") {
             correctAudio.current = new Audio("https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3");
@@ -138,11 +133,14 @@ export default function GamePage() {
 
     // --- SESSION LOGIC ---
     const initSession = () => {
+        // Clear dữ liệu cũ
         setScore(0);
         setStreak(0);
         setUnlockedAchievements([]);
         setCurrentQuestionIndex(1);
+        setExercise(null); // Reset câu hỏi để force load cái mới
 
+        // Reset Data Ref
         gameDataRef.current = {
             exercises: [],
             answers: [],
@@ -174,6 +172,7 @@ export default function GamePage() {
     const saveGameSession = async () => {
         try {
             const data = gameDataRef.current;
+            // Logic save session giữ nguyên
             if (data.exercises.length === 0 && mode !== 'speed-match') return;
             if (mode === 'speed-match' && score === 0) return;
 
@@ -223,7 +222,6 @@ export default function GamePage() {
         }, 1000);
     };
 
-    // Xử lý Hết giờ
     useEffect(() => {
         if (timeLeft === 0 && mode === 'guess' && !showResult && exercise && !loading) {
             setShowResult(true);
@@ -234,9 +232,11 @@ export default function GamePage() {
         }
     }, [timeLeft, mode, showResult, exercise, loading]);
 
+    // Load Exercise (Thêm tham số force để bắt buộc random)
     const loadExercise = async () => {
+        // Reset timer
         if (timerRef.current) clearInterval(timerRef.current);
-        setTimeLeft(20);
+        if (mode === 'guess') setTimeLeft(20);
 
         setLoading(true);
         setError("");
@@ -254,9 +254,7 @@ export default function GamePage() {
                 data.options = shuffleArray([...data.options]);
             }
             setExercise(data);
-
             if (mode === 'guess') startCountdown(20);
-
         } catch (err) {
             setError("Lỗi kết nối server.");
         } finally {
@@ -352,7 +350,7 @@ export default function GamePage() {
     const startTimed = () => {
         initSession();
         setTimedRunning(true);
-        setTimedLeft(60);
+        setTimedLeft(60); // Reset time
 
         if (timedTimerRef.current) clearInterval(timedTimerRef.current);
 
@@ -373,16 +371,37 @@ export default function GamePage() {
 
     const answerTimed = async (id: string) => {
         if (!exercise || !timedRunning) return;
-        const correct = id === exercise.correctAnswer;
 
+        setSelectedAnswer(id);
+        const correct = id === exercise.correctAnswer;
         playSound(correct);
+
         if (exercise._id) {
             updateGameData(exercise._id, id, correct, 0);
         }
-        loadExercise();
+
+        // Delay 500ms để hiện màu
+        setTimeout(() => {
+            loadExercise();
+        }, 500);
     };
 
+    // --- QUAN TRỌNG: RESET TRẠNG THÁI KHI CHUYỂN TAB ---
     useEffect(() => {
+        // 1. Dọn dẹp sạch sẽ các timer cũ
+        if (timerRef.current) clearInterval(timerRef.current);
+        if (timedTimerRef.current) clearInterval(timedTimerRef.current);
+
+        // 2. Reset dữ liệu về ban đầu (tránh bug hiển thị)
+        setExercise(null);
+        setScore(0);
+        setStreak(0);
+        setTimedRunning(false);
+        setTimedLeft(60);
+        setShowResult(false);
+        setLoading(false);
+
+        // 3. Khởi tạo lại theo mode mới
         if (mode === "guess") {
             initSession();
             loadExercise();
@@ -390,9 +409,10 @@ export default function GamePage() {
             initSession();
             loadSpeedMatchData();
         } else if (mode === "timed") {
-            setScore(0);
-            setStreak(0);
+            // Timed Mode không tự start, phải bấm nút
+            initSession();
         }
+
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
             if (timedTimerRef.current) clearInterval(timedTimerRef.current);
@@ -445,228 +465,261 @@ export default function GamePage() {
                 </div>
             )}
 
-            {/* GUESS MODE */}
-            {mode === "guess" && (
-                <div className="border-t pt-6">
-                    <div className="mb-4 flex justify-between text-sm text-muted-foreground">
-                        <span>Câu hỏi {currentQuestionIndex} / {TOTAL_QUESTIONS_PER_ROUND}</span>
-                        <Timer className="h-4 w-4 inline mr-1"/> {timeLeft}s
-                    </div>
-                    <Progress value={(currentQuestionIndex / TOTAL_QUESTIONS_PER_ROUND) * 100} className="h-2 mb-6" />
+            {/* SỬ DỤNG KEY={MODE} ĐỂ RESET COMPONENT KHI CHUYỂN TAB */}
+            <div key={mode}>
+                {/* GUESS MODE */}
+                {mode === "guess" && (
+                    <div className="border-t pt-6">
+                        <div className="mb-4 flex justify-between text-sm text-muted-foreground">
+                            <span>Câu hỏi {currentQuestionIndex} / {TOTAL_QUESTIONS_PER_ROUND}</span>
+                            <Timer className="h-4 w-4 inline mr-1"/> {timeLeft}s
+                        </div>
+                        <Progress value={(currentQuestionIndex / TOTAL_QUESTIONS_PER_ROUND) * 100} className="h-2 mb-6" />
 
-                    {loading ? (
-                        <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>
-                    ) : exercise ? (
-                        <Card>
-                            <CardContent className="p-8">
-                                <div className="aspect-video bg-black rounded-lg overflow-hidden relative mb-6 flex items-center justify-center">
-                                    {exercise.videoUrl ? (
-                                        (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
-                                            <iframe
-                                                src={exercise.videoUrl}
-                                                className="w-full h-full"
-                                                title="Video minh họa"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowFullScreen
+                        {loading ? (
+                            <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>
+                        ) : exercise ? (
+                            <Card>
+                                <CardContent className="p-8">
+                                    <div className="aspect-video bg-black rounded-lg overflow-hidden relative mb-6 flex items-center justify-center">
+                                        {exercise.videoUrl ? (
+                                            (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
+                                                <iframe
+                                                    src={exercise.videoUrl}
+                                                    className="w-full h-full"
+                                                    title="Video minh họa"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                            ) : (
+                                                <video
+                                                    src={exercise.videoUrl}
+                                                    className="w-full h-full object-contain"
+                                                    autoPlay
+                                                    loop
+                                                    muted
+                                                    playsInline
+                                                    controls
+                                                />
+                                            )
+                                        ) : getImageUrl(exercise.thumbnail) ? (
+                                            <img
+                                                src={getImageUrl(exercise.thumbnail)!}
+                                                className="w-full h-full object-cover"
+                                                alt="Quiz"
                                             />
                                         ) : (
-                                            <video
-                                                src={exercise.videoUrl}
-                                                className="w-full h-full object-contain"
-                                                autoPlay
-                                                loop
-                                                muted
-                                                playsInline
-                                                controls
-                                            />
-                                        )
-                                    ) : getImageUrl(exercise.thumbnail) ? (
-                                        <img
-                                            src={getImageUrl(exercise.thumbnail)!}
-                                            className="w-full h-full object-cover"
-                                            alt="Quiz"
-                                        />
-                                    ) : (
-                                        <div className="text-center text-muted-foreground">
-                                            <ImageOff className="h-12 w-12 mx-auto mb-2 opacity-50"/>
-                                            <p>No Image</p>
-                                        </div>
-                                    )}
-                                </div>
+                                            <div className="text-center text-muted-foreground">
+                                                <ImageOff className="h-12 w-12 mx-auto mb-2 opacity-50"/>
+                                                <p>No Image</p>
+                                            </div>
+                                        )}
+                                    </div>
 
-                                {/* ĐÃ XÓA TEXT WORD MEANING Ở ĐÂY */}
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                        {exercise.options.map((option, idx) => {
+                                            const isSelected = selectedAnswer === option;
+                                            const isCorrect = option === exercise.correctAnswer;
+                                            let buttonClass = "h-16 text-lg font-semibold transition-all border-2 ";
 
-                                <div className="grid grid-cols-2 gap-4 mb-6">
-                                    {exercise.options.map((option, idx) => {
-                                        const isSelected = selectedAnswer === option;
-                                        const isCorrect = option === exercise.correctAnswer;
-                                        let buttonClass = "h-16 text-lg font-semibold transition-all border-2 ";
-
-                                        if (showResult) {
-                                            if (isCorrect) {
-                                                buttonClass += "!bg-green-600 !text-white !border-green-600 hover:!bg-green-700";
-                                            } else if (isSelected && !isCorrect) {
-                                                buttonClass += "!bg-red-600 !text-white !border-red-600 hover:!bg-red-700";
+                                            if (showResult) {
+                                                if (isCorrect) {
+                                                    buttonClass += "!bg-green-600 !text-white !border-green-600 hover:!bg-green-700";
+                                                } else if (isSelected && !isCorrect) {
+                                                    buttonClass += "!bg-red-600 !text-white !border-red-600 hover:!bg-red-700";
+                                                } else {
+                                                    buttonClass += "opacity-40 border-muted bg-transparent text-muted-foreground";
+                                                }
                                             } else {
-                                                buttonClass += "opacity-40 border-muted bg-transparent text-muted-foreground";
+                                                if (isSelected) {
+                                                    buttonClass += "!bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 ring-2 ring-blue-200 ring-offset-2";
+                                                } else {
+                                                    buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
+                                                }
                                             }
-                                        } else {
-                                            if (isSelected) {
-                                                buttonClass += "!bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 ring-2 ring-blue-200 ring-offset-2";
+
+                                            return (
+                                                <Button
+                                                    key={option}
+                                                    variant="outline"
+                                                    className={buttonClass}
+                                                    onClick={() => !showResult && handleAnswerSelect(option)}
+                                                    disabled={showResult}
+                                                >
+                                                    {option}
+                                                </Button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="flex justify-center">
+                                        {!showResult ? (
+                                            <Button onClick={confirmAnswer} disabled={!selectedAnswer} className="px-8">Kiểm tra</Button>
+                                        ) : (
+                                            <Button onClick={nextQuestion} className="px-8">
+                                                {currentQuestionIndex >= TOTAL_QUESTIONS_PER_ROUND ? "Kết thúc" : "Tiếp theo"}
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="text-red-500">{error}</div>
+                        )}
+                    </div>
+                )}
+
+                {/* SPEED MATCH MODE */}
+                {mode === "speed-match" && (
+                    <div className="border-t pt-6">
+                        <div className="flex items-center gap-4 mb-4">
+                            <Button variant="outline" onClick={loadSpeedMatchData}>Làm mới</Button>
+                            <span className="text-muted-foreground">Kéo từ vào hình ảnh tương ứng</span>
+                        </div>
+
+                        {loading ? (
+                            <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>
+                        ) : words.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <Card>
+                                    <CardContent className="p-6">
+                                        <h3 className="font-semibold mb-4">Từ vựng</h3>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {words.map((w) => (
+                                                <Button
+                                                    key={w._id}
+                                                    draggable
+                                                    onDragStart={(e) => onDragStart(e, w._id)}
+                                                    variant="outline"
+                                                    className={`h-12 ${pairs.find(p => p.wordId === w._id)?.matched ? "opacity-50 bg-green-50" : ""}`}
+                                                >
+                                                    {w.word}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardContent className="p-6">
+                                        <h3 className="font-semibold mb-4">Hình ảnh</h3>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {targets.map((t) => (
+                                                <div
+                                                    key={t.id}
+                                                    onDragOver={(e) => e.preventDefault()}
+                                                    onDrop={(e) => onDrop(e, t.id)}
+                                                    className={`rounded-lg overflow-hidden border h-32 flex items-center justify-center bg-muted relative ${
+                                                        pairs.find(p => p.wordId === t.id)?.matched ? "border-green-500 ring-2 ring-green-100" : ""
+                                                    }`}
+                                                >
+                                                    {getImageUrl(t.image) ? (
+                                                        <img src={getImageUrl(t.image)!} className="w-full h-full object-cover" alt="thumb" />
+                                                    ) : (
+                                                        <span className="text-xs">No Image</span>
+                                                    )}
+
+                                                    {pairs.find(p => p.wordId === t.id)?.matched && (
+                                                        <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
+                                                            <CheckCircle2 className="text-green-600 h-8 w-8" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        ) : (
+                            <div className="text-center py-8">{error || "Không có dữ liệu"}</div>
+                        )}
+
+                        {allMatched && (
+                            <div className="mt-8 text-center animate-in zoom-in">
+                                <h3 className="text-2xl font-bold text-green-600 mb-4">Hoàn thành xuất sắc!</h3>
+                                <Button size="lg" onClick={() => {
+                                    saveGameSession();
+                                    loadSpeedMatchData();
+                                }}>Lưu điểm & Chơi lại</Button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* TIMED MODE */}
+                {mode === "timed" && (
+                    <div className="border-t pt-6">
+                        <div className="flex items-center gap-4 mb-4">
+                            <span className="font-bold text-2xl text-red-600">{timedRunning ? `${timedLeft}s` : "60s"}</span>
+                            <Button onClick={startTimed} disabled={timedRunning}>{timedRunning ? "Đang chạy..." : "Bắt đầu"}</Button>
+                        </div>
+
+                        {timedRunning && exercise ? (
+                            <Card>
+                                <CardContent className="p-6">
+                                    <div className="aspect-video bg-black rounded-lg overflow-hidden relative mb-6 flex items-center justify-center max-h-[300px]">
+                                        {exercise.videoUrl ? (
+                                            (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
+                                                <iframe
+                                                    src={exercise.videoUrl}
+                                                    className="w-full h-full"
+                                                    title="Video minh họa"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                            ) : (
+                                                <video
+                                                    src={exercise.videoUrl}
+                                                    className="w-full h-full object-contain"
+                                                    autoPlay
+                                                    loop
+                                                    muted
+                                                    playsInline
+                                                    controls
+                                                />
+                                            )
+                                        ) : getImageUrl(exercise.thumbnail) ? (
+                                            <img src={getImageUrl(exercise.thumbnail)!} className="w-full h-full object-contain" alt="Quiz" />
+                                        ) : (
+                                            <div className="text-center text-muted-foreground">
+                                                <ImageOff className="h-10 w-10 mx-auto mb-2 opacity-50"/>
+                                                <p>No Image</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {exercise.options.map((opt) => {
+                                            let buttonClass = "h-14 text-lg font-semibold transition-all border-2 ";
+                                            if (selectedAnswer) {
+                                                const isSelected = selectedAnswer === opt;
+                                                const isCorrect = opt === exercise.correctAnswer;
+                                                if (isCorrect) buttonClass += "!bg-green-600 !text-white !border-green-600";
+                                                else if (isSelected && !isCorrect) buttonClass += "!bg-red-600 !text-white !border-red-600";
+                                                else buttonClass += "opacity-50";
                                             } else {
                                                 buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
                                             }
-                                        }
 
-                                        return (
-                                            <Button
-                                                key={option}
-                                                variant="outline"
-                                                className={buttonClass}
-                                                onClick={() => !showResult && handleAnswerSelect(option)}
-                                                disabled={showResult}
-                                            >
-                                                {option}
-                                            </Button>
-                                        );
-                                    })}
-                                </div>
-
-                                <div className="flex justify-center">
-                                    {!showResult ? (
-                                        <Button onClick={confirmAnswer} disabled={!selectedAnswer} className="px-8">Kiểm tra</Button>
-                                    ) : (
-                                        <Button onClick={nextQuestion} className="px-8">
-                                            {currentQuestionIndex >= TOTAL_QUESTIONS_PER_ROUND ? "Kết thúc" : "Tiếp theo"}
-                                        </Button>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ) : (
-                        <div className="text-red-500">{error}</div>
-                    )}
-                </div>
-            )}
-
-            {/* SPEED MATCH MODE */}
-            {mode === "speed-match" && (
-                <div className="border-t pt-6">
-                    <div className="flex items-center gap-4 mb-4">
-                        <Button variant="outline" onClick={loadSpeedMatchData}>Làm mới</Button>
-                        <span className="text-muted-foreground">Kéo từ vào hình ảnh tương ứng</span>
-                    </div>
-
-                    {loading ? (
-                        <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>
-                    ) : words.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Card>
-                                <CardContent className="p-6">
-                                    <h3 className="font-semibold mb-4">Từ vựng</h3>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        {words.map((w) => (
-                                            <Button
-                                                key={w._id}
-                                                draggable
-                                                onDragStart={(e) => onDragStart(e, w._id)}
-                                                variant="outline"
-                                                className={`h-12 ${pairs.find(p => p.wordId === w._id)?.matched ? "opacity-50 bg-green-50" : ""}`}
-                                            >
-                                                {w.word}
-                                            </Button>
-                                        ))}
+                                            return (
+                                                <Button key={opt} variant="outline" className={buttonClass} onClick={() => answerTimed(opt)} disabled={!!selectedAnswer}>
+                                                    {opt}
+                                                </Button>
+                                            )
+                                        })}
                                     </div>
                                 </CardContent>
                             </Card>
-
-                            <Card>
-                                <CardContent className="p-6">
-                                    <h3 className="font-semibold mb-4">Hình ảnh</h3>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        {targets.map((t) => (
-                                            <div
-                                                key={t.id}
-                                                onDragOver={(e) => e.preventDefault()}
-                                                onDrop={(e) => onDrop(e, t.id)}
-                                                className={`rounded-lg overflow-hidden border h-32 flex items-center justify-center bg-muted relative ${
-                                                    pairs.find(p => p.wordId === t.id)?.matched ? "border-green-500 ring-2 ring-green-100" : ""
-                                                }`}
-                                            >
-                                                {getImageUrl(t.image) ? (
-                                                    <img src={getImageUrl(t.image)!} className="w-full h-full object-cover" alt="thumb" />
-                                                ) : (
-                                                    <span className="text-xs">No Image</span>
-                                                )}
-
-                                                {pairs.find(p => p.wordId === t.id)?.matched && (
-                                                    <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
-                                                        <CheckCircle2 className="text-green-600 h-8 w-8" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    ) : (
-                        <div className="text-center py-8">{error || "Không có dữ liệu"}</div>
-                    )}
-
-                    {allMatched && (
-                        <div className="mt-8 text-center animate-in zoom-in">
-                            <h3 className="text-2xl font-bold text-green-600 mb-4">Hoàn thành xuất sắc!</h3>
-                            <Button size="lg" onClick={() => {
-                                saveGameSession();
-                                loadSpeedMatchData();
-                            }}>Lưu điểm & Chơi lại</Button>
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {/* TIMED MODE */}
-            {mode === "timed" && (
-                <div className="border-t pt-6">
-                    <div className="flex items-center gap-4 mb-4">
-                        <span className="font-bold text-2xl text-red-600">{timedRunning ? `${timedLeft}s` : "60s"}</span>
-                        <Button onClick={startTimed} disabled={timedRunning}>{timedRunning ? "Đang chạy..." : "Bắt đầu"}</Button>
+                        ) : (
+                            <div className="text-center py-12 bg-muted rounded-lg">
+                                <Trophy className="mx-auto h-12 w-12 text-muted-foreground mb-4"/>
+                                <h3 className="text-xl font-bold">Thử thách tốc độ</h3>
+                                <p className="text-muted-foreground">Trả lời càng nhiều càng tốt trong 60 giây!</p>
+                            </div>
+                        )}
                     </div>
-
-                    {timedRunning && exercise ? (
-                        <Card>
-                            <CardContent className="p-6">
-                                <div className="aspect-video bg-muted rounded-lg overflow-hidden relative mb-6 flex items-center justify-center max-h-[300px]">
-                                    {getImageUrl(exercise.thumbnail) ? (
-                                        <img src={getImageUrl(exercise.thumbnail)!} className="w-full h-full object-contain" alt="Quiz" />
-                                    ) : (
-                                        <div className="text-center text-muted-foreground">
-                                            <ImageOff className="h-10 w-10 mx-auto mb-2 opacity-50"/>
-                                            <p>No Image</p>
-                                        </div>
-                                    )}
-                                </div>
-                                
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    {exercise.options.map((opt) => (
-                                        <Button key={opt} variant="outline" className="h-14 text-lg" onClick={() => answerTimed(opt)}>
-                                            {opt}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ) : (
-                        <div className="text-center py-12 bg-muted rounded-lg">
-                            <Trophy className="mx-auto h-12 w-12 text-muted-foreground mb-4"/>
-                            <h3 className="text-xl font-bold">Thử thách tốc độ</h3>
-                            <p className="text-muted-foreground">Trả lời càng nhiều càng tốt trong 60 giây!</p>
-                        </div>
-                    )}
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
