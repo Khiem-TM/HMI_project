@@ -9,7 +9,93 @@ const execAsync = promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Translate text to sign language using Python service
+export const createTranslation = async (req, res) => {
+  try {
+    const userId = req.user.id; // Lấy từ middleware verifyToken
+    const { inputText, outputSign, direction } = req.body;
+
+    if (!inputText || !outputSign) {
+      return res.status(400).json({ message: "Thiếu thông tin đầu vào/đầu ra" });
+    }
+
+    const translation = await Translation.create({
+      userId,
+      inputText,
+      outputSign,
+      direction: direction || "text-to-sign",
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Lưu lịch sử thành công",
+      data: translation
+    });
+  } catch (error) {
+    console.error("Error creating translation:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getUserTranslations = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { page = 1, limit = 10, direction } = req.query;
+
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const skip = (pageNum - 1) * limitNum;
+
+    const filter = { userId };
+    if (direction) {
+      filter.direction = direction;
+    }
+
+    // Lấy dữ liệu & Tổng số
+    const [translations, total] = await Promise.all([
+      Translation.find(filter)
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limitNum),
+      Translation.countDocuments(filter)
+    ]);
+
+    res.json({
+      success: true,
+      data: translations,
+      pagination: {
+        current: pageNum,
+        pages: Math.ceil(total / limitNum),
+        total,
+        limit: limitNum
+      },
+    });
+  } catch (err) {
+    console.error("Error fetching history:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const deleteTranslation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const translation = await Translation.findOneAndDelete({
+      _id: id,
+      userId: userId,
+    });
+
+    if (!translation) {
+      return res.status(404).json({ success: false, message: "Không tìm thấy hoặc không có quyền xóa" });
+    }
+
+    res.json({ success: true, message: "Xóa thành công" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+
 export const translateTextToSign = async (req, res) => {
   try {
     const {
@@ -28,8 +114,8 @@ export const translateTextToSign = async (req, res) => {
 
     // Path to Python script
     const pythonScriptPath = path.join(
-      __dirname,
-      "../services/translationService.py"
+        __dirname,
+        "../services/translationService.py"
     );
 
     // Check if Python script exists
@@ -48,26 +134,26 @@ export const translateTextToSign = async (req, res) => {
       output_format,
     });
 
-    // Determine Python command (prefer python3.12 or python3.11 for compatibility)
+    // Determine Python command
     const pythonCmd =
-      process.env.PYTHON_PATH ||
-      (await execAsync(
-        "which python3.12 || which python3.11 || which python3",
-        { timeout: 5000 }
-      )
-        .then(({ stdout }) => stdout.trim().split("\n")[0])
-        .catch(() => "python3"));
+        process.env.PYTHON_PATH ||
+        (await execAsync(
+            "which python3.12 || which python3.11 || which python3",
+            { timeout: 5000 }
+        )
+            .then(({ stdout }) => stdout.trim().split("\n")[0])
+            .catch(() => "python3"));
 
     // Execute Python script
     const { stdout, stderr } = await execAsync(
-      `"${pythonCmd}" "${pythonScriptPath}" '${inputData.replace(
-        /'/g,
-        "'\"'\"'"
-      )}'`,
-      {
-        maxBuffer: 10 * 1024 * 1024, // 10MB buffer
-        timeout: 60000, // 60 seconds timeout
-      }
+        `"${pythonCmd}" "${pythonScriptPath}" '${inputData.replace(
+            /'/g,
+            "'\"'\"'"
+        )}'`,
+        {
+          maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+          timeout: 60000, // 60 seconds timeout
+        }
     );
 
     if (stderr && !stdout) {
@@ -103,16 +189,17 @@ export const translateTextToSign = async (req, res) => {
     // Save translation to database
     let translationRecord = null;
     try {
-      translationRecord = await Translation.create({
-        userId: req.user.id,
-        inputText: text,
-        outputSign:
-          result.video_path || result.landmarks_path || "Translation completed",
-        direction: "text-to-sign",
-      });
+      if (req.user && req.user.id) {
+        translationRecord = await Translation.create({
+          userId: req.user.id,
+          inputText: text,
+          outputSign:
+              result.video_path || result.landmarks_path || "Translation completed",
+          direction: "text-to-sign",
+        });
+      }
     } catch (dbError) {
       console.error("Failed to save translation to database:", dbError);
-      // Continue even if DB save fails
     }
 
     // Return success response
@@ -140,56 +227,6 @@ export const translateTextToSign = async (req, res) => {
   }
 };
 
-// create new translation
-export const createTranslation = async (req, res) => {
-  try {
-    const { inputText, outputSign, direction } = req.body;
-
-    const translation = await Translation.create({
-      userId: req.user.id,
-      inputText,
-      outputSign,
-      direction,
-    });
-
-    res.status(201).json({ message: "Tạo bản dịch thành công", translation });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Lấy danh sách bản dịch của user
-export const getUserTranslations = async (req, res) => {
-  try {
-    const { page = 1, limit = 10, direction } = req.query;
-    const skip = (page - 1) * limit;
-
-    const filter = { userId: req.user.id };
-    if (direction) {
-      filter.direction = direction;
-    }
-
-    const translations = await Translation.find(filter)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
-
-    const total = await Translation.countDocuments(filter);
-
-    res.json({
-      translations,
-      pagination: {
-        current: parseInt(page),
-        pages: Math.ceil(total / limit),
-        total,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// Translate sign language to text using landmarks
 export const translateSignToText = async (req, res) => {
   try {
     const {
@@ -210,17 +247,15 @@ export const translateSignToText = async (req, res) => {
     const Word = (await import("../models/Word.js")).default;
     let dictionaryWords = [];
     try {
-      dictionaryWords = await Word.find({}).limit(500); // Limit to prevent huge payload
-      console.log(`Loaded ${dictionaryWords.length} words from dictionary`);
+      dictionaryWords = await Word.find({}).limit(500);
     } catch (dbError) {
       console.warn("Failed to load dictionary words:", dbError.message);
-      // Continue without dictionary - will use basic detection
     }
 
     // Use Python service for sign recognition
     const pythonScriptPath = path.join(
-      __dirname,
-      "../services/signRecognitionService.py"
+        __dirname,
+        "../services/signRecognitionService.py"
     );
 
     // Detect Python version
@@ -243,7 +278,6 @@ export const translateSignToText = async (req, res) => {
       meaning: word.meaning || word.word,
       category: word.category || "general",
       videoUrl: word.videoUrl || "",
-      // Add feature hints if available
       difficulty: word.difficulty || "beginner",
     }));
 
@@ -251,21 +285,21 @@ export const translateSignToText = async (req, res) => {
     const inputData = JSON.stringify({
       landmarks: landmarks,
       sign_language: signLanguage,
-      mode: mode, // "single" or "sequence"
+      mode: mode,
       dictionary_words: dictionaryData,
     });
 
     try {
       // Execute Python recognition service
       const { stdout, stderr } = await execAsync(
-        `"${pythonCmd}" "${pythonScriptPath}" '${inputData.replace(
-          /'/g,
-          "'\"'\"'"
-        )}'`,
-        {
-          maxBuffer: 10 * 1024 * 1024, // 10MB buffer
-          timeout: 10000, // 10 seconds timeout
-        }
+          `"${pythonCmd}" "${pythonScriptPath}" '${inputData.replace(
+              /'/g,
+              "'\"'\"'"
+          )}'`,
+          {
+            maxBuffer: 10 * 1024 * 1024,
+            timeout: 10000,
+          }
       );
 
       if (stderr && !stderr.includes("DeprecationWarning")) {
@@ -285,12 +319,14 @@ export const translateSignToText = async (req, res) => {
       // Save translation to database
       let translationRecord = null;
       try {
-        translationRecord = await Translation.create({
-          userId: req.user.id,
-          inputText: `[Sign Language: ${signLanguage}]`,
-          outputSign: recognizedText,
-          direction: "sign-to-text",
-        });
+        if (req.user && req.user.id) {
+          translationRecord = await Translation.create({
+            userId: req.user.id,
+            inputText: `[Sign Language: ${signLanguage}]`,
+            outputSign: recognizedText,
+            direction: "sign-to-text",
+          });
+        }
       } catch (dbError) {
         console.error("Failed to save translation to database:", dbError);
       }
@@ -314,15 +350,17 @@ export const translateSignToText = async (req, res) => {
       const estimatedWord = "hello";
       const confidence = 0.5;
 
-      // Save translation
+      // Save translation (Fallback)
       let translationRecord = null;
       try {
-        translationRecord = await Translation.create({
-          userId: req.user.id,
-          inputText: `[Sign Language: ${signLanguage}]`,
-          outputSign: estimatedWord,
-          direction: "sign-to-text",
-        });
+        if (req.user && req.user.id) {
+          translationRecord = await Translation.create({
+            userId: req.user.id,
+            inputText: `[Sign Language: ${signLanguage}]`,
+            outputSign: estimatedWord,
+            direction: "sign-to-text",
+          });
+        }
       } catch (dbError) {
         console.error("Failed to save translation to database:", dbError);
       }
@@ -347,25 +385,5 @@ export const translateSignToText = async (req, res) => {
       message: err.message || "Internal server error",
       error: err.toString(),
     });
-  }
-};
-
-// Xóa bản dịch
-export const deleteTranslation = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const translation = await Translation.findOneAndDelete({
-      _id: id,
-      userId: req.user.id,
-    });
-
-    if (!translation) {
-      return res.status(404).json({ message: "Không tìm thấy bản dịch" });
-    }
-
-    res.json({ message: "Xóa bản dịch thành công" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
   }
 };
