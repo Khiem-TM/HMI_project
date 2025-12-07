@@ -22,13 +22,13 @@ export function Navigation() {
     }
   }, [user, pathname, router]);
 
-  // ---> ĐÃ THÊM LEADERBOARD VÀO ĐÂY
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/dictionary", label: "Dictionary" },
     { href: "/translator", label: "Translator" },
     { href: "/game", label: "Practice Game" },
-    { href: "/leaderboard", label: "Leaderboard" }, // <--- Mới thêm
+    { href: "/leaderboard", label: "Leaderboard" },
+    { href: "/history", label: "History" }, // <--- Mới thêm
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
   ];

@@ -89,12 +89,14 @@ export default function GamePage() {
         correctCount: number;
         wrongCount: number;
         startTime: Date | null;
+        score: number;
     }>({
         exercises: [],
         answers: [],
         correctCount: 0,
         wrongCount: 0,
-        startTime: null
+        startTime: null,
+        score: 0
     });
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -109,6 +111,11 @@ export default function GamePage() {
     // Audio Refs
     const correctAudio = useRef<HTMLAudioElement | null>(null);
     const wrongAudio = useRef<HTMLAudioElement | null>(null);
+
+    const colors = useMemo(
+        () => ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"],
+        []
+    );
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -133,12 +140,11 @@ export default function GamePage() {
 
     // --- SESSION LOGIC ---
     const initSession = () => {
-        // Clear dữ liệu cũ
         setScore(0);
         setStreak(0);
         setUnlockedAchievements([]);
         setCurrentQuestionIndex(1);
-        setExercise(null); // Reset câu hỏi để force load cái mới
+        setExercise(null);
 
         // Reset Data Ref
         gameDataRef.current = {
@@ -146,7 +152,8 @@ export default function GamePage() {
             answers: [],
             correctCount: 0,
             wrongCount: 0,
-            startTime: new Date()
+            startTime: new Date(),
+            score: 0
         };
     };
 
@@ -158,13 +165,21 @@ export default function GamePage() {
             isCorrect,
             timeSpent
         });
-        if (isCorrect) gameDataRef.current.correctCount++;
-        else gameDataRef.current.wrongCount++;
 
         if (isCorrect) {
-            setScore(prev => prev + 10);
+            gameDataRef.current.correctCount++;
+
+            // Tính điểm và lưu vào cả Ref lẫn State
+            // Guess Mode: 10 + thời gian còn lại (timeSpent = 20 - timeLeft, vậy điểm = 10 + timeLeft)
+            // Timed Mode: 10 điểm cứng
+            const points = mode === 'guess' ? (10 + (20 - timeSpent)) : 10;
+
+            gameDataRef.current.score += points; // Cập nhật Ref cho an toàn
+
+            setScore(prev => prev + points);
             setStreak(prev => prev + 1);
         } else {
+            gameDataRef.current.wrongCount++;
             setStreak(0);
         }
     };
@@ -172,7 +187,7 @@ export default function GamePage() {
     const saveGameSession = async () => {
         try {
             const data = gameDataRef.current;
-            // Logic save session giữ nguyên
+            // Logic save session
             if (data.exercises.length === 0 && mode !== 'speed-match') return;
             if (mode === 'speed-match' && score === 0) return;
 
@@ -183,7 +198,7 @@ export default function GamePage() {
             const response = await apiService.games.saveSession({
                 gameMode: mode,
                 difficulty,
-                score,
+                score: data.score,
                 correctAnswers: data.correctCount,
                 wrongAnswers: data.wrongCount,
                 totalQuestions: data.correctCount + data.wrongCount,
@@ -198,7 +213,7 @@ export default function GamePage() {
                 } else {
                     toast({
                         title: "Kết quả đã được lưu!",
-                        description: `Score: ${score}`,
+                        description: `Score: ${data.score}`,
                     });
                 }
             }
@@ -222,19 +237,18 @@ export default function GamePage() {
         }, 1000);
     };
 
+    // Xử lý Hết giờ (Guess Mode)
     useEffect(() => {
         if (timeLeft === 0 && mode === 'guess' && !showResult && exercise && !loading) {
             setShowResult(true);
             playSound(false);
             if (exercise._id) {
-                updateGameData(exercise._id, "TIMEOUT", false, 20);
+                updateGameData(exercise._id, "TIMEOUT", false, 20); // timeSpent = 20 (hết giờ)
             }
         }
     }, [timeLeft, mode, showResult, exercise, loading]);
 
-    // Load Exercise (Thêm tham số force để bắt buộc random)
     const loadExercise = async () => {
-        // Reset timer
         if (timerRef.current) clearInterval(timerRef.current);
         if (mode === 'guess') setTimeLeft(20);
 
@@ -333,9 +347,12 @@ export default function GamePage() {
             setPairs((prev) =>
                 prev.map((p) => (p.wordId === targetId ? { ...p, matched: true } : p))
             );
+            // Speed Match: Cộng điểm vào Ref và State
+            gameDataRef.current.score += 5;
+            gameDataRef.current.correctCount++;
+
             setScore(s => s + 5);
             playSound(true);
-            gameDataRef.current.correctCount++;
         } else {
             playSound(false);
         }
@@ -350,7 +367,7 @@ export default function GamePage() {
     const startTimed = () => {
         initSession();
         setTimedRunning(true);
-        setTimedLeft(60); // Reset time
+        setTimedLeft(60);
 
         if (timedTimerRef.current) clearInterval(timedTimerRef.current);
 
@@ -359,9 +376,12 @@ export default function GamePage() {
         timedTimerRef.current = setInterval(() => {
             setTimedLeft((t) => {
                 if (t <= 1) {
+                    // HẾT GIỜ
                     clearInterval(timedTimerRef.current as NodeJS.Timeout);
                     setTimedRunning(false);
+
                     saveGameSession();
+
                     return 0;
                 }
                 return t - 1;
@@ -377,22 +397,20 @@ export default function GamePage() {
         playSound(correct);
 
         if (exercise._id) {
+            // Truyền 0 vì thời gian tính bằng tổng 60s
             updateGameData(exercise._id, id, correct, 0);
         }
 
-        // Delay 500ms để hiện màu
         setTimeout(() => {
             loadExercise();
         }, 500);
     };
 
-    // --- QUAN TRỌNG: RESET TRẠNG THÁI KHI CHUYỂN TAB ---
+    // --- RESET TRẠNG THÁI KHI CHUYỂN TAB ---
     useEffect(() => {
-        // 1. Dọn dẹp sạch sẽ các timer cũ
         if (timerRef.current) clearInterval(timerRef.current);
         if (timedTimerRef.current) clearInterval(timedTimerRef.current);
 
-        // 2. Reset dữ liệu về ban đầu (tránh bug hiển thị)
         setExercise(null);
         setScore(0);
         setStreak(0);
@@ -401,7 +419,6 @@ export default function GamePage() {
         setShowResult(false);
         setLoading(false);
 
-        // 3. Khởi tạo lại theo mode mới
         if (mode === "guess") {
             initSession();
             loadExercise();
@@ -409,7 +426,6 @@ export default function GamePage() {
             initSession();
             loadSpeedMatchData();
         } else if (mode === "timed") {
-            // Timed Mode không tự start, phải bấm nút
             initSession();
         }
 
@@ -421,6 +437,7 @@ export default function GamePage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
+            {/* Phần giao diện giữ nguyên như cũ, không thay đổi */}
             <div className="mb-6 flex items-center justify-between">
                 <div>
                     <h1 className="text-4xl font-bold text-primary mb-2">Game Hub</h1>
@@ -444,7 +461,6 @@ export default function GamePage() {
                 <Button variant={mode === "timed" ? "default" : "outline"} onClick={() => setMode("timed")}>Timed Challenge</Button>
             </div>
 
-            {/* Achievement Popup */}
             {unlockedAchievements.length > 0 && (
                 <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg animate-in fade-in slide-in-from-top-4">
                     <div className="flex items-center gap-2 mb-2">
@@ -465,9 +481,8 @@ export default function GamePage() {
                 </div>
             )}
 
-            {/* SỬ DỤNG KEY={MODE} ĐỂ RESET COMPONENT KHI CHUYỂN TAB */}
+            {/* SỬ DỤNG KEY ĐỂ RESET STATE KHI ĐỔI MODE */}
             <div key={mode}>
-                {/* GUESS MODE */}
                 {mode === "guess" && (
                     <div className="border-t pt-6">
                         <div className="mb-4 flex justify-between text-sm text-muted-foreground">

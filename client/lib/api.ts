@@ -207,7 +207,7 @@ export const apiService = {
     create: async (data: {
       inputText: string;
       outputSign: string;
-      direction: "text-to-sign" | "sign-to-text";
+      direction: "text-to-sign" | "sign-to-text" | "dictionary-lookup";
     }) => {
       return api.post("/translations", data);
     },
