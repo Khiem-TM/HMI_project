@@ -62,6 +62,7 @@
     "react-dom": "^19.2.0",
     "recharts": "^3.5.0",
     "stats.js": "^0.17.0",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^2.6.0",
     "three": "^0.180.0",
     "zustand": "^4.4.7"
