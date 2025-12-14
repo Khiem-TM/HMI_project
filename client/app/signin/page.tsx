@@ -42,11 +42,9 @@ export default function SignInPage() {
       setError("");
       setLoading(true);
 
-      // A. Mở Popup Google
       const googleUser = await signInWithGooglePopup();
       if (!googleUser.email) throw new Error("Không lấy được email từ Google");
 
-      // B. Gọi API Backend
       const res = await apiService.auth.googleLogin({
         email: googleUser.email,
         name: googleUser.displayName || "User",
@@ -54,11 +52,9 @@ export default function SignInPage() {
         avatar: googleUser.photoURL || "",
       });
 
-      // C. Lưu Token
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // D. Chuyển hướng thông minh (Admin về /admin, User về /)
       if (res.data.user.role === "admin") {
         window.location.href = "/admin";
       } else {
@@ -83,7 +79,6 @@ export default function SignInPage() {
         title: "Đăng nhập thành công",
         description: "Chào mừng bạn quay trở lại!",
       });
-      // Logic check role sau khi login thường
       try {
         const savedUser = localStorage.getItem("user");
         const parsed = savedUser ? JSON.parse(savedUser) : null;
@@ -108,7 +103,8 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden bg-center bg-cover bg-[url('/Component_3.png')]">
+    // FIX: Đã xóa bg-background ở đây để tránh đè lên ảnh nền
+    <div className="min-h-[calc(100vh-4rem)] grid md:grid-cols-2 overflow-hidden bg-center bg-cover md:bg-[url('/Component_3.png')]">
 
       <motion.div
         key="signin-image"
@@ -125,20 +121,22 @@ export default function SignInPage() {
         <div className="absolute inset-0 flex items-center justify-center ">
           <div className="text-left text-muted-foreground p-10">
             <div className="flex items-baseline gap-3">
-              <span className="font-black text-2xl text-black">SignLearn</span>
+              <span className="font-black text-2xl text-foreground">SignLearn</span>
               <div className="flex-1 h-[2px] bg-[#043BB3]" />
               <p />
             </div>
-            <h2 className="text-5xl font-black mb-4 text-black">HỌC ASL CÙNG {""}
+            <h2 className="text-5xl font-black mb-4 text-foreground">HỌC ASL CÙNG {""}
               <span className="text-primary font-black" style={{ color: "#043BB3" }}>SIGNLEARN</span>
             </h2>
-            <p className="text-lg text-black">
+            <p className="text-lg text-foreground/80">
               Sứ mệnh của chúng tôi là hỗ trợ cộng đồng người khiếm thính bằng cách mang đến các công cụ học ngôn ngữ ký hiệu dễ tiếp cận và công nghệ dịch thuật tự động, giúp phá bỏ rào cản giao tiếp và thúc đẩy sự hòa nhập xã hội
             </p>
             <p className="text-right font-bold italic" style={{ color: "#043bb3" }}>“Caring for life,  every step of the way.”</p>
           </div>
         </div>
       </motion.div>
+      
+      {/* Container bên phải (Form) */}
       <motion.div
         key="signin-form"
         initial={{ opacity: 0, x: -80, scale: 0.95 }}
@@ -149,22 +147,22 @@ export default function SignInPage() {
           ease: [0.43, 0.13, 0.23, 0.96],
           opacity: { duration: 0.3 },
         }}
-        className="flex items-center justify-center p-8"
+        // FIX QUAN TRỌNG: Sử dụng nền bán trong suốt và hiệu ứng kính mờ
+        className="flex items-center justify-center p-8 bg-white/50 backdrop-blur-md dark:bg-black/70"
       >
         <div className="w-full max-w-[320px] -ml-20">
           <div>
-            <h1 className="text-3xl font-bold">Chào mừng trở lại</h1>
+            <h1 className="text-3xl font-bold text-foreground">Chào mừng trở lại</h1>
             <p className="text-muted-foreground mt-2">
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
 
-            {/* 3. THÊM NÚT GOOGLE VÀO ĐÂY */}
             <Button
               type="button"
               variant="outline"
-              className="w-full bg-transparent"
+              className="w-full bg-transparent hover:bg-accent hover:text-accent-foreground dark:border-gray-600 dark:text-white"
               onClick={handleGoogleLogin}
               disabled={loading}
             >
@@ -189,13 +187,13 @@ export default function SignInPage() {
               Đăng nhập với Google
             </Button>
 
-            {/* 4. THÊM ĐƯỜNG KẺ "OR" */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
+                <span className="w-full border-t border-border dark:border-gray-700" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
+                {/* FIX: Nền chữ OR trong suốt để tiệp với nền form */}
+                <span className="bg-transparent px-2 text-muted-foreground font-bold">
                   or
                 </span>
               </div>
@@ -203,7 +201,7 @@ export default function SignInPage() {
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-foreground">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -211,11 +209,12 @@ export default function SignInPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="bg-background text-foreground border-input dark:bg-secondary/20 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Mật khẩu</Label>
+                <Label htmlFor="password" className="text-foreground">Mật khẩu</Label>
                 <Input
                   id="password"
                   type="password"
@@ -223,6 +222,7 @@ export default function SignInPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="bg-background text-foreground border-input dark:bg-secondary/20 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -233,10 +233,11 @@ export default function SignInPage() {
                   id="remember"
                   checked={remember}
                   onCheckedChange={(checked) => setRemember(checked as boolean)}
+                  className="border-gray-400 dark:border-gray-500 data-[state=checked]:bg-primary"
                 />
                 <label
                   htmlFor="remember"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground"
                 >
                   Ghi nhớ đăng nhập
                 </label>

@@ -12,8 +12,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 
-import { signInWithGooglePopup } from "@/lib/firebase"; // Đảm bảo đường dẫn đúng
-import { apiService } from "@/lib/api"; // Hoặc đường dẫn file api.ts của bạn
+import { signInWithGooglePopup } from "@/lib/firebase"; 
+import { apiService } from "@/lib/api"; 
 
 export default function SignUpPage() {
     const [name, setName] = useState("");
@@ -34,7 +34,6 @@ export default function SignUpPage() {
         }
     }, [user, router]);
 
-    // ---> 2. THÊM HÀM XỬ LÝ GOOGLE LOGIN
     const handleGoogleLogin = async () => {
         try {
             setError("");
@@ -47,7 +46,7 @@ export default function SignUpPage() {
                 throw new Error("Không lấy được email từ Google");
             }
 
-            // Bước B: Gửi thông tin về Backend của bạn
+            // Bước B: Gửi thông tin về Backend
             const res = await apiService.auth.googleLogin({
                 email: googleUser.email,
                 name: googleUser.displayName || "User",
@@ -55,9 +54,6 @@ export default function SignUpPage() {
                 avatar: googleUser.photoURL || "",
             });
 
-            // Bước C: Lưu Token nhận được từ Backend
-            // (Lưu ý: Vì AuthContext của bạn có thể chưa hỗ trợ hàm loginGoogle riêng,
-            // nên ta lưu thủ công vào localStorage rồi reload trang để Context tự cập nhật)
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user));
 
@@ -75,7 +71,6 @@ export default function SignUpPage() {
             setLoading(false);
         }
     };
-    // <--- KẾT THÚC HÀM XỬ LÝ
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -108,7 +103,8 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] overflow-hidden bg-center bg-cover bg-[url('/Đăng_nhập_(2).png')] ">
+        // FIX: Đã xóa bg-background ở thẻ cha để không che ảnh nền
+        <div className="min-h-[calc(100vh-4rem)] overflow-hidden bg-center bg-cover bg-[url('/Đăng_nhập_(2).png')]">
 
             <motion.div
                 key="signup-form"
@@ -120,11 +116,12 @@ export default function SignUpPage() {
                     ease: [0.43, 0.13, 0.23, 0.96],
                     opacity: { duration: 0.3 },
                 }}
-                className="flex items-center justify-center p-8 order-2"
+                // FIX QUAN TRỌNG: Sử dụng nền bán trong suốt và hiệu ứng kính mờ
+                className="flex items-center justify-center p-8 order-2 bg-white/30 backdrop-blur-md dark:bg-black/80"
             >
                 <div className="w-full max-w-md space-y-8">
                     <div>
-                        <h1 className="text-3xl font-bold">Chào mừng đến với {""}
+                        <h1 className="text-3xl font-bold text-foreground">Chào mừng đến với {""}
                             <span className="text-primary" style={{ color: "#043BB3" }}>SignLearn</span>
                         </h1>
                         <p className="text-muted-foreground mt-2">
@@ -136,10 +133,10 @@ export default function SignUpPage() {
                         <Button
                             type="button"
                             variant="outline"
-                            className="w-full bg-transparent"
+                            // FIX: Chỉnh màu nút Google khi dark mode
+                            className="w-full bg-transparent hover:bg-accent hover:text-accent-foreground dark:border-gray-600 dark:text-white"
                             onClick={handleGoogleLogin}
                         >
-                            {/* ---> ĐÃ THAY SỰ KIỆN onClick THÀNH handleGoogleLogin */}
                             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                                 <path
                                     fill="currentColor"
@@ -161,21 +158,21 @@ export default function SignUpPage() {
                             Sign up with Google
                         </Button>
 
-                        {/* ... PHẦN CÒN LẠI CỦA FORM GIỮ NGUYÊN ... */}
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t" />
+                                <span className="w-full border-t border-border dark:border-gray-700" />
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  or
-                </span>
+                                {/* FIX: Nền chữ OR trong suốt */}
+                                <span className="bg-transparent px-2 text-muted-foreground font-bold">
+                                    or
+                                </span>
                             </div>
                         </div>
 
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="name">Tên</Label>
+                                <Label htmlFor="name" className="text-foreground">Tên</Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -183,11 +180,12 @@ export default function SignUpPage() {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
+                                    className="bg-background text-foreground border-input dark:bg-secondary/20 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
+                                <Label htmlFor="email" className="text-foreground">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -195,11 +193,12 @@ export default function SignUpPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
+                                    className="bg-background text-foreground border-input dark:bg-secondary/20 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="password">Mật khẩu</Label>
+                                <Label htmlFor="password" className="text-foreground">Mật khẩu</Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -207,11 +206,12 @@ export default function SignUpPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
+                                    className="bg-background text-foreground border-input dark:bg-secondary/20 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+                                <Label htmlFor="confirmPassword" className="text-foreground">Xác nhận mật khẩu</Label>
                                 <Input
                                     id="confirmPassword"
                                     type="password"
@@ -219,6 +219,7 @@ export default function SignUpPage() {
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
+                                    className="bg-background text-foreground border-input dark:bg-secondary/20 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
                                 />
                             </div>
                         </div>
@@ -228,10 +229,11 @@ export default function SignUpPage() {
                                 id="remember"
                                 checked={remember}
                                 onCheckedChange={(checked) => setRemember(checked as boolean)}
+                                className="border-gray-400 dark:border-gray-500 data-[state=checked]:bg-primary"
                             />
                             <label
                                 htmlFor="remember"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground"
                             >
                                 Ghi nhớ mật khẩu
                             </label>

@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import {
     CheckCircle2,
-    XCircle,
     Loader2,
     Timer,
     Trophy,
@@ -15,13 +14,6 @@ import {
     ImageOff,
 } from "lucide-react";
 import { apiService } from "@/lib/api";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
 // Interface
@@ -112,11 +104,6 @@ export default function GamePage() {
     const correctAudio = useRef<HTMLAudioElement | null>(null);
     const wrongAudio = useRef<HTMLAudioElement | null>(null);
 
-    const colors = useMemo(
-        () => ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"],
-        []
-    );
-
     useEffect(() => {
         if (typeof window !== "undefined") {
             correctAudio.current = new Audio("https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3");
@@ -168,13 +155,8 @@ export default function GamePage() {
 
         if (isCorrect) {
             gameDataRef.current.correctCount++;
-
-            // Tính điểm và lưu vào cả Ref lẫn State
-            // Guess Mode: 10 + thời gian còn lại (timeSpent = 20 - timeLeft, vậy điểm = 10 + timeLeft)
-            // Timed Mode: 10 điểm cứng
             const points = mode === 'guess' ? (10 + (20 - timeSpent)) : 10;
-
-            gameDataRef.current.score += points; // Cập nhật Ref cho an toàn
+            gameDataRef.current.score += points;
 
             setScore(prev => prev + points);
             setStreak(prev => prev + 1);
@@ -187,7 +169,6 @@ export default function GamePage() {
     const saveGameSession = async () => {
         try {
             const data = gameDataRef.current;
-            // Logic save session
             if (data.exercises.length === 0 && mode !== 'speed-match') return;
             if (mode === 'speed-match' && score === 0) return;
 
@@ -237,13 +218,12 @@ export default function GamePage() {
         }, 1000);
     };
 
-    // Xử lý Hết giờ (Guess Mode)
     useEffect(() => {
         if (timeLeft === 0 && mode === 'guess' && !showResult && exercise && !loading) {
             setShowResult(true);
             playSound(false);
             if (exercise._id) {
-                updateGameData(exercise._id, "TIMEOUT", false, 20); // timeSpent = 20 (hết giờ)
+                updateGameData(exercise._id, "TIMEOUT", false, 20);
             }
         }
     }, [timeLeft, mode, showResult, exercise, loading]);
@@ -347,10 +327,8 @@ export default function GamePage() {
             setPairs((prev) =>
                 prev.map((p) => (p.wordId === targetId ? { ...p, matched: true } : p))
             );
-            // Speed Match: Cộng điểm vào Ref và State
             gameDataRef.current.score += 5;
             gameDataRef.current.correctCount++;
-
             setScore(s => s + 5);
             playSound(true);
         } else {
@@ -376,12 +354,9 @@ export default function GamePage() {
         timedTimerRef.current = setInterval(() => {
             setTimedLeft((t) => {
                 if (t <= 1) {
-                    // HẾT GIỜ
                     clearInterval(timedTimerRef.current as NodeJS.Timeout);
                     setTimedRunning(false);
-
                     saveGameSession();
-
                     return 0;
                 }
                 return t - 1;
@@ -397,7 +372,6 @@ export default function GamePage() {
         playSound(correct);
 
         if (exercise._id) {
-            // Truyền 0 vì thời gian tính bằng tổng 60s
             updateGameData(exercise._id, id, correct, 0);
         }
 
@@ -406,7 +380,7 @@ export default function GamePage() {
         }, 500);
     };
 
-    // --- RESET TRẠNG THÁI KHI CHUYỂN TAB ---
+    // --- RESET ---
     useEffect(() => {
         if (timerRef.current) clearInterval(timerRef.current);
         if (timedTimerRef.current) clearInterval(timedTimerRef.current);
@@ -437,7 +411,6 @@ export default function GamePage() {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-6xl">
-            {/* Phần giao diện giữ nguyên như cũ, không thay đổi */}
             <div className="mb-6 flex items-center justify-between">
                 <div>
                     <h1 className="text-4xl font-bold text-primary mb-2">Game Hub</h1>
@@ -467,27 +440,16 @@ export default function GamePage() {
                         <Award className="h-5 w-5 text-yellow-600" />
                         <h3 className="font-semibold text-yellow-800">New Achievements Unlocked!</h3>
                     </div>
-                    <div className="space-y-2">
-                        {unlockedAchievements.map((achievement, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-sm">
-                                <Trophy className="h-4 w-4 text-yellow-600" />
-                                <span className="font-medium">{achievement.name}</span>
-                                <span className="text-muted-foreground">- {achievement.description}</span>
-                                {achievement.points > 0 && <span className="text-green-600">+{achievement.points} pts</span>}
-                            </div>
-                        ))}
-                    </div>
                     <Button size="sm" variant="ghost" onClick={() => setUnlockedAchievements([])} className="mt-2 text-yellow-800">Close</Button>
                 </div>
             )}
 
-            {/* SỬ DỤNG KEY ĐỂ RESET STATE KHI ĐỔI MODE */}
             <div key={mode}>
                 {mode === "guess" && (
                     <div className="border-t pt-6">
                         <div className="mb-4 flex justify-between text-sm text-muted-foreground">
                             <span>Câu hỏi {currentQuestionIndex} / {TOTAL_QUESTIONS_PER_ROUND}</span>
-                            <Timer className="h-4 w-4 inline mr-1"/> {timeLeft}s
+                            <span><Timer className="h-4 w-4 inline mr-1"/> {timeLeft}s</span>
                         </div>
                         <Progress value={(currentQuestionIndex / TOTAL_QUESTIONS_PER_ROUND) * 100} className="h-2 mb-6" />
 
@@ -495,86 +457,94 @@ export default function GamePage() {
                             <div className="flex justify-center py-12"><Loader2 className="animate-spin" /></div>
                         ) : exercise ? (
                             <Card>
-                                <CardContent className="p-8">
-                                    <div className="aspect-video bg-black rounded-lg overflow-hidden relative mb-6 flex items-center justify-center">
-                                        {exercise.videoUrl ? (
-                                            (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
-                                                <iframe
-                                                    src={exercise.videoUrl}
-                                                    className="w-full h-full"
-                                                    title="Video minh họa"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
+                                <CardContent className="p-4 md:p-6">
+                                    {/* FIX: Sử dụng Grid Layout: Bên trái là Video, Bên phải là Đáp án */}
+                                    <div className="grid md:grid-cols-2 gap-6 items-stretch">
+                                        
+                                        {/* Cột 1: Media Area */}
+                                        <div className="bg-black rounded-lg overflow-hidden relative flex items-center justify-center min-h-[300px] md:h-auto">
+                                            {exercise.videoUrl ? (
+                                                (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
+                                                    <iframe
+                                                        src={exercise.videoUrl}
+                                                        className="w-full h-full absolute inset-0"
+                                                        title="Video minh họa"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    />
+                                                ) : (
+                                                    <video
+                                                        src={exercise.videoUrl}
+                                                        className="w-full h-full object-contain absolute inset-0"
+                                                        autoPlay
+                                                        loop
+                                                        muted
+                                                        playsInline
+                                                        controls
+                                                    />
+                                                )
+                                            ) : getImageUrl(exercise.thumbnail) ? (
+                                                <img
+                                                    src={getImageUrl(exercise.thumbnail)!}
+                                                    className="w-full h-full object-contain absolute inset-0"
+                                                    alt="Quiz"
                                                 />
                                             ) : (
-                                                <video
-                                                    src={exercise.videoUrl}
-                                                    className="w-full h-full object-contain"
-                                                    autoPlay
-                                                    loop
-                                                    muted
-                                                    playsInline
-                                                    controls
-                                                />
-                                            )
-                                        ) : getImageUrl(exercise.thumbnail) ? (
-                                            <img
-                                                src={getImageUrl(exercise.thumbnail)!}
-                                                className="w-full h-full object-cover"
-                                                alt="Quiz"
-                                            />
-                                        ) : (
-                                            <div className="text-center text-muted-foreground">
-                                                <ImageOff className="h-12 w-12 mx-auto mb-2 opacity-50"/>
-                                                <p>No Image</p>
+                                                <div className="text-center text-muted-foreground">
+                                                    <ImageOff className="h-12 w-12 mx-auto mb-2 opacity-50"/>
+                                                    <p>No Image</p>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Cột 2: Options & Controls */}
+                                        <div className="flex flex-col justify-center space-y-6">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                {exercise.options.map((option, idx) => {
+                                                    const isSelected = selectedAnswer === option;
+                                                    const isCorrect = option === exercise.correctAnswer;
+                                                    let buttonClass = "h-16 text-lg font-semibold transition-all border-2 ";
+
+                                                    if (showResult) {
+                                                        if (isCorrect) {
+                                                            buttonClass += "!bg-green-600 !text-white !border-green-600 hover:!bg-green-700";
+                                                        } else if (isSelected && !isCorrect) {
+                                                            buttonClass += "!bg-red-600 !text-white !border-red-600 hover:!bg-red-700";
+                                                        } else {
+                                                            buttonClass += "opacity-40 border-muted bg-transparent text-muted-foreground";
+                                                        }
+                                                    } else {
+                                                        if (isSelected) {
+                                                            buttonClass += "!bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 ring-2 ring-blue-200 ring-offset-2";
+                                                        } else {
+                                                            buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
+                                                        }
+                                                    }
+
+                                                    return (
+                                                        <Button
+                                                            key={option}
+                                                            variant="outline"
+                                                            className={buttonClass}
+                                                            onClick={() => !showResult && handleAnswerSelect(option)}
+                                                            disabled={showResult}
+                                                        >
+                                                            {option}
+                                                        </Button>
+                                                    );
+                                                })}
                                             </div>
-                                        )}
-                                    </div>
 
-                                    <div className="grid grid-cols-2 gap-4 mb-6">
-                                        {exercise.options.map((option, idx) => {
-                                            const isSelected = selectedAnswer === option;
-                                            const isCorrect = option === exercise.correctAnswer;
-                                            let buttonClass = "h-16 text-lg font-semibold transition-all border-2 ";
-
-                                            if (showResult) {
-                                                if (isCorrect) {
-                                                    buttonClass += "!bg-green-600 !text-white !border-green-600 hover:!bg-green-700";
-                                                } else if (isSelected && !isCorrect) {
-                                                    buttonClass += "!bg-red-600 !text-white !border-red-600 hover:!bg-red-700";
-                                                } else {
-                                                    buttonClass += "opacity-40 border-muted bg-transparent text-muted-foreground";
-                                                }
-                                            } else {
-                                                if (isSelected) {
-                                                    buttonClass += "!bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 ring-2 ring-blue-200 ring-offset-2";
-                                                } else {
-                                                    buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
-                                                }
-                                            }
-
-                                            return (
-                                                <Button
-                                                    key={option}
-                                                    variant="outline"
-                                                    className={buttonClass}
-                                                    onClick={() => !showResult && handleAnswerSelect(option)}
-                                                    disabled={showResult}
-                                                >
-                                                    {option}
-                                                </Button>
-                                            );
-                                        })}
-                                    </div>
-
-                                    <div className="flex justify-center">
-                                        {!showResult ? (
-                                            <Button onClick={confirmAnswer} disabled={!selectedAnswer} className="px-8">Kiểm tra</Button>
-                                        ) : (
-                                            <Button onClick={nextQuestion} className="px-8">
-                                                {currentQuestionIndex >= TOTAL_QUESTIONS_PER_ROUND ? "Kết thúc" : "Tiếp theo"}
-                                            </Button>
-                                        )}
+                                            <div className="flex justify-end">
+                                                {!showResult ? (
+                                                    <Button onClick={confirmAnswer} disabled={!selectedAnswer} size="lg" className="w-full sm:w-auto">Kiểm tra</Button>
+                                                ) : (
+                                                    <Button onClick={nextQuestion} size="lg" className="w-full sm:w-auto">
+                                                        {currentQuestionIndex >= TOTAL_QUESTIONS_PER_ROUND ? "Kết thúc" : "Tiếp theo"}
+                                                    </Button>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -584,9 +554,9 @@ export default function GamePage() {
                     </div>
                 )}
 
-                {/* SPEED MATCH MODE */}
+                {/* SPEED MATCH MODE (Giữ nguyên hoặc chỉnh nhẹ nếu cần) */}
                 {mode === "speed-match" && (
-                    <div className="border-t pt-6">
+                     <div className="border-t pt-6">
                         <div className="flex items-center gap-4 mb-4">
                             <Button variant="outline" onClick={loadSpeedMatchData}>Làm mới</Button>
                             <span className="text-muted-foreground">Kéo từ vào hình ảnh tương ứng</span>
@@ -671,57 +641,64 @@ export default function GamePage() {
 
                         {timedRunning && exercise ? (
                             <Card>
-                                <CardContent className="p-6">
-                                    <div className="aspect-video bg-black rounded-lg overflow-hidden relative mb-6 flex items-center justify-center max-h-[300px]">
-                                        {exercise.videoUrl ? (
-                                            (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
-                                                <iframe
-                                                    src={exercise.videoUrl}
-                                                    className="w-full h-full"
-                                                    title="Video minh họa"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                />
+                                <CardContent className="p-4 md:p-6">
+                                    {/* FIX: Tương tự Guess Mode, dùng Grid chia đôi layout */}
+                                    <div className="grid md:grid-cols-2 gap-6 items-stretch">
+                                        {/* Cột 1: Video */}
+                                        <div className="bg-black rounded-lg overflow-hidden relative flex items-center justify-center min-h-[300px] md:h-auto">
+                                            {exercise.videoUrl ? (
+                                                (exercise.videoUrl.includes("youtube.com") || exercise.videoUrl.includes("youtu.be")) ? (
+                                                    <iframe
+                                                        src={exercise.videoUrl}
+                                                        className="w-full h-full absolute inset-0"
+                                                        title="Video minh họa"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    />
+                                                ) : (
+                                                    <video
+                                                        src={exercise.videoUrl}
+                                                        className="w-full h-full object-contain absolute inset-0"
+                                                        autoPlay
+                                                        loop
+                                                        muted
+                                                        playsInline
+                                                        controls
+                                                    />
+                                                )
+                                            ) : getImageUrl(exercise.thumbnail) ? (
+                                                <img src={getImageUrl(exercise.thumbnail)!} className="w-full h-full object-contain absolute inset-0" alt="Quiz" />
                                             ) : (
-                                                <video
-                                                    src={exercise.videoUrl}
-                                                    className="w-full h-full object-contain"
-                                                    autoPlay
-                                                    loop
-                                                    muted
-                                                    playsInline
-                                                    controls
-                                                />
-                                            )
-                                        ) : getImageUrl(exercise.thumbnail) ? (
-                                            <img src={getImageUrl(exercise.thumbnail)!} className="w-full h-full object-contain" alt="Quiz" />
-                                        ) : (
-                                            <div className="text-center text-muted-foreground">
-                                                <ImageOff className="h-10 w-10 mx-auto mb-2 opacity-50"/>
-                                                <p>No Image</p>
+                                                <div className="text-center text-muted-foreground">
+                                                    <ImageOff className="h-10 w-10 mx-auto mb-2 opacity-50"/>
+                                                    <p>No Image</p>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Cột 2: Buttons */}
+                                        <div className="flex flex-col justify-center">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {exercise.options.map((opt) => {
+                                                    let buttonClass = "h-20 text-lg font-semibold transition-all border-2 "; // Tăng nhẹ chiều cao nút cho Timed Mode dễ bấm hơn chút
+                                                    if (selectedAnswer) {
+                                                        const isSelected = selectedAnswer === opt;
+                                                        const isCorrect = opt === exercise.correctAnswer;
+                                                        if (isCorrect) buttonClass += "!bg-green-600 !text-white !border-green-600";
+                                                        else if (isSelected && !isCorrect) buttonClass += "!bg-red-600 !text-white !border-red-600";
+                                                        else buttonClass += "opacity-50";
+                                                    } else {
+                                                        buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
+                                                    }
+
+                                                    return (
+                                                        <Button key={opt} variant="outline" className={buttonClass} onClick={() => answerTimed(opt)} disabled={!!selectedAnswer}>
+                                                            {opt}
+                                                        </Button>
+                                                    )
+                                                })}
                                             </div>
-                                        )}
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        {exercise.options.map((opt) => {
-                                            let buttonClass = "h-14 text-lg font-semibold transition-all border-2 ";
-                                            if (selectedAnswer) {
-                                                const isSelected = selectedAnswer === opt;
-                                                const isCorrect = opt === exercise.correctAnswer;
-                                                if (isCorrect) buttonClass += "!bg-green-600 !text-white !border-green-600";
-                                                else if (isSelected && !isCorrect) buttonClass += "!bg-red-600 !text-white !border-red-600";
-                                                else buttonClass += "opacity-50";
-                                            } else {
-                                                buttonClass += "hover:bg-accent hover:text-accent-foreground border-input bg-background";
-                                            }
-
-                                            return (
-                                                <Button key={opt} variant="outline" className={buttonClass} onClick={() => answerTimed(opt)} disabled={!!selectedAnswer}>
-                                                    {opt}
-                                                </Button>
-                                            )
-                                        })}
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>

@@ -13,6 +13,7 @@ import { useHandDetection } from "@/hooks/useHandDetection";
 import { apiService } from "@/lib/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useSignRecognition } from "@/hooks/useSignRecognition";
+import RocketLoader from "@/components/RocketLoader";
 
 let translationService: any = null;
 let languageDetectionService: any = null;
@@ -402,67 +403,65 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
 
   // Handle text translation using external API (Firebase Cloud Functions)
   const handleTranslate = async () => {
+    // 1. Validation
     if (!inputText.trim() || !translationService || !languageDetectionService) {
       setTranslationError("Vui lòng nhập văn bản để dịch");
       return;
     }
 
+    // 2. Reset State & Bật Loader
     setIsTranslating(true);
     setTranslationError(null);
     setVideoError(null);
+    
+    // Xóa sạch dữ liệu cũ để hiện Rocket Loader
     setSignWriting([]);
     setPoseUrl(null);
-    // Clear previous video URL (will revoke blob URL in store)
     setSignedLanguageVideo(null);
     setSignedLanguagePose(null);
 
+    // 3. Tạo Promise đếm ngược 3 giây (Animation Time)
+    const minDelayPromise = new Promise((resolve) => setTimeout(resolve, 3000));
+
     try {
-      // Detect language if not manually selected (use MediaPipe if available)
+      // --- BẮT ĐẦU XỬ LÝ LOGIC (Lưu vào biến tạm, CHƯA set state vội) ---
+
+      // A. Detect Language
       let spokenLang = selectedSpokenLanguage;
       if (!selectedSpokenLanguage || selectedSpokenLanguage === "auto") {
         if (mediapipeLanguageDetectionService) {
           try {
             await mediapipeLanguageDetectionService.init();
-            spokenLang =
-              await mediapipeLanguageDetectionService.detectSpokenLanguage(
-                inputText
-              );
+            spokenLang = await mediapipeLanguageDetectionService.detectSpokenLanguage(inputText);
           } catch (e) {
-            console.warn("Phát hiện MediaPipe thất bại, sử dụng phương án dự phòng:", e);
-            spokenLang = await languageDetectionService.detectSpokenLanguage(
-              inputText
-            );
+            console.warn("MediaPipe failed, using fallback:", e);
+            spokenLang = await languageDetectionService.detectSpokenLanguage(inputText);
           }
         } else {
-          spokenLang = await languageDetectionService.detectSpokenLanguage(
-            inputText
-          );
+          spokenLang = await languageDetectionService.detectSpokenLanguage(inputText);
         }
-        setDetectedLanguage(spokenLang);
+        setDetectedLanguage(spokenLang); // Cái này set luôn cũng được vì nó không ảnh hưởng UI chính
       }
 
-      const videoUrl = translationService.getSpokenToSignedVideoUrl(
+      // B. Get Video & Pose URLs (Lưu vào biến, chưa hiển thị)
+      const calculatedVideoUrl = translationService.getSpokenToSignedVideoUrl(
         inputText.trim(),
         spokenLang,
         selectedSignedLanguage
       );
-      setSignedLanguageVideo(videoUrl);
 
-      const poseUrlValue = translationService.getSpokenToSignedPoseUrl(
+      const calculatedPoseUrl = translationService.getSpokenToSignedPoseUrl(
         inputText.trim(),
         spokenLang,
         selectedSignedLanguage
       );
-      setPoseUrl(poseUrlValue);
-      setSignedLanguagePose(poseUrlValue);
 
-      // Split into sentences
+      // C. Call Translation API (SignWriting)
       const sentences = translationService.splitSpokenSentences(
         spokenLang,
         inputText.trim()
       );
 
-      // Translate to SignWriting
       const result = await translationService.translateSpokenToSignWriting(
         inputText.trim(),
         sentences,
@@ -470,49 +469,56 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
         selectedSignedLanguage
       );
 
-      // Convert FSW string to array of SignWriting objects
-      // FSW signs are separated by spaces, filter out empty strings
+      // D. Process FSW (Xử lý chuỗi kết quả)
       const fswSigns = result.text
         .split(/\s+/)
-        .filter((s: string) => s.trim().length > 0 && !s.match(/^\$[a-z]+$/)); // Filter out language tags like $en $ase
+        .filter((s: string) => s.trim().length > 0 && !s.match(/^\$[a-z]+$/));
 
       if (fswSigns.length === 0) {
         throw new Error("Translation returned no sign language symbols");
       }
 
-      const signWritingObjs: SignWritingObj[] = fswSigns.map((fsw: string) => ({
+      const signWritingObjs: any[] = fswSigns.map((fsw: string) => ({
         fsw: fsw.trim(),
       }));
+
+      // --- KẾT THÚC XỬ LÝ LOGIC ---
+
+      // 4. BƯỚC QUAN TRỌNG NHẤT: Đợi cho đủ 3 giây (Wait for Animation)
+      // Nếu logic trên chạy mất 0.5s -> Đợi thêm 2.5s
+      // Nếu logic trên chạy mất 5s -> Không đợi thêm (vì đã quá 3s)
+      await minDelayPromise;
+
+      // 5. Cập nhật UI một thể (Video + Pose + SignWriting hiện ra cùng lúc)
+      setSignedLanguageVideo(calculatedVideoUrl);
+      
+      setPoseUrl(calculatedPoseUrl);
+      setSignedLanguagePose(calculatedPoseUrl);
+      
       setSignWriting(signWritingObjs);
+
     } catch (err: any) {
       console.error("Translation error:", err);
-      const errorMessage =
-        err.message || "Translation failed. Please try again.";
+      // Nếu lỗi cũng phải đợi đủ giây rồi mới báo lỗi (để tránh giật cục)
+      await minDelayPromise; 
 
-      // Provide user-friendly error messages
+      const errorMessage = err.message || "Translation failed. Please try again.";
+
       if (errorMessage.includes("404") || errorMessage.includes("not found")) {
-        setTranslationError(
-          "Translation models not found. Please ensure models are downloaded."
-        );
-      } else if (
-        errorMessage.includes("empty") ||
-        errorMessage.includes("no sign language symbols")
-      ) {
-        setTranslationError(
-          "Translation returned no results. Please try different text."
-        );
+        setTranslationError("Translation models not found. Please ensure models are downloaded.");
+      } else if (errorMessage.includes("empty") || errorMessage.includes("no sign language symbols")) {
+        setTranslationError("Translation returned no results. Please try different text.");
       } else if (errorMessage.includes("Worker not initialized")) {
-        setTranslationError(
-          "Translation engine failed to initialize. Please refresh the page."
-        );
+        setTranslationError("Translation engine failed to initialize. Please refresh the page.");
       } else {
         setTranslationError(errorMessage);
       }
     } finally {
+      // 6. Tắt Loader -> Kết quả hiện ra
       setIsTranslating(false);
     }
   };
-
+  
   // Auto-detect language when text changes
   useEffect(() => {
     if (
@@ -544,7 +550,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
         <h1 className="text-4xl font-bold text-primary mb-4">Trình dịch</h1>
         <p className="text-muted-foreground mb-2">
           <span className="text-accent font-semibold">
-            Văn bảng sang ngôn ngữ ký hiệu:
+            Văn bản sang ngôn ngữ ký hiệu:
           </span>{" "}
           Chuyển đổi văn bản viết thành các hoạt ảnh ngôn ngữ ký hiệu chính xác, giúp người khiếm thính dễ dàng hiểu.
         </p>
@@ -576,7 +582,7 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
             />
           </svg>
-          Văn bảng sang ASL
+          Văn bản sang ASL
         </Button>
         <Button
           variant={mode === "sign-to-text" ? "default" : "outline"}
@@ -847,9 +853,11 @@ const [realtimeSign, setRealtimeSign] = useState<string>("");
             ) : (
               <div className="space-y-4">
                 {isTranslating ? (
-                  <div className="aspect-video bg-muted rounded-lg flex flex-col items-center justify-center">
-                    <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-                    <p className="text-muted-foreground">Đang dịch...</p>
+                  // Thay thế Loader2 bằng RocketLoader
+                  <div className="aspect-video bg-muted/30 rounded-lg flex items-center justify-center overflow-hidden relative bg-slate-900/5 dark:bg-black/20">
+                    <div className="transform scale-75">
+                         <RocketLoader />
+                    </div>
                   </div>
                 ) : signedLanguageVideo ? (
                   <div className="aspect-video bg-black rounded-lg overflow-hidden relative">
